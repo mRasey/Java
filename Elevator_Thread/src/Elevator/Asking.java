@@ -60,5 +60,15 @@ public class Asking {
         return m_askingElevator;
     }
 
+    @Override
+    public String toString(){
+        if(m_entryState == EntryState.FR){
+            return "(FR," + m_askingFloorNumber + "," + m_elevatorState + ")";
+        }
+        else{
+            return "(ER,#" + m_askingElevator + "," + m_askingFloorNumber + ")";
+        }
+    }
+
 }
 

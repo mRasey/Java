@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class thread_Elevator extends Elevator implements Runnable{
     ArrayList<Asking> elevatorAskingQueue = new ArrayList<>();
     AskQueue askQueue = new AskQueue();
+    //AskQueue finishAskQueue = new AskQueue();
     private int elevatorNumber;
 
     public thread_Elevator(int elevatorNumber){
@@ -50,7 +51,7 @@ public class thread_Elevator extends Elevator implements Runnable{
         while(true) {
             //System.out.println("true in");
             if (!askQueue.getM_askingQueue().isEmpty()) {
-                //System.out.println("data in");
+                System.out.println("thread data in");
                 do{
                     for (Asking asking : askQueue.getM_askingQueue()) {
                         if (asking == null) {
@@ -63,10 +64,14 @@ public class thread_Elevator extends Elevator implements Runnable{
                     }
                 }while(deleteFlag);
                 starToMove(askQueue, 0);
+                //finishAskings.add(askQueue.getM_askingQueue().get(0));
                 do {
                     while (getCurrentFloor() != getM_primaryFloor()) {
                         //还没有到主请求楼层，则继续移动
-                        moveStepByStep(askQueue);
+                        if(moveStepByStep(askQueue)){
+                            //如果停下
+
+                        }
                     }
                     //printCarryRequests();//输出捎带序列
                     //elevator.rebuildCarryRequesets();
@@ -74,15 +79,17 @@ public class thread_Elevator extends Elevator implements Runnable{
                 //System.out.println("输出：" + toString());
                 //printElevatorState();
                 askQueue.getM_askingQueue().removeAllElements();
+                finishAskings.removeAllElements();
                 //break;
             }
-            /*else {
-                now = System.currentTimeMillis();
+            else {
+                initElevatorState();//将电梯运动状态初始化
+                /*now = System.currentTimeMillis();
                 if(now - last > 5000) {
                     System.out.println("data out");
                     last = now;
-                }
-            }*/
+                }*/
+            }
         }
     }
 
