@@ -3,6 +3,7 @@ package Elevator;
 import com.sun.javafx.binding.BidirectionalBinding;
 import com.sun.javafx.binding.SelectBinding;
 
+import java.beans.IntrospectionException;
 import java.nio.channels.CancelledKeyException;
 import java.security.PublicKey;
 import java.util.TreeMap;
@@ -151,11 +152,14 @@ public class Elevator implements Move{
                 }
             }
             printElevatorState();
+            System.out.println(asking.toString());
+            //printFinishAsking(asking.getM_askingFloorNumber());
         }
 
     }
     //输出完成的函数
     public void printFinishAsking(int floorNumber){
+        //System.out.println("PFA in");
         for(int i = 0; i < finishAskings.size(); i++){
             Asking asking = finishAskings.get(i);
             if(asking != null){
@@ -169,13 +173,21 @@ public class Elevator implements Move{
     }
     //电梯一层一层地运动
     public boolean moveStepByStep(AskQueue askQueue){
+        System.out.println("move in");
         amountOfExercise++;
         if(elevatorState == ElevatorState.UP) {
             m_currentFloor++;
             m_time += 3;
+            try {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException i){
+                i.printStackTrace();
+            }
             traverseFloors(askQueue);
             if (m_ifStay[m_currentFloor-1] == true) {
                 printElevatorState();
+                //System.out.println("PES to PFA");
                 printFinishAsking(m_currentFloor);
                 m_ifStay[m_currentFloor-1] = false;//过了该层之后变成false
                 return true;
@@ -184,6 +196,12 @@ public class Elevator implements Move{
         else if(elevatorState == ElevatorState.DOWN){
             m_currentFloor--;
             m_time += 3;
+            try {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException i){
+                i.printStackTrace();
+            }
             traverseFloors(askQueue);
             if (m_ifStay[m_currentFloor - 1] == true) {
                 printElevatorState();
@@ -192,14 +210,24 @@ public class Elevator implements Move{
                 return true;
             }
         }
+        else{
+            System.out.println("else");
+        }
         return false;
     }
     public void printElevatorState() {
         //电梯去目的地
+        //System.out.print("PES in");
         System.out.print(toString());
         m_time += 6;//开关门附加时间
+        try {
+            Thread.sleep(6000);
+        }
+        catch (InterruptedException i){
+            i.printStackTrace();
+        }
     }
-    //重载toString()
+    //重载toString
     @Override
     public String toString(){
         return "(" + m_currentFloor + "," + elevatorState + "," + m_time + ")";
@@ -302,6 +330,7 @@ public class Elevator implements Move{
     public ElevatorState getElevatorState(){
         return elevatorState;
     }
+    //电梯置为STABLE状态
     public void initElevatorState(){
         elevatorState = ElevatorState.STABLE;
     }

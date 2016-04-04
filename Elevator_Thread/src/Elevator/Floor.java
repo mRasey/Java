@@ -12,6 +12,7 @@ public class Floor {
         //thread_Elevator[] thread_elevators = new thread_Elevator[3];
         ALS_Schedule als_schedule = new ALS_Schedule();
         Thread alsThread = new Thread(als_schedule);
+        alsThread.start();
         //boolean ifFirstInput = true;
         for(int i = 0; i < als_schedule.getThread_elevators().length; i++){
             als_schedule.getThread_elevators()[i] = new thread_Elevator(i+1);
@@ -30,8 +31,8 @@ public class Floor {
                     //成功匹配
                     Asking asking = new Asking(input);
                     if (askQueue.addAskingQueue(asking)) {
-                        als_schedule.setAsking(asking);
-                        alsThread.run();
+                        als_schedule.setAskings(asking);//将请求加入托盘
+                        //alsThread.run();
                         //als_schedule.distribute(asking, als_schedule.getThread_elevators());//分配请求
                     }
                 } else {

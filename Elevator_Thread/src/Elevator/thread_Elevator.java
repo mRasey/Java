@@ -52,17 +52,13 @@ public class thread_Elevator extends Elevator implements Runnable{
             //System.out.println("true in");
             if (!askQueue.getM_askingQueue().isEmpty()) {
                 System.out.println("thread data in");
-                do{
-                    for (Asking asking : askQueue.getM_askingQueue()) {
-                        if (asking == null) {
-                            askQueue.getM_askingQueue().remove(asking);
-                            deleteFlag = true;
-                            break;
-                        }
-                        else
-                            deleteFlag = false;
+                for (int i = 0; i < askQueue.getM_askingQueue().size(); i++) {
+                    Asking asking = askQueue.getM_askingQueue().get(i);
+                    if (asking == null) {
+                        askQueue.getM_askingQueue().remove(asking);
+                        i--;
                     }
-                }while(deleteFlag);
+                }
                 starToMove(askQueue, 0);
                 //finishAskings.add(askQueue.getM_askingQueue().get(0));
                 do {
