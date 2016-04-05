@@ -1,10 +1,11 @@
 package Elevator;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class thread_Elevator extends Elevator implements Runnable{
-    ArrayList<Asking> elevatorAskingQueue = new ArrayList<>();
-    AskQueue askQueue = new AskQueue();
+    private ArrayList<Asking> elevatorAskingQueue = new ArrayList<>();
+    private AskQueue askQueue = new AskQueue();
     //AskQueue finishAskQueue = new AskQueue();
     private int elevatorNumber;
 
@@ -14,9 +15,22 @@ public class thread_Elevator extends Elevator implements Runnable{
     public void addAskingQueue(Asking asking){
         askQueue.addAskingQueue(asking);
     }
-
     public int getElevatorNumber(){
         return elevatorNumber;
+    }
+
+    public Vector<Asking> removeNull(Vector<Asking> askings){
+        for (int i = 0; i < askings.size(); i++) {
+            Asking asking = askings.get(i);
+            /*if(asking != null){
+                System.out.println("askQ : " + asking.toString());
+            }*/
+            if (asking == null) {
+                askQueue.getM_askingQueue().remove(asking);
+                i--;
+            }
+        }
+        return askings;
     }
 
     @Override
@@ -49,42 +63,46 @@ public class thread_Elevator extends Elevator implements Runnable{
         long last = System.currentTimeMillis();
         long now = System.currentTimeMillis();
         while(true) {
-            //System.out.println("true in");
-            if (!askQueue.getM_askingQueue().isEmpty()) {
-                System.out.println("thread data in");
-                for (int i = 0; i < askQueue.getM_askingQueue().size(); i++) {
-                    Asking asking = askQueue.getM_askingQueue().get(i);
-                    if (asking == null) {
-                        askQueue.getM_askingQueue().remove(asking);
-                        i--;
-                    }
-                }
-                starToMove(askQueue, 0);
-                //finishAskings.add(askQueue.getM_askingQueue().get(0));
-                do {
-                    while (getCurrentFloor() != getM_primaryFloor()) {
-                        //还没有到主请求楼层，则继续移动
-                        if(moveStepByStep(askQueue)){
-                            //如果停下
-
+            synchronized (getM_carryRequests()) {
+                //System.out.println("true in");
+                if (!askQueue.getM_askingQueue().isEmpty()) {
+                    //System.out.println("thread data in");
+                    for (int i = 0; i < askQueue.getM_askingQueue().size(); i++) {
+                        Asking asking = askQueue.getM_askingQueue().get(i);
+                        /*if(asking != null){
+                            System.out.println("askQ : " + asking.toString());
+                        }*/
+                        if (asking == null) {
+                            askQueue.getM_askingQueue().remove(asking);
+                            i--;
                         }
                     }
-                    //printCarryRequests();//输出捎带序列
-                    //elevator.rebuildCarryRequesets();
-                } while (rebuildCarryRequesets() && ifStillHaveTrueFloor());//当重建捎带序列成功,继续循环
-                //System.out.println("输出：" + toString());
-                //printElevatorState();
-                askQueue.getM_askingQueue().removeAllElements();
-                finishAskings.removeAllElements();
-                //break;
-            }
-            else {
-                initElevatorState();//将电梯运动状态初始化
+                    if(starToMove(askQueue, 0))
+                        //System.out.println("start");
+                    do {
+                        //System.out.println("into do while");
+                        //System.out.println("primary floor : " + getM_primaryFloor());
+                        //System.out.println("current floor : " + getCurrentFloor());
+                        while (getCurrentFloor() != getM_primaryFloor()) {
+                            //还没有到主请求楼层，则继续移动
+                            //traverseFloors(askQueue);
+                            moveStepByStep(askQueue);
+                        }
+                        //elevator.rebuildCarryRequesets();
+                    } while (rebuildCarryRequesets() && ifStillHaveTrueFloor());//当重建捎带序列成功,继续循环
+                    //System.out.println("输出：" + toString());
+                    //printElevatorState();
+                    askQueue.getM_askingQueue().removeAllElements();
+                    finishAskings.removeAllElements();
+                    getM_carryRequests().removeAllElements();
+                } else {
+                    initElevatorState();//将电梯运动状态初始化
                 /*now = System.currentTimeMillis();
                 if(now - last > 5000) {
                     System.out.println("data out");
                     last = now;
                 }*/
+                }
             }
         }
     }

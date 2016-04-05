@@ -8,6 +8,8 @@ import java.nio.channels.CancelledKeyException;
 import java.security.PublicKey;
 import java.util.TreeMap;
 import java.util.Vector;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.locks.Lock;
 
 enum ElevatorState{
     UP,//上升
@@ -22,9 +24,10 @@ public class Elevator implements Move{
     private ElevatorState elevatorState = ElevatorState.STABLE;
     private boolean[] m_ifStay = new boolean[20];
     private int m_primaryFloor = 0;
-    private Vector<Asking> m_carryRequests = new Vector<>();
+    private volatile Vector<Asking> m_carryRequests = new Vector<>();
     protected Vector<Asking> finishAskings = new Vector<>();
     private int amountOfExercise = 0;
+    private long sleepTime = 3000;
     //构造方法
     public Elevator(){
         for(int i = 0; i < 20; i++){
@@ -37,8 +40,8 @@ public class Elevator implements Move{
             //for (int i = m_currentFloor-1; i < 10; i++) {
                 for (int j = 0; j < askQueue.getM_askingQueue().size(); j++) {
                     Asking asking = askQueue.getM_askingQueue().get(j);
-                    if (asking != null && asking.getM_askingTime() < m_time
-                            && asking.getM_askingFloorNumber() >= m_currentFloor) {
+                    if (asking != null ){//&& asking.getM_askingTime() <= m_time){
+                            //&& asking.getM_askingFloorNumber() >= m_currentFloor) {
                         if(asking.getM_entryState() == EntryState.ER) {
                             //如果是在电梯内部的指令就直接响应
                             m_ifStay[asking.getM_askingFloorNumber()-1] = true;
@@ -65,11 +68,12 @@ public class Elevator implements Move{
             //for (int i = m_currentFloor-1; i > 0; i--) {
                 for (int j = 0; j < askQueue.getM_askingQueue().size(); j++) {
                     Asking asking = askQueue.getM_askingQueue().get(j);
-                    if (asking != null && asking.getM_askingTime() < m_time
-                            && asking.getM_askingFloorNumber() <= m_currentFloor){
+                    if (asking != null){ /*&& asking.getM_askingTime() < m_time
+                            && asking.getM_askingFloorNumber() <= m_currentFloor){*/
                         if(asking.getM_entryState() == EntryState.ER) {
                             //如果是在电梯内部的指令就直接响应
                             m_ifStay[asking.getM_askingFloorNumber()-1] = true;
+                            finishAskings.add(askQueue.getM_askingQueue().get(j));
                             askQueue.getM_askingQueue().set(j, null);
                             addCarryRequests(asking);//将捎带请求加入队列
                         }
@@ -79,6 +83,7 @@ public class Elevator implements Move{
                                     && asking.getM_askingFloorNumber() >= m_primaryFloor){
                                 //如果是在电梯的运动方向上并且不小于主请求的楼层
                                 m_ifStay[asking.getM_askingFloorNumber()-1] = true;
+                                finishAskings.add(askQueue.getM_askingQueue().get(j));
                                 askQueue.getM_askingQueue().set(j, null);
                                 addCarryRequests(asking);//将捎带请求加入队列
                             }
@@ -127,7 +132,7 @@ public class Elevator implements Move{
         return false;
     }
     //电梯刚刚从静止状态开始运动,取整个队列中最近的请求
-    public void starToMove(AskQueue askQueue, int i){
+    public boolean starToMove(AskQueue askQueue, int i){
         //int i;
         /*for(i = 0; i < askQueue.getM_askingQueue().size(); i++){
             if(askQueue.getM_askingQueue().get(i) != null)
@@ -151,11 +156,24 @@ public class Elevator implements Move{
                     askQueue.getM_askingQueue().set(j, null);
                 }
             }
-            printElevatorState();
-            System.out.println(asking.toString());
-            //printFinishAsking(asking.getM_askingFloorNumber());
+            synchronized (System.out) {
+                printElevatorState();
+                m_time += 60;
+                try {
+                    Thread.sleep(sleepTime*2);
+                }
+                catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                //System.out.println(asking.toString());
+                finishAskings.add(asking);
+                printFinishAsking(asking.getM_askingFloorNumber());
+            }
+            traverseFloors(askQueue);
+            return false;
         }
-
+        //finishAskings.add(asking);
+        return true;
     }
     //输出完成的函数
     public void printFinishAsking(int floorNumber){
@@ -173,45 +191,48 @@ public class Elevator implements Move{
     }
     //电梯一层一层地运动
     public boolean moveStepByStep(AskQueue askQueue){
-        System.out.println("move in");
+        //System.out.println("move in");
         amountOfExercise++;
         if(elevatorState == ElevatorState.UP) {
             m_currentFloor++;
-            m_time += 3;
+            m_time += 30;
             try {
-                Thread.sleep(3000);
+                Thread.sleep(sleepTime);
             }
             catch (InterruptedException i){
                 i.printStackTrace();
             }
             traverseFloors(askQueue);
             if (m_ifStay[m_currentFloor-1] == true) {
-                printElevatorState();
-                //System.out.println("PES to PFA");
-                printFinishAsking(m_currentFloor);
+                synchronized (System.out) {
+                    printElevatorState();
+                    printFinishAsking(m_currentFloor);
+                }
                 m_ifStay[m_currentFloor-1] = false;//过了该层之后变成false
                 return true;
             }
         }
         else if(elevatorState == ElevatorState.DOWN){
             m_currentFloor--;
-            m_time += 3;
+            m_time += 30;
             try {
-                Thread.sleep(3000);
+                Thread.sleep(sleepTime);
             }
             catch (InterruptedException i){
                 i.printStackTrace();
             }
             traverseFloors(askQueue);
             if (m_ifStay[m_currentFloor - 1] == true) {
-                printElevatorState();
-                printFinishAsking(m_currentFloor);
+                synchronized (System.out) {
+                    printElevatorState();
+                    printFinishAsking(m_currentFloor);
+                }
                 m_ifStay[m_currentFloor - 1] = false;//过了该层之后变成false
                 return true;
             }
         }
         else{
-            System.out.println("else");
+            //System.out.println("else");
         }
         return false;
     }
@@ -219,9 +240,9 @@ public class Elevator implements Move{
         //电梯去目的地
         //System.out.print("PES in");
         System.out.print(toString());
-        m_time += 6;//开关门附加时间
+        m_time += 60;//开关门附加时间
         try {
-            Thread.sleep(6000);
+            Thread.sleep(sleepTime*2);
         }
         catch (InterruptedException i){
             i.printStackTrace();
@@ -279,6 +300,25 @@ public class Elevator implements Move{
     }
     //重新设定捎带队列,将最近的一个未完成捎带请求变成主请求
     public boolean rebuildCarryRequesets(){
+        for(int i = 0; i < m_carryRequests.size(); i++){
+            Asking asking = m_carryRequests.get(i);
+            //if(asking != null)
+                //System.out.println("m_carry : " + asking.toString());
+            if(asking != null && asking.getM_askingFloorNumber() <= m_primaryFloor){
+                m_carryRequests.set(i, null);
+            }
+        }
+        for(int i = 0; i < m_carryRequests.size(); i++) {
+            if(m_carryRequests.get(i) != null) {
+                m_primaryFloor = m_carryRequests.get(i).getM_askingFloorNumber();
+                setElevatorState(m_primaryFloor);
+                return true;
+            }
+        }
+        return  false;
+    }
+    public boolean rebuildCarryRequesets(AskQueue askQueue){
+        m_carryRequests.add(askQueue.getM_askingQueue().lastElement());
         for(int i = 0; i < m_carryRequests.size(); i++){
             Asking asking = m_carryRequests.get(i);
             if(asking != null && asking.getM_askingFloorNumber() <= m_primaryFloor){

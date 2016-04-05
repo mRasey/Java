@@ -1,6 +1,7 @@
 package Elevator;
 
 import java.sql.Time;
+import java.util.Objects;
 
 enum EntryState{
     FR, ER
@@ -13,7 +14,7 @@ public class Asking {
     private int m_askingElevator;
     private long m_askingTime;
     //private double m_actuallyStartTime = 0;//实际出发时间
-    //private boolean m_ifCanAddInQueue;
+    //private boolean m_ifCanAddInQueue
     //private int m_currentTime;
 
     public Asking(){
@@ -70,5 +71,12 @@ public class Asking {
         }
     }
 
+    /*public boolean equals(Asking asking){
+        if(m_askingElevator == asking.getM_askingElevator()
+                && m_askingFloorNumber == asking.getM_askingFloorNumber()
+                )
+            return true;
+        return false;
+    }*/
 }
 
