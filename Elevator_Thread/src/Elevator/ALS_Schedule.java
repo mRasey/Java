@@ -114,7 +114,7 @@ public class ALS_Schedule extends Scheduler implements Runnable{
     @Override
     public void run(){
         try {
-            System.out.println("als is running");
+            //System.out.println("als is running");
             while (true) {
                 //synchronized (askings) {
                 for (int i = 0; i < askings.size(); i++) {
@@ -137,7 +137,7 @@ public class ALS_Schedule extends Scheduler implements Runnable{
             t.printStackTrace();
         }
         finally {
-            System.out.println("调度器运行结束");
+            System.out.println("调度器停止运行");
         }
     }
 }

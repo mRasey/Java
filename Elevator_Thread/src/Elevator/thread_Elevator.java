@@ -60,7 +60,7 @@ public class thread_Elevator extends Elevator implements Runnable{
     public void run() {
         try {
             boolean deleteFlag = false;
-            System.out.println("elevator " + getElevatorNumber() + " is running");
+            //System.out.println("elevator " + getElevatorNumber() + " is running");
             long last = System.currentTimeMillis();
             long now = System.currentTimeMillis();
             while (true) {
