@@ -6,41 +6,45 @@ public class Floor {
     static long startTime;
 
     public static void main(String[] args){
-        //Floor floor = new Floor();
-        Floor.startTime = System.currentTimeMillis();
-        AskQueue askQueue = new AskQueue();
-        //thread_Elevator[] thread_elevators = new thread_Elevator[3];
-        ALS_Schedule als_schedule = new ALS_Schedule();
-        Thread alsThread = new Thread(als_schedule);
-        alsThread.start();
-        //boolean ifFirstInput = true;
-        for(int i = 0; i < als_schedule.getThread_elevators().length; i++){
-            als_schedule.getThread_elevators()[i] = new thread_Elevator(i+1);
-            new Thread(als_schedule.getThread_elevators()[i]).start();
-        }
+        try {
+            //Floor floor = new Floor();
+            Floor.startTime = System.currentTimeMillis();
+            AskQueue askQueue = new AskQueue();
+            //thread_Elevator[] thread_elevators = new thread_Elevator[3];
+            ALS_Schedule als_schedule = new ALS_Schedule();
+            Thread alsThread = new Thread(als_schedule);
+            alsThread.start();
+            //boolean ifFirstInput = true;
+            for (int i = 0; i < als_schedule.getThread_elevators().length; i++) {
+                als_schedule.getThread_elevators()[i] = new thread_Elevator(i + 1);
+                new Thread(als_schedule.getThread_elevators()[i]).start();
+            }
 
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        while(true){
-            if(scanner.hasNextLine()) {
-                input = scanner.nextLine();
-                input = input.replaceAll(" ", "");
-                if (input.matches("^\\(FR,[0-9]{1,2},UP\\)$")
-                        || input.matches("^\\(FR,[0-9]{1,2},DOWN\\)$")
-                        || input.matches("^\\(ER,#[1-3],[0-9]{1,2}\\)$")) {
-                    //成功匹配
-                    Asking asking = new Asking(input);
-                    if (askQueue.addAskingQueue(asking)) {
-                        als_schedule.setAskings(asking);//将请求加入托盘
-                        //alsThread.run();
-                        //als_schedule.distribute(asking, als_schedule.getThread_elevators());//分配请求
+            Scanner scanner = new Scanner(System.in);
+            String input;
+            while (true) {
+                if (scanner.hasNextLine()) {
+                    input = scanner.nextLine();
+                    input = input.replaceAll(" ", "");
+                    if (input.matches("^\\(FR,[0-9]{1,2},UP\\)$")
+                            || input.matches("^\\(FR,[0-9]{1,2},DOWN\\)$")
+                            || input.matches("^\\(ER,#[1-3],[0-9]{1,2}\\)$")) {
+                        //成功匹配
+                        Asking asking = new Asking(input);
+                        if (askQueue.addAskingQueue(asking)) {
+                            als_schedule.setAskings(asking);//将请求加入托盘
+                            //alsThread.run();
+                            //als_schedule.distribute(asking, als_schedule.getThread_elevators());//分配请求
+                        }
+                    } else if (input.equals("exit")) {
+                        System.out.println("电梯运行结束");
+                        System.exit(0);
+                    } else {
+                        //未成功匹配
+                        System.out.println("输入格式有误");
                     }
-                } else {
-                    //未成功匹配
-                    System.out.println("输入格式有误");
                 }
             }
-        }
             //电梯开始运动
             /*for(int i = 0; i < askQueue.getM_askingQueue().size(); i++){
                 if(askQueue.getM_askingQueue().get(i) != null){
@@ -57,7 +61,15 @@ public class Floor {
                     elevator.getM_carryRequests().removeAllElements();
                 }
             }*/
-
+        }
+        catch (Throwable t){
+            System.out.println("程序发生错误");
+            t.printStackTrace();
+        }
+        finally {
+            System.out.println("程序结束");
+            System.exit(0);
+        }
     }
 }
 

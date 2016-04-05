@@ -49,6 +49,7 @@ public class ALS_Schedule extends Scheduler implements Runnable{
         //System.out.println("dis");
         if(asking.getM_entryState() == EntryState.ER ){
             thread_elevators[asking.getM_askingElevator()-1].addAskingQueue(asking);//进入所选择的电梯
+            //thread_elevators[asking.getM_askingElevator()-1].setElevatorState(asking.getM_askingFloorNumber());
             //thread_elevators[asking.getM_askingElevator()-1].getM_carryRequests().add(asking);
             //System.out.println("er add in");
             return true;
@@ -112,9 +113,10 @@ public class ALS_Schedule extends Scheduler implements Runnable{
 
     @Override
     public void run(){
-        System.out.println("als is running");
-        while(true) {
-            //synchronized (askings) {
+        try {
+            System.out.println("als is running");
+            while (true) {
+                //synchronized (askings) {
                 for (int i = 0; i < askings.size(); i++) {
                     //System.out.println(distribute(getAsking(i), thread_elevators));
                     if (getAsking(i) != null && distribute(getAsking(i), thread_elevators)) {
@@ -122,12 +124,20 @@ public class ALS_Schedule extends Scheduler implements Runnable{
                         askings.set(i, null);//分配成功从托盘删除
                     }
                 }
-            //}
-        }
+                //}
+            }
         /*if(asking != null) {
             System.out.println("data in");
             distribute(asking, thread_elevators);
             asking = null;
         }*/
+        }
+        catch (Throwable t){
+            System.out.println("调度器发生故障");
+            t.printStackTrace();
+        }
+        finally {
+            System.out.println("调度器运行结束");
+        }
     }
 }
