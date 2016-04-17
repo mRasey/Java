@@ -5,7 +5,6 @@ import java.util.Vector;
 
 public class thread_Elevator extends Elevator implements Runnable{
     private ArrayList<Asking> elevatorAskingQueue = new ArrayList<>();
-    private AskQueue askQueue = new AskQueue();
     //AskQueue finishAskQueue = new AskQueue();
     private int elevatorNumber;
 
@@ -56,6 +55,10 @@ public class thread_Elevator extends Elevator implements Runnable{
         return  false;
     }*/
 
+    public void setElevatorState(ElevatorState elevatorState){
+        this.elevatorState = elevatorState;
+    }
+
     @Override
     public void run() {
         try {
@@ -64,7 +67,8 @@ public class thread_Elevator extends Elevator implements Runnable{
             long last = System.currentTimeMillis();
             long now = System.currentTimeMillis();
             while (true) {
-                synchronized (getM_carryRequests()) {
+                //try{Thread.sleep(1);}catch (InterruptedException i){}
+                //synchronized (getM_carryRequests()) {
                     //System.out.println("true in");
                     if (!askQueue.getM_askingQueue().isEmpty()) {
                         //System.out.println("thread data in");
@@ -78,7 +82,8 @@ public class thread_Elevator extends Elevator implements Runnable{
                                 i--;
                             }
                         }
-                        if (starToMove(askQueue, 0))
+                        if(askQueue.getM_askingQueue().size() != 0) {
+                            starToMove(askQueue, 0);
                             //System.out.println("start");
                             do {
                                 //System.out.println("into do while");
@@ -88,18 +93,24 @@ public class thread_Elevator extends Elevator implements Runnable{
                                     //还没有到主请求楼层，则继续移动
                                     //traverseFloors(askQueue);
                                     moveStepByStep(askQueue);
+                                    for (int i = 0; i < askQueue.getM_askingQueue().size(); i++) {
+                                        if (askQueue.getM_askingQueue().get(i) != null
+                                                && askQueue.getM_askingQueue().get(i).getM_askingFloorNumber() == m_currentFloor)
+                                            askQueue.getM_askingQueue().set(i, null);
+                                    }
                                 }
                                 //elevator.rebuildCarryRequesets();
                             } while (rebuildCarryRequesets() && ifStillHaveTrueFloor());//当重建捎带序列成功,继续循环
-                        //System.out.println("输出：" + toString());
-                        //printElevatorState();
-                        askQueue.getM_askingQueue().removeAllElements();
-                        finishAskings.removeAllElements();
-                        getM_carryRequests().removeAllElements();
+                            //System.out.println("输出：" + toString());
+                            //printElevatorState();
+                            //askQueue.getM_askingQueue().removeAllElements();
+                            finishAskings.removeAllElements();
+                            getM_carryRequests().removeAllElements();
+                        }
                     } else {
                         initElevatorState();//将电梯运动状态初始化
                     }
-                }
+               // }
             }
         }
         catch (Throwable t){
@@ -108,6 +119,8 @@ public class thread_Elevator extends Elevator implements Runnable{
         }
         finally {
             System.out.println("电梯 " + elevatorNumber + " 停止运行");
+            System.out.println("程序结束");
+            System.exit(0);
         }
     }
 

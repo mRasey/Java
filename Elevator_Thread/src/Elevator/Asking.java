@@ -1,8 +1,5 @@
 package Elevator;
 
-import java.sql.Time;
-import java.util.Objects;
-
 enum EntryState{
     FR, ER
 }

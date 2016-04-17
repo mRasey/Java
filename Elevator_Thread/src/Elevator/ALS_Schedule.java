@@ -1,7 +1,5 @@
 package Elevator;
 
-import com.sun.javafx.binding.SelectBinding;
-
 import java.util.Vector;
 
 public class ALS_Schedule extends Scheduler implements Runnable{
@@ -62,9 +60,11 @@ public class ALS_Schedule extends Scheduler implements Runnable{
                 if (thread_elevators[i].getElevatorState() == asking.getM_elevatorState()) {
                     //如果请求方向与电梯方向相同
                     if((asking.getM_elevatorState() == ElevatorState.UP
-                            && thread_elevators[i].getM_primaryFloor() >= asking.getM_askingFloorNumber())
+                            && thread_elevators[i].getM_primaryFloor() >= asking.getM_askingFloorNumber()
+                            && thread_elevators[i].getCurrentFloor() < asking.getM_askingFloorNumber())
                         || (asking.getM_elevatorState() == ElevatorState.DOWN
-                            && thread_elevators[i].getM_primaryFloor() <= asking.getM_askingFloorNumber())){
+                            && thread_elevators[i].getM_primaryFloor() <= asking.getM_askingFloorNumber())
+                            && thread_elevators[i].getCurrentFloor() > asking.getM_askingFloorNumber()){
                         //
                         if(!carryFlag) {
                             //System.out.println("carryFlag");
@@ -94,7 +94,8 @@ public class ALS_Schedule extends Scheduler implements Runnable{
         boolean addFlag = false;
         for(int i = 0; i < thread_elevators.length; i++){
             //System.out.println("WTF");
-            if(thread_elevators[i].getAmountOfExercise() < sumFlag && thread_elevators[i].getElevatorState() == ElevatorState.STABLE) {
+            if(thread_elevators[i].getAmountOfExercise() < sumFlag
+                    && thread_elevators[i].getElevatorState() == ElevatorState.STABLE) {
                 whichElevatorToAdd = i;
                 sumFlag = thread_elevators[i].getAmountOfExercise();
                 addFlag = true;
@@ -105,6 +106,7 @@ public class ALS_Schedule extends Scheduler implements Runnable{
             //System.out.println("min add in");
             thread_elevators[whichElevatorToAdd].addAskingQueue(asking);
             thread_elevators[whichElevatorToAdd].setElevatorState(asking.getM_askingFloorNumber());
+            thread_elevators[whichElevatorToAdd].setM_primaryFloor(asking.getM_askingFloorNumber());
             //System.out.println("move add in to elevator " + (whichElevatorToAdd+1));
             return true;
         }
@@ -116,15 +118,16 @@ public class ALS_Schedule extends Scheduler implements Runnable{
         try {
             //System.out.println("als is running");
             while (true) {
-                //synchronized (askings) {
-                for (int i = 0; i < askings.size(); i++) {
-                    //System.out.println(distribute(getAsking(i), thread_elevators));
-                    if (getAsking(i) != null && distribute(getAsking(i), thread_elevators)) {
-                        //System.out.println(getAsking(i).toString());
-                        askings.set(i, null);//分配成功从托盘删除
+                synchronized (askings) {
+                    for (int i = 0; i < askings.size(); i++) {
+                        //System.out.println(distribute(getAsking(i), thread_elevators));
+                        if (getAsking(i) != null && distribute(getAsking(i), thread_elevators)) {
+                            System.out.print("");
+                            //try{Thread.sleep(1);}catch (InterruptedException j){}
+                            askings.set(i, null);//分配成功从托盘删除
+                        }
                     }
                 }
-                //}
             }
         /*if(asking != null) {
             System.out.println("data in");
@@ -138,6 +141,8 @@ public class ALS_Schedule extends Scheduler implements Runnable{
         }
         finally {
             System.out.println("调度器停止运行");
+            System.out.println("程序结束");
+            System.exit(0);
         }
     }
 }
