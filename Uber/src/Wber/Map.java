@@ -1,12 +1,12 @@
 package Wber;
 
 /**
- * Map
+ * 地图类
  */
 public class Map {
 
     /**
-     * Constructor
+     * 构造器
      */
     public Map() {
 

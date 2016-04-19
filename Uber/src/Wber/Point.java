@@ -1,43 +1,17 @@
 package Wber;
 
 /**
- * Point
+ * 坐标点类
  */
 public class Point {
-    private Matrix location;
-    private Connect connect;
+    private int x;/*横坐标*/
+    private int y;/*纵坐标*/
 
     /**
-     * Constructor
+     * 构造器
      */
-    public Point(Matrix location){
-        this.location = location;
-    }
-
-    /**
-     * Matrix getLocation()
-     * @return location
-     */
-    public Matrix getLocation(){return location;}
-
-    /**
-     * Connect getConnect()
-     * @return connect
-     */
-    public Connect getConnect(){return connect;}
-
-}
-
-class Connect{
-    boolean up;
-    boolean down;
-    boolean left;
-    boolean right;
-
-    public Connect(){
-        up = false;
-        down = false;
-        left = false;
-        right = false;
+    public Point(int x, int y){
+        this.x = x;
+        this.y = y;
     }
 }

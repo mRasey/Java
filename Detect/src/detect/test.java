@@ -8,24 +8,12 @@ public class test implements Runnable{
     }
     @Override
     public void run() {
-        Operate.makeNewFileFolder("D:\\789\\123");
-        for (int i = 0; i < 200; i++) {
-            try {
-                Operate.makeNewFile("D:\\789\\" + i + ".txt");
-            } catch (IOException e) {
-                //e.printStackTrace();
-            }
-        }
         try {
-            Operate.writeFile("D:\\789\\2.txt", "hello world");
-        } catch (IOException e) {
-            //e.printStackTrace();
+            Operate.writeFile("D:\\oo7\\hello.txt", "asd");
+        } catch (IOException e1) {
+// TODO Auto-generated catch block
+            e1.printStackTrace();
         }
-        Operate.renameFile("D:\\789\\2.txt", "D:\\789\\11.txt");
-        Operate.deleteFile("D:\\789\\5.txt");
-        Operate.moveFile("D:\\789\\4.txt", "D:\\789\\123\\4.txt");
-        System.out.println(Operate.getFileName("D:\\789\\123\\4.txt"));
-        System.out.println(Operate.getLength("D:\\789\\1.txt"));
-        System.out.println(Operate.getModifiedTime("D:\\789\\2.txt"));
+        Operate.deleteFile("D:\\oo7\\hello.txt");
     }
 }

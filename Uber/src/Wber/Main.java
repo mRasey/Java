@@ -1,7 +1,7 @@
 package Wber;
 
 /**
- * Main
+ * 主方法
  */
 public class Main {
 

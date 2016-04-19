@@ -3,22 +3,22 @@ package Wber;
 import java.util.Random;
 
 /**
- *
+ * 乘客类
  */
 public class Passenger {
     private int num;
-    private Matrix location;
+    private Point location;
 
     /**
-     * Constructor
+     * 构造器
      */
     public Passenger() {
-        location = new Matrix(new Random().nextInt(80), new Random().nextInt(80));
+        location = new Point(new Random().nextInt(80), new Random().nextInt(80));
     }
 
     /**
-     * Matrix getLocation()
-     * @return the location of passenger
+     * Point getLocation()
+     * @return 乘客当前坐标
      */
-    public Matrix getLocation(){return location;}
+    public Point getLocation(){return location;}
 }

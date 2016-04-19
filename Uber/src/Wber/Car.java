@@ -3,23 +3,23 @@ package Wber;
 import java.util.Random;
 
 /**
- * Car
+ * 出租车类
  */
 public class Car {
-    private Matrix location;
+    private Point location;
 
     /**
-     * Constructor
+     * 构造器
      */
     public Car(){
-        location = new Matrix(new Random().nextInt(80), new Random().nextInt(80));/*随机出租车的初始位置*/
+        location = new Point(new Random().nextInt(80), new Random().nextInt(80));/*随机出租车的初始位置*/
 
     }
 
     /**
-     * Matrix getLocation()
-     * @return current location of the car
+     * Point getLocation()
+     * @return 出租车当前坐标
      */
-    public Matrix getLocation(){return location;}
+    public Point getLocation(){return location;}
 
 }

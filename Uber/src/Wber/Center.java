@@ -1,11 +1,11 @@
 package Wber;
 
 /**
- * Center
+ * 指挥中心类
  */
 public class Center {
     /**
-     * Constructor
+     * 构造器
      */
     public Center() {
 
