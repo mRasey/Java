@@ -4,14 +4,11 @@ package Wber;
  * 坐标点类
  */
 public class Point {
-    private int x;/*横坐标*/
-    private int y;/*纵坐标*/
+    boolean up = false;
+    boolean down = false;
+    boolean left = false;
+    boolean right = false;
+    boolean ifPreUsed = false;
+    boolean ifLastUsed = false;
 
-    /**
-     * 构造器
-     */
-    public Point(int x, int y){
-        this.x = x;
-        this.y = y;
-    }
 }
