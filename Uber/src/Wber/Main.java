@@ -12,7 +12,7 @@ public class Main {
         Input input = new Input("D:\\123\\456.txt");/*读入文件建立地图*/
         input.buildMap();
         Center center = new Center();
-//        new Thread(center).start();
+        new Thread(center).start();
         for(int i = 0; i < 10; i++){
 //            System.out.println("new car");
             Car car = new Car(input.getPoints(), center.getCars());

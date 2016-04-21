@@ -112,14 +112,14 @@ public class Passenger implements Runnable{
             }
             synchronized (this.getClass()) {
                 if (fitCars.isEmpty())
-                    System.out.println(num + " 号乘客无可用乘客");
+                    System.out.println(num + " 号乘客无可用车");
                 else {
                     Car car = findBestFitCar();
                     if (car != null) {
-//                    center.setChosenCars(new AskedCar(this, car));
-                        car.setCarState(CarState.WaitServing);
-                        car.setStartLocation(this.startLocation);
-                        car.setDestinationLocation(this.destinationLocation);
+                        center.setChosenCars(new AskedCar(this, car));
+//                        car.setCarState(CarState.WaitServing);
+//                        car.setStartLocation(this.startLocation);
+//                        car.setDestinationLocation(this.destinationLocation);
                         System.out.println(num + " 号乘客上了 " + car.getNum() + " 号车");
                     }
                     else

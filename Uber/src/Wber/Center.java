@@ -47,6 +47,7 @@ public class Center implements Runnable{
     public void run(){
         try {
             while(true) {
+                Thread.sleep(1);
                 AskedCar askedCar = chosenCars.take();
                 askedCar.getCar().setStartLocation(askedCar.getPassenger().getStartLocation());
                 askedCar.getCar().setDestinationLocation(askedCar.getPassenger().getDestinationLocation());
