@@ -1,24 +1,21 @@
 package Wber;
 
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * 指挥中心类
  */
 public class Center implements Runnable{
-    private Set<Car> cars = Collections.synchronizedSet(new HashSet<Car>());/*出租车队列*/
+    private HashSet<Car> cars = new HashSet<>();/*出租车队列*/
     private LinkedBlockingQueue<AskedCar> chosenCars = new LinkedBlockingQueue<>();
-//    private Car chosenCar;
     /**
      * 构造器
      */
     public Center() {}
 
-    public Set<Car> getCars() {
-        return cars;
+    public HashSet<Car> getCars() {
+        return (HashSet<Car>) cars.clone();
     }
 
     public void addCars(Car car){
@@ -30,24 +27,23 @@ public class Center implements Runnable{
     }
 
     /**
-     * 判断出租车是否在乘客请求范围内
-     * @param passengerLocation 乘客坐标
-     * @param carLocation 出租车坐标
-     * @return 如果在请求范围内，返回true
+     * 根据编号获取指定车辆
+     * @param carNum 车编号
+     * @return 找到指定编号的车，返回车，找不到则返回null
      */
-    public boolean inPassengerRange(Location passengerLocation, Location carLocation) {
-        if ((carLocation.getX() >= passengerLocation.getX() - 2 || carLocation.getX() <= passengerLocation.getX() + 2)
-                && (carLocation.getY() >= passengerLocation.getY() - 2 || carLocation.getY() <= passengerLocation.getY() + 2)) {
-            return true;
+    public Car getCar(int carNum) {
+        for (Car car : cars) {
+            if (car.getNum() == carNum)
+                return car;
         }
-        return false;
+        return null;
     }
 
     @Override
     public void run(){
         try {
             while(true) {
-                Thread.sleep(1);
+//                Thread.sleep(1);
                 AskedCar askedCar = chosenCars.take();
                 askedCar.getCar().setStartLocation(askedCar.getPassenger().getStartLocation());
                 askedCar.getCar().setDestinationLocation(askedCar.getPassenger().getDestinationLocation());
@@ -58,7 +54,7 @@ public class Center implements Runnable{
             e.printStackTrace();
         }
         finally {
-            System.out.println("指挥中心停止运行");
+            System.out.println("调度中心停止运行");
             System.exit(0);
         }
     }

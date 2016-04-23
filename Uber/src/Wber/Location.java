@@ -44,4 +44,8 @@ public class Location {
         return x * 80 + y;
     }
 
+    public Location clone(){
+        return new Location(this.x,this.y);
+    }
+
 }

@@ -36,7 +36,6 @@ public class Input {
             String line = bufferedReader.readLine();
             String[] strings = line.split(" ");
             for (int j = 0; j < strings.length; j++) {
-//                System.out.println("length " + strings.length);
                 int model = Integer.parseInt(strings[j]);
                 setConnection(model, i, j);
             }

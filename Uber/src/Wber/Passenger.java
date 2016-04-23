@@ -1,6 +1,7 @@
 package Wber;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -11,19 +12,33 @@ public class Passenger implements Runnable{
     private int num;/*乘客编号*/
     private Location startLocation;/*初始坐标*/
     private Location destinationLocation;/*目的地坐标*/
-    private Set<Car> cars;/*出租车队列*/
+    private HashSet<Car> cars = new HashSet<>();/*出租车队列*/
     private HashSet<Car> fitCars = new HashSet<>();/*满足条件的出租车队列*/
+//    private CopyOnWriteArrayList<Car> fitCars = new CopyOnWriteArrayList<>();
     private boolean accept = false;/*是否接受*/
     private Center center;
 
     /**
-     * 构造器
+     * 构造器1
      */
-    public Passenger(Center center, Set<Car> cars) {
+    public Passenger(Center center, HashSet<Car> cars) {
         passengerCount.addAndGet(1);
         num = passengerCount.get();
         startLocation = new Location(new Random().nextInt(80), new Random().nextInt(80));
         destinationLocation = new Location(new Random().nextInt(80), new Random().nextInt(80));
+        this.cars = cars;
+        this.center = center;
+//        System.out.println("start");
+    }
+
+    /**
+     * 构造器2
+     */
+    public Passenger(Center center, HashSet<Car> cars, Location startLocation, Location destinationLocation) {
+        passengerCount.addAndGet(1);
+        num = passengerCount.get();
+        this.startLocation = startLocation;
+        this.destinationLocation = destinationLocation;
         this.cars = cars;
         this.center = center;
     }
@@ -45,24 +60,21 @@ public class Passenger implements Runnable{
      * @return 找到满足条件的出租车，返回真
      */
     public boolean traverseCars(){
-        synchronized (cars) {
-            Iterator<Car> carIterator = cars.iterator();
-            while (carIterator.hasNext()) {
-                Car car = carIterator.next();
-                if (inPassengerRange(startLocation, car.getLocation())) {
-                    fitCars.add(car);
-                }
+        Iterator<Car> carIterator = cars.iterator();
+        while (carIterator.hasNext()) {
+            Car car = carIterator.next();
+            if (inPassengerRange(startLocation, car.getLocation()) && car.getCarState() == CarState.Waiting) {
+                fitCars.add(car);
             }
         }
         return !fitCars.isEmpty();
     }
 
     /**
-     * 根据信用度寻找最合适的出租车
+     * 根据信用度和距离寻找最合适的出租车
      * @return 最终选择的出租车
      */
     public Car findBestFitCar(){
-//        synchronized (fitCars) {
         Iterator<Car> carIterator = fitCars.iterator();
         Car chosenCar = carIterator.next();
         int chosenCarPathSize = chosenCar.findPath(chosenCar.getLocation(), startLocation).size();
@@ -75,15 +87,14 @@ public class Passenger implements Runnable{
             }
             else if(car.getCredit() == chosenCar.getCredit()
                     && carPathSize <= chosenCarPathSize
-                    && car.getCarState() == CarState.Waiting){
+                    && !car.isHasPassenger()){
                 chosenCar = car;
                 chosenCarPathSize = carPathSize;
             }
         }
-        if(chosenCar.getCarState() != CarState.Waiting)
+        if(chosenCar.isHasPassenger())
             return null;
         return chosenCar;
-//        }
     }
 
     /**
@@ -93,8 +104,10 @@ public class Passenger implements Runnable{
      * @return 如果在请求范围内，返回true
      */
     public boolean inPassengerRange(Location passengerLocation, Location carLocation) {
-        return (carLocation.getX() >= passengerLocation.getX() - 2 || carLocation.getX() <= passengerLocation.getX() + 2)
-                && (carLocation.getY() >= passengerLocation.getY() - 2 || carLocation.getY() <= passengerLocation.getY() + 2);
+        return (carLocation.getX() >= passengerLocation.getX() - 2
+                && carLocation.getX() <= passengerLocation.getX() + 2
+                && carLocation.getY() >= passengerLocation.getY() - 2
+                && carLocation.getY() <= passengerLocation.getY() + 2);
     }
 
     @Override
@@ -107,28 +120,29 @@ public class Passenger implements Runnable{
                     break;/*时间到达三秒，线程结束*/
                 else {
                     traverseCars();
-                    Thread.sleep(100);
+                    Thread.sleep(50);
                 }
             }
             synchronized (this.getClass()) {
-                if (fitCars.isEmpty())
+                if (fitCars.isEmpty()) {
                     System.out.println(num + " 号乘客无可用车");
-                else {
+                } else {
                     Car car = findBestFitCar();
                     if (car != null) {
                         center.setChosenCars(new AskedCar(this, car));
-//                        car.setCarState(CarState.WaitServing);
-//                        car.setStartLocation(this.startLocation);
-//                        car.setDestinationLocation(this.destinationLocation);
+                        car.setHasPassenger(true);
                         System.out.println(num + " 号乘客上了 " + car.getNum() + " 号车");
-                    }
-                    else
+                    } else {
                         System.out.println(num + " 号乘客无可用车");
+                    }
                 }
             }
         }
         catch (InterruptedException i){
             i.printStackTrace();
+        }
+        finally {
+//            System.out.println("over");
         }
     }
 }
