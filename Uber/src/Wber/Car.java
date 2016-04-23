@@ -22,7 +22,7 @@ public class Car implements Runnable {
      */
     public Car(Point[][] points) {
         carState = CarState.Waiting;
-        this.points = points.clone();
+        this.points = points;
         location = new Location();
         count.addAndGet(1);
         num = count.get();
@@ -37,181 +37,61 @@ public class Car implements Runnable {
         location = new Location(x, y);
         num = count.addAndGet(1);
     }
-
+    /*获取当前出租车是否有乘客*/
     public void setHasPassenger(boolean hasPassenger) {
         this.hasPassenger = hasPassenger;
     }
-
+    /*设置是否有乘客*/
     public boolean isHasPassenger() {
         return hasPassenger;
     }
-
+    /*设置起始的位置*/
     public void setStartLocation(Location startLocation) {
         this.startLocation = startLocation;
     }
-
+    /*设置目的地*/
     public void setDestinationLocation(Location destinationLocation) {
         this.destinationLocation = destinationLocation;
     }
-
+    /*获取出租车当前位置*/
     public Location getLocation() {
         return location.clone();
     }
-
-    public void setLocation(int x, int y) {
-        this.location.setXY(x, y);
-    }
-
+    /*增加出租车指定大小信用度*/
     public void addCredit(int i) {
         credit += i;
     }
-
+    /*获取出租车信用度*/
     public int getCredit() {
         return credit;
     }
-
+    /*获取出租车编号*/
     public int getNum() {
         return num;
     }
-
+    /*设置出租车运行状态*/
     public void setCarState(CarState carState) {
         this.carState = carState;
     }
-
+    /*获取出租车状态*/
     public CarState getCarState() {
         return carState;
     }
-
+    /*获取格式化时间*/
     public String getCurrentTimeDate(){
         return new Date(System.currentTimeMillis()).toString();
     }
-
+    /*获取毫秒单位时间*/
     public long getCurrentTimeLong(){
         return System.currentTimeMillis();
     }
-
-    /**
-     * 初始化地图
-     */
-    public void initPoints() {
-        for (int i = 0; i < 80; i++) {
-            for (int j = 0; j < 80; j++) {
-                points[i][j].ifPreUsed = false;
-                points[i][j].ifLastUsed = false;
-            }
-        }
-    }
-
-    /**
-     * 单向广搜
-     * @param startLocation 起始点
-     * @param destinationLocation 目的地
-     * @return 路径
-     */
-    public ArrayList<Integer> findPathSingle(Location startLocation, Location destinationLocation){
-        initPoints();
-        ArrayList<Integer> path = new ArrayList<>();
-        Queue<Location> preQueue = new ArrayDeque<>();/*前序队列*/
-        int[] records = new int[6400];
-        int preSonLoc = -1;// = startLocation.oneDimensionalLoc();
-
-        points[startLocation.getX()][startLocation.getY()].ifPreUsed = true;
-        records[startLocation.oneDimensionalLoc()] = startLocation.oneDimensionalLoc();
-        preQueue.add(startLocation);
-        points[destinationLocation.getX()][destinationLocation.getY()].ifLastUsed = true;
-
-        if (startLocation.oneDimensionalLoc() == destinationLocation.oneDimensionalLoc()) {/*起点与终点相同，直接返回*/
-            return path;
-        }
-
-        while (true) {
-            if (!preQueue.isEmpty()) {
-                Location preLocation = preQueue.poll();
-                Point point = points[preLocation.getX()][preLocation.getY()];
-                if (point.up && inRange(preLocation.getX() - 1) && inRange(preLocation.getY())
-                        && !points[preLocation.getX() - 1][preLocation.getY()].ifPreUsed) {
-                    Location nextLocation = new Location(preLocation.getX() - 1, preLocation.getY());
-                    Point nextPoint = points[nextLocation.getX()][nextLocation.getY()];
-                    if (nextPoint.ifLastUsed) {
-                        preSonLoc = preLocation.oneDimensionalLoc();
-                        break;
-                    }
-                    if (!nextPoint.ifPreUsed) {/*未被前序走过*/
-                        records[nextLocation.oneDimensionalLoc()] = preLocation.oneDimensionalLoc();
-                        preQueue.add(nextLocation);
-                        nextPoint.ifPreUsed = true;
-//                        preSonLoc = nextLocation.oneDimensionalLoc();
-                    }
-                }
-                if (point.down && inRange(preLocation.getX() + 1) && inRange(preLocation.getY())
-                        && !points[preLocation.getX() + 1][preLocation.getY()].ifPreUsed) {
-                    Location nextLocation = new Location(preLocation.getX() + 1, preLocation.getY());
-                    Point nextPoint = points[nextLocation.getX()][nextLocation.getY()];
-                    if (nextPoint.ifLastUsed) {
-                        preSonLoc = preLocation.oneDimensionalLoc();
-                        break;
-                    }
-                    if (!nextPoint.ifPreUsed) {/*未被前序走过*/
-                        records[nextLocation.oneDimensionalLoc()] = preLocation.oneDimensionalLoc();
-                        preQueue.add(nextLocation);
-                        nextPoint.ifPreUsed = true;
-//                        preSonLoc = nextLocation.oneDimensionalLoc();
-                    }
-                }
-                if (point.left && inRange(preLocation.getX()) && inRange(preLocation.getY() - 1)
-                        && !points[preLocation.getX()][preLocation.getY() - 1].ifPreUsed) {
-                    Location nextLocation = new Location(preLocation.getX(), preLocation.getY() - 1);
-                    Point nextPoint = points[nextLocation.getX()][nextLocation.getY()];
-                    if (nextPoint.ifLastUsed) {
-                        preSonLoc = preLocation.oneDimensionalLoc();
-                        break;
-                    }
-                    if (!nextPoint.ifPreUsed) {/*未被前序走过*/
-                        records[nextLocation.oneDimensionalLoc()] = preLocation.oneDimensionalLoc();
-                        preQueue.add(nextLocation);
-                        nextPoint.ifPreUsed = true;
-//                        preSonLoc = nextLocation.oneDimensionalLoc();
-                    }
-                }
-                if (point.right && inRange(preLocation.getX()) && inRange(preLocation.getY() + 1)
-                        && !points[preLocation.getX()][preLocation.getY() + 1].ifPreUsed) {
-                    Location nextLocation = new Location(preLocation.getX(), preLocation.getY() + 1);
-                    Point nextPoint = points[nextLocation.getX()][nextLocation.getY()];
-                    if (nextPoint.ifLastUsed) {
-                        preSonLoc = preLocation.oneDimensionalLoc();
-                        break;
-                    }
-                    if (!nextPoint.ifPreUsed) {/*未被前序走过*/
-                        records[nextLocation.oneDimensionalLoc()] = preLocation.oneDimensionalLoc();
-                        preQueue.add(nextLocation);
-                        nextPoint.ifPreUsed = true;
-//                        preSonLoc = nextLocation.oneDimensionalLoc();
-                    }
-                }
-            }
-        }
-
-        Stack<Integer> backPath = new Stack<>();
-        int parentLoc = preSonLoc;
-        int childLoc;
-        /*将前序队列加入路径*/
-        do {
-            backPath.push(parentLoc);
-            childLoc = parentLoc;
-            parentLoc = records[childLoc];
-            if(backPath.size() > 6400) {
-                System.out.println("startLocation " + startLocation.getX() + " " + startLocation.getY());
-                System.out.println("destinationLocation " + destinationLocation.getX() + " " + destinationLocation.getY());
-                System.out.println("parentLoc " + parentLoc);
-                System.out.println("childLoc " + childLoc);
-            }
-        } while (parentLoc != childLoc);
-        while (backPath.size() > 0) {
-            path.add(backPath.pop());
-        }
-        path.remove(0);
-        path.add(destinationLocation.oneDimensionalLoc());
-        return path;
+    /*输出出租车当前状态*/
+    public void print() {
+        System.out.println(num + " 号出租车：");
+        System.out.println("出租车状态 " + carState);
+        System.out.println("出租车坐标 " + location.getX() + " " + location.getY());
+        System.out.println("出租车信用度 " + credit);
+        System.out.println("当前时间 " + System.currentTimeMillis());
     }
 
     /**
@@ -381,27 +261,15 @@ public class Car implements Runnable {
             System.out.println(startLocation.getX() + " " + startLocation.getY());
             System.out.println(destinationLocation.getX() + " " + destinationLocation.getY());
         }
-//        backPath.push(parentLoc);
         int childLoc;
-        boolean flag = false;
-
         /*将前序队列加入路径*/
         do {
             backPath.push(parentLoc);
             childLoc = parentLoc;
             parentLoc = records[childLoc];
             if(backPath.size() > 6400) {
-                System.out.println("startLocation " + startLocation.getX() + " " + startLocation.getY());
-                System.out.println("destinationLocation " + destinationLocation.getX() + " " + destinationLocation.getY());
-                System.out.println("parentLoc " + parentLoc / 80 + " " + parentLoc % 80);
-                System.out.println("childLoc " + childLoc);
-                System.out.println(""+num+":"+records);
                 break;
             }
-//            if (records[records[parentLoc]] == parentLoc) {
-//                flag = true;
-//                break;
-//            }
         } while (parentLoc != childLoc);
 
         while (backPath.size() > 0) {
@@ -414,31 +282,11 @@ public class Car implements Runnable {
             childLoc = parentLoc;
             parentLoc = records[childLoc];
             if(backPath.size() > 6401) {
-                System.out.println("startLocation " + startLocation.getX() + " " + startLocation.getY());
-                System.out.println("destinationLocation " + destinationLocation.getX() + " " + destinationLocation.getY());
-                System.out.println("parentLoc " + parentLoc / 80 + " " + parentLoc % 80);
-                System.out.println("childLoc " + childLoc);
                 break;
             }
-//            if (records[records[parentLoc]] == parentLoc) {
-//                flag = true;
-//                break;
-//            }
         } while (parentLoc != childLoc);
-//        if(!flag)
+
         path.remove(0);/*去除第一个出租车所在的点*/
-//        else
-//            path.add(destinationLocation.oneDimensionalLoc());
-//
-//        if(flag){
-//            synchronized (System.out) {
-//                System.out.println("startLocation " + startLocation.getX() + " " + startLocation.getY());
-//                System.out.println("destinationLocation " + destinationLocation.getX() + " " + destinationLocation.getY());
-//                for (Integer anArrayList : path) {
-//                    System.out.println(anArrayList / 80 + " " + anArrayList % 80);
-//                }
-//            }
-//        }
         return path;
     }
 
@@ -465,17 +313,21 @@ public class Car implements Runnable {
         Random random = new Random();
         long startTime = System.currentTimeMillis();
         while (carState == CarState.Waiting) {
-            if(location.getX() < 0 || location.getY() < 0)
-                System.out.println("x " + location.getX() + " y " + location.getY());
+//            if(location.getX() < 0 || location.getY() < 0)
+//                System.out.println("x " + location.getX() + " y " + location.getY());
             Point point = points[location.getX()][location.getY()];
             long endTime = System.currentTimeMillis();
-            if (random.nextInt(4) == 0 && point.up) {
+            int moveDirection = random.nextInt(4);
+            if (moveDirection == 0 && point.up) {
                 moveUp();
-            } else if (random.nextInt(4) == 1 && point.down) {
+            }
+            if (moveDirection == 1 && point.down) {
                 moveDown();
-            } else if (random.nextInt(4) == 2 && point.left) {
+            }
+            if (moveDirection == 2 && point.left) {
                 moveLeft();
-            } else if (random.nextInt(4) == 3 && point.right) {
+            }
+            if (moveDirection == 3 && point.right) {
                 moveRight();
             }
             if (endTime - startTime > 20000) {/*运行时间到达20秒，停止1秒*/
@@ -527,20 +379,19 @@ public class Car implements Runnable {
                     addCredit(3);/*完成订单，信用度加三*/
                     hasPassenger = false;
                     carState = CarState.Stopping;
-                    Thread.sleep(1000);
+                    Thread.sleep(1000);/*等待乘客下车*/
                     carState = CarState.Waiting;
                 } else if (carState == CarState.WaitServing) {
                     addCredit(1);/*抢单成功，信用度加一*/
-                    moveToDestination(findPath(location, startLocation));
+                    moveToDestination(findPath(location, startLocation));/*去乘客所在位置*/
                     carState = CarState.Stopping;
-                    Thread.sleep(1000);
+                    Thread.sleep(1000);/*等待乘客上车*/
                     carState = CarState.Serving;
                 }
 
             }
         } catch (Throwable t) {
             t.printStackTrace();
-        } finally {
             System.out.println(num + " 号出租车停止运行");
             System.exit(0);
         }

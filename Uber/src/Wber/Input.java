@@ -27,18 +27,23 @@ public class Input {
 
     /**
      * 建立地图
+     *
      * @throws IOException
      */
     public void buildMap() throws IOException {
-        File file = new File(inputPath);
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-        for(int i = 0; i < 80; i++){
-            String line = bufferedReader.readLine();
-            String[] strings = line.split(" ");
-            for (int j = 0; j < strings.length; j++) {
-                int model = Integer.parseInt(strings[j]);
-                setConnection(model, i, j);
+        try {
+            File file = new File(inputPath);
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            for (int i = 0; i < 80; i++) {
+                String line = bufferedReader.readLine();
+                String[] strings = line.split(" ");
+                for (int j = 0; j < strings.length; j++) {
+                    int model = Integer.parseInt(strings[j]);
+                    setConnection(model, i, j);
+                }
             }
+        }catch (Throwable t){
+            System.exit(0);
         }
     }
 
@@ -70,6 +75,5 @@ public class Input {
             if(i + 1 < 80)
                 points[i + 1][j].up = true;
         }
-//        System.out.println(points[i][j].left);
     }
 }

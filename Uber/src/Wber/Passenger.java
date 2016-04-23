@@ -1,7 +1,8 @@
 package Wber;
 
-import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -14,32 +15,38 @@ public class Passenger implements Runnable{
     private Location destinationLocation;/*目的地坐标*/
     private HashSet<Car> cars = new HashSet<>();/*出租车队列*/
     private HashSet<Car> fitCars = new HashSet<>();/*满足条件的出租车队列*/
-//    private CopyOnWriteArrayList<Car> fitCars = new CopyOnWriteArrayList<>();
     private boolean accept = false;/*是否接受*/
     private Center center;
 
     /**
      * 构造器1
      */
-    public Passenger(Center center, HashSet<Car> cars) {
+    public Passenger(Center center) {
         passengerCount.addAndGet(1);
         num = passengerCount.get();
+//        if(num > 300){
+//            System.out.println("生成的乘客超过300个，程序结束");
+//            System.exit(0);
+//        }
         startLocation = new Location(new Random().nextInt(80), new Random().nextInt(80));
         destinationLocation = new Location(new Random().nextInt(80), new Random().nextInt(80));
-        this.cars = cars;
+        this.cars = center.getCars();
         this.center = center;
-//        System.out.println("start");
     }
 
     /**
      * 构造器2
      */
-    public Passenger(Center center, HashSet<Car> cars, Location startLocation, Location destinationLocation) {
+    public Passenger(Center center, Location startLocation, Location destinationLocation) {
         passengerCount.addAndGet(1);
         num = passengerCount.get();
+//        if(num > 300){
+//            System.out.println("生成的乘客超过300个，程序结束");
+//            System.exit(0);
+//        }
         this.startLocation = startLocation;
         this.destinationLocation = destinationLocation;
-        this.cars = cars;
+        this.cars = center.getCars();
         this.center = center;
     }
 
@@ -81,7 +88,7 @@ public class Passenger implements Runnable{
         while (carIterator.hasNext()) {
             Car car = carIterator.next();
             int carPathSize = car.findPath(car.getLocation(), startLocation).size();
-            if(car.getCredit() > chosenCar.getCredit()){
+            if(car.getCredit() > chosenCar.getCredit() && !car.isHasPassenger()){
                 chosenCar = car;
                 chosenCarPathSize = carPathSize;
             }
@@ -137,12 +144,9 @@ public class Passenger implements Runnable{
                     }
                 }
             }
-        }
-        catch (InterruptedException i){
-            i.printStackTrace();
-        }
-        finally {
-//            System.out.println("over");
+        } catch (InterruptedException i) {
+            System.out.println("乘客线程发生故障，程序退出");
+            System.exit(0);
         }
     }
 }

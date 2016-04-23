@@ -4,10 +4,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Test {
-    public static void main(String[] args) throws IOException {
+public class Test implements Runnable{
+    @Override
+    public void run() {
         Input input = new Input("D:\\123\\456.txt");/*读入文件建立地图*/
-        input.buildMap();
+        try {
+            input.buildMap();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Center center = new Center();
         Car car = new Car(input.getPoints());
         center.addCars(car);
@@ -15,7 +20,7 @@ public class Test {
         for (Integer anArrayList : cars) {
             System.out.println(anArrayList / 80 + " " + anArrayList % 80);
         }
-        Passenger passenger = new Passenger(center, (HashSet<Car>) center.getCars());
+        Passenger passenger = new Passenger(center);
         new Thread(center).start();
         new Thread(car).start();
         new Thread(passenger).start();

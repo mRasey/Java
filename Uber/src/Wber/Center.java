@@ -8,7 +8,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class Center implements Runnable{
     private HashSet<Car> cars = new HashSet<>();/*出租车队列*/
-    private LinkedBlockingQueue<AskedCar> chosenCars = new LinkedBlockingQueue<>();
+    private LinkedBlockingQueue<AskedCar> chosenCars = new LinkedBlockingQueue<>(300);
     /**
      * 构造器
      */
@@ -52,9 +52,7 @@ public class Center implements Runnable{
         }
         catch (InterruptedException e) {
             e.printStackTrace();
-        }
-        finally {
-            System.out.println("调度中心停止运行");
+            System.out.println("调度中心发生故障，程序退出");
             System.exit(0);
         }
     }
