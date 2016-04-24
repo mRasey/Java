@@ -43,6 +43,7 @@ public class Input {
                 }
             }
         }catch (Throwable t){
+            System.out.println("建立地图出现问题，程序退出");
             System.exit(0);
         }
     }

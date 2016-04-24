@@ -88,10 +88,8 @@ public class Car implements Runnable {
     /*输出出租车当前状态*/
     public void print() {
         System.out.println(num + " 号出租车：");
-        System.out.println("出租车状态 " + carState);
         System.out.println("出租车坐标 " + location.getX() + " " + location.getY());
-        System.out.println("出租车信用度 " + credit);
-        System.out.println("当前时间 " + System.currentTimeMillis());
+        System.out.println("当前时间 " + System.currentTimeMillis() + "ms  " + new Date(System.currentTimeMillis()));
     }
 
     /**
@@ -368,14 +366,17 @@ public class Car implements Runnable {
     @Override
     public void run() {
         try {
+            ArrayList<Integer> path = new ArrayList<>();
             while (true) {
                 if (carState == CarState.Waiting) {
                     waitingMove();
                 } else if (carState == CarState.Stopping) {
 
                 } else if (carState == CarState.Serving) {
-                    moveToDestination(findPath(startLocation, destinationLocation));
-                    System.out.println(num + " 号出租车到达目的地");
+                    path.clear();
+                    path.addAll(findPath(location, destinationLocation));
+                    moveToDestination(path);
+//                    System.out.println(num + " 号出租车到达目的地");
                     addCredit(3);/*完成订单，信用度加三*/
                     hasPassenger = false;
                     carState = CarState.Stopping;
@@ -383,7 +384,9 @@ public class Car implements Runnable {
                     carState = CarState.Waiting;
                 } else if (carState == CarState.WaitServing) {
                     addCredit(1);/*抢单成功，信用度加一*/
-                    moveToDestination(findPath(location, startLocation));/*去乘客所在位置*/
+                    path.clear();
+                    path.addAll(findPath(location, startLocation));
+                    moveToDestination(path);/*去乘客所在位置*/
                     carState = CarState.Stopping;
                     Thread.sleep(1000);/*等待乘客上车*/
                     carState = CarState.Serving;
@@ -391,7 +394,7 @@ public class Car implements Runnable {
 
             }
         } catch (Throwable t) {
-            t.printStackTrace();
+//            t.printStackTrace();
             System.out.println(num + " 号出租车停止运行");
             System.exit(0);
         }

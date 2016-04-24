@@ -41,8 +41,8 @@
       <file leaf-file-name="TestCar.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Wber/TestCar.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+            <state relative-caret-position="400">
+              <caret line="20" column="33" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -51,8 +51,8 @@
       <file leaf-file-name="Input.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Wber/Input.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="840">
-              <caret line="45" column="27" selection-start-line="45" selection-start-column="27" selection-end-line="45" selection-end-column="27" />
+            <state relative-caret-position="917">
+              <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -63,13 +63,10 @@
       <file leaf-file-name="Passenger.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Wber/Passenger.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="121" column="52" selection-start-line="121" selection-start-column="52" selection-end-line="121" selection-end-column="52" />
+            <state relative-caret-position="877">
+              <caret line="150" column="7" selection-start-line="150" selection-start-column="7" selection-end-line="150" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-                <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-                <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -78,12 +75,12 @@
       <file leaf-file-name="Center.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Wber/Center.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
+            <state relative-caret-position="277">
+              <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#379#380#0" expanded="true" />
-                <element signature="e#429#430#0" expanded="true" />
+                <element signature="e#545#546#0" expanded="true" />
+                <element signature="e#585#586#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -92,25 +89,21 @@
       <file leaf-file-name="Location.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Wber/Location.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
-              <folding>
-                <element signature="e#646#647#0" expanded="true" />
-                <element signature="e#679#680#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="780">
+              <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Car.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Car.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Wber/Car.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="428">
-              <caret line="96" column="7" selection-start-line="96" selection-start-column="7" selection-end-line="96" selection-end-column="7" />
+            <state relative-caret-position="280">
+              <caret line="87" column="17" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#findPath#0;class#Car#0" expanded="false" />
-                <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
                 <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
                 <element signature="method#moveUp#0;class#Car#0" expanded="false" />
                 <element signature="method#moveDown#0;class#Car#0" expanded="false" />
@@ -121,11 +114,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Test.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Test.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Wber/Test.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="22" column="52" selection-start-line="22" selection-start-column="52" selection-end-line="22" selection-end-column="52" />
+            <state relative-caret-position="180">
+              <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -165,12 +158,12 @@
         <option value="$PROJECT_DIR$/src/Wber/Point.java" />
         <option value="$PROJECT_DIR$/src/Wber/TestRandom.java" />
         <option value="$PROJECT_DIR$/src/Wber/Location.java" />
-        <option value="$PROJECT_DIR$/src/Wber/Input.java" />
-        <option value="$PROJECT_DIR$/src/Wber/TestCar.java" />
         <option value="$PROJECT_DIR$/src/Wber/Test.java" />
-        <option value="$PROJECT_DIR$/src/Wber/Passenger.java" />
         <option value="$PROJECT_DIR$/src/Wber/Center.java" />
+        <option value="$PROJECT_DIR$/src/Wber/Input.java" />
         <option value="$PROJECT_DIR$/src/Wber/Main.java" />
+        <option value="$PROJECT_DIR$/src/Wber/TestCar.java" />
+        <option value="$PROJECT_DIR$/src/Wber/Passenger.java" />
         <option value="$PROJECT_DIR$/src/Wber/Car.java" />
       </list>
     </option>
@@ -191,7 +184,7 @@
     <option name="x" value="1358" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
-    <option name="height" value="1066" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -218,6 +211,24 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Uber" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Uber" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches">
+        <subPane />
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -256,24 +267,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches">
-        <subPane />
-      </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Uber" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Uber" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -286,7 +279,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/exp4" />
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://D:/Java/Uber/src/Wber/Car.java" />
   </component>
-  <component name="RunManager" selected="Application.TestCar">
+  <component name="RunManager" selected="Application.Main">
     <configuration default="false" name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
@@ -776,8 +769,8 @@
     </list>
     <recent_temporary>
       <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Application.TestCar" />
-        <item index="1" class="java.lang.String" itemvalue="Application.Main" />
+        <item index="0" class="java.lang.String" itemvalue="Application.Main" />
+        <item index="1" class="java.lang.String" itemvalue="Application.TestCar" />
         <item index="2" class="java.lang.String" itemvalue="Application.Test" />
         <item index="3" class="java.lang.String" itemvalue="Application.TestRandom" />
       </list>
@@ -804,16 +797,20 @@
       <workItem from="1461258024736" duration="34000" />
       <workItem from="1461284188603" duration="32260000" />
       <workItem from="1461326373028" duration="10157000" />
-      <workItem from="1461386546273" duration="15112000" />
+      <workItem from="1461386546273" duration="15684000" />
+      <workItem from="1461418305463" duration="2130000" />
+      <workItem from="1461426306299" duration="109000" />
+      <workItem from="1461464110740" duration="4093000" />
+      <workItem from="1461472125817" duration="128000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142289000" />
+    <option name="totallyTimeSpent" value="149321000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1358" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="false" />
+    <frame x="1358" y="-8" width="1936" height="1096" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -823,11 +820,11 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31875" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31875" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.119791664" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.119791664" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -876,7 +873,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#findPath#0;class#Car#0" expanded="false" />
-            <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
             <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
             <element signature="method#moveUp#0;class#Car#0" expanded="false" />
             <element signature="method#moveDown#0;class#Car#0" expanded="false" />
@@ -892,9 +888,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-            <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-            <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -905,8 +898,8 @@
           <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#379#380#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#585#586#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -926,7 +919,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#findPath#0;class#Car#0" expanded="false" />
-            <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
             <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
             <element signature="method#moveUp#0;class#Car#0" expanded="false" />
             <element signature="method#moveDown#0;class#Car#0" expanded="false" />
@@ -942,9 +934,6 @@
           <caret line="56" column="29" selection-start-line="56" selection-start-column="29" selection-end-line="56" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-            <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-            <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -955,8 +944,8 @@
           <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#379#380#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#585#586#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -986,7 +975,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#findPath#0;class#Car#0" expanded="false" />
-            <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
             <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
             <element signature="method#moveUp#0;class#Car#0" expanded="false" />
             <element signature="method#moveDown#0;class#Car#0" expanded="false" />
@@ -1007,10 +995,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="700">
           <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="e#646#647#0" expanded="true" />
-            <element signature="e#679#680#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1020,9 +1005,6 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-            <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-            <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1033,8 +1015,8 @@
           <caret line="63" column="1" selection-start-line="63" selection-start-column="1" selection-end-line="63" selection-end-column="1" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#379#380#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#585#586#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1074,7 +1056,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#findPath#0;class#Car#0" expanded="false" />
-            <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
             <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
             <element signature="method#moveUp#0;class#Car#0" expanded="false" />
             <element signature="method#moveDown#0;class#Car#0" expanded="false" />
@@ -1095,10 +1076,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="700">
           <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-          <folding>
-            <element signature="e#646#647#0" expanded="true" />
-            <element signature="e#679#680#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1108,9 +1086,6 @@
           <caret line="73" column="36" selection-start-line="73" selection-start-column="36" selection-end-line="73" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-            <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-            <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1121,8 +1096,8 @@
           <caret line="49" column="54" selection-start-line="49" selection-start-column="54" selection-end-line="49" selection-end-column="54" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#379#380#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#585#586#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1162,7 +1137,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#findPath#0;class#Car#0" expanded="false" />
-            <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
             <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
             <element signature="method#moveUp#0;class#Car#0" expanded="false" />
             <element signature="method#moveDown#0;class#Car#0" expanded="false" />
@@ -1185,8 +1159,8 @@
           <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#379#380#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#585#586#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1197,9 +1171,6 @@
           <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-            <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-            <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1229,7 +1200,6 @@
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#findPath#0;class#Car#0" expanded="false" />
-            <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
             <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
             <element signature="method#moveUp#0;class#Car#0" expanded="false" />
             <element signature="method#moveDown#0;class#Car#0" expanded="false" />
@@ -1252,8 +1222,8 @@
           <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#379#380#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#585#586#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1264,21 +1234,11 @@
           <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-            <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-            <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Matrix.java" />
-    <entry file="file://$PROJECT_DIR$/src/Wber/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Wber/AskedCar.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -1315,7 +1275,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="831" column="0" selection-start-line="831" selection-start-column="0" selection-end-line="831" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1327,73 +1286,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/TestRandom.java">
+    <entry file="file://$PROJECT_DIR$/src/Wber/TestRandom.java" />
+    <entry file="file://$PROJECT_DIR$/src/Wber/Map.java" />
+    <entry file="file://$PROJECT_DIR$/src/Wber/Test.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/Input.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="45" column="27" selection-start-line="45" selection-start-column="27" selection-end-line="45" selection-end-column="27" />
+        <state relative-caret-position="180">
+          <caret line="11" column="12" selection-start-line="11" selection-start-column="12" selection-end-line="11" selection-end-column="12" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/Passenger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="121" column="52" selection-start-line="121" selection-start-column="52" selection-end-line="121" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#traverseCars#0;class#Passenger#0" expanded="false" />
-            <element signature="method#findBestFitCar#0;class#Passenger#0" expanded="false" />
-            <element signature="method#inPassengerRange#0;class#Passenger#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/Center.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#379#380#0" expanded="true" />
-            <element signature="e#429#430#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/Location.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
-          <folding>
-            <element signature="e#646#647#0" expanded="true" />
-            <element signature="e#679#680#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/Car.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="428">
-          <caret line="96" column="7" selection-start-line="96" selection-start-column="7" selection-end-line="96" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#findPath#0;class#Car#0" expanded="false" />
-            <element signature="method#moveToDestination#0;class#Car#0" expanded="false" />
-            <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
-            <element signature="method#moveUp#0;class#Car#0" expanded="false" />
-            <element signature="method#moveDown#0;class#Car#0" expanded="false" />
-            <element signature="method#moveLeft#0;class#Car#0" expanded="false" />
-            <element signature="method#moveRight#0;class#Car#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1406,20 +1306,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/TestCar.java">
+    <entry file="file://$PROJECT_DIR$/src/Wber/Location.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="21" column="9" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+        <state relative-caret-position="780">
+          <caret line="51" column="0" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Wber/Test.java">
+    <entry file="file://$PROJECT_DIR$/src/Wber/TestCar.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="22" column="52" selection-start-line="22" selection-start-column="52" selection-end-line="22" selection-end-column="52" />
+        <state relative-caret-position="400">
+          <caret line="20" column="33" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Wber/Center.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="277">
+          <caret line="26" column="5" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#545#546#0" expanded="true" />
+            <element signature="e#585#586#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Wber/Passenger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="877">
+          <caret line="150" column="7" selection-start-line="150" selection-start-column="7" selection-end-line="150" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Wber/Input.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="917">
+          <caret line="80" column="0" selection-start-line="80" selection-start-column="0" selection-end-line="80" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Wber/Car.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="87" column="17" selection-start-line="87" selection-start-column="17" selection-end-line="87" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#findPath#0;class#Car#0" expanded="false" />
+            <element signature="method#waitingMove#0;class#Car#0" expanded="false" />
+            <element signature="method#moveUp#0;class#Car#0" expanded="false" />
+            <element signature="method#moveDown#0;class#Car#0" expanded="false" />
+            <element signature="method#moveLeft#0;class#Car#0" expanded="false" />
+            <element signature="method#moveRight#0;class#Car#0" expanded="false" />
           </folding>
         </state>
       </provider>

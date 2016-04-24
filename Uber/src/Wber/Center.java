@@ -51,7 +51,7 @@ public class Center implements Runnable{
             }
         }
         catch (InterruptedException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             System.out.println("调度中心发生故障，程序退出");
             System.exit(0);
         }

@@ -5,7 +5,7 @@ import java.io.IOException;
 public class TestCar {
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        Input input = new Input("D:\\123\\456.txt");/*读入文件建立地图*/
+        Input input = new Input("D:\\123\\test.txt");/*读入文件建立地图*/
         input.buildMap();
         Center center = new Center();
         new Thread(center).start();
@@ -16,12 +16,16 @@ public class TestCar {
 //            center.addCars(car1);
 //            new Thread(car1).start();
 //        }
-        Car car1 = new Car(input.getPoints(),29,29);
-        for(int i = 0; i < 1; i++) {
-            new Thread(new Passenger(center, new Location(29, 29), new Location(79, 79))).start();
-        }
-        Thread.sleep(1);
+        Car car1 = new Car(input.getPoints(), 0, 0);
+        center.addCars(car1);
         new Thread(car1).start();
+        for(int i = 0; i < 1; i++) {
+//            new Thread(new Passenger(center)).start();
+            new Thread(new Passenger(center, new Location(1, 1), new Location(79, 79))).start();
+//            new Thread(new Passenger(center, new Location(29, 29), new Location(79, 79))).start();
+//            new Thread(new Passenger(center, new Location(29, 29), new Location(79, 79))).start();
+        }
+//        Thread.sleep(100);
 //        new Thread(car2).start();
         while(true){
             System.out.println(car1.getLocation().getX() + " " + car1.getLocation().getY());
