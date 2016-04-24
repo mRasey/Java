@@ -29,6 +29,9 @@ public class Main {
                     center.getCar(12).print();
                     /**************************************/
                 /**********************************************/
+                for(int i = 0; i < 1000; i++){
+                    new Thread(new Passenger(center)).start();
+                }
             }
             catch (Throwable t){
                 System.out.println("测试模块发生故障，程序退出");

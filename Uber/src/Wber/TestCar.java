@@ -19,7 +19,7 @@ public class TestCar {
         Car car1 = new Car(input.getPoints(), 0, 0);
         center.addCars(car1);
         new Thread(car1).start();
-        for(int i = 0; i < 1; i++) {
+        for(int i = 0; i < 100; i++) {
 //            new Thread(new Passenger(center)).start();
             new Thread(new Passenger(center, new Location(1, 1), new Location(79, 79))).start();
 //            new Thread(new Passenger(center, new Location(29, 29), new Location(79, 79))).start();

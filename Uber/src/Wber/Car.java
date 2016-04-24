@@ -376,7 +376,7 @@ public class Car implements Runnable {
                     path.clear();
                     path.addAll(findPath(location, destinationLocation));
                     moveToDestination(path);
-//                    System.out.println(num + " 号出租车到达目的地");
+                    System.out.println(num + " 号出租车到达目的地");
                     addCredit(3);/*完成订单，信用度加三*/
                     hasPassenger = false;
                     carState = CarState.Stopping;
