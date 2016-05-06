@@ -12,17 +12,30 @@ public class Center implements Runnable{
     /**
      * 构造器
      */
-    public Center() {}
+    public Center() {
+        //Requires: none
+        //Modifies: none
+        //Effects: 构造器
+    }
 
     public HashSet<Car> getCars() {
+        //Requires: none
+        //Modifies: none
+        //Effects: 返回出租车队列
         return (HashSet<Car>) cars.clone();
     }
 
     public void addCars(Car car){
+        //Requires: 出租车
+        //Modifies: 出租车队列
+        //Effects: 将出租车加入出租车队列
         cars.add(car);
     }
 
     public void setChosenCars(AskedCar askedCar) {
+        //Requires: 请求的车
+        //Modifies: 出租车
+        //Effects: 设置被选择的出租车
         chosenCars.add(askedCar);
     }
 
@@ -32,6 +45,9 @@ public class Center implements Runnable{
      * @return 找到指定编号的车，返回车，找不到则返回null
      */
     public Car getCar(int carNum) {
+        //Requires: 出租车编号
+        //Modifies: none
+        //Effects: 返回指定出租车
         for (Car car : cars) {
             if (car.getNum() == carNum)
                 return car;

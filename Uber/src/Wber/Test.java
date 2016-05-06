@@ -2,12 +2,10 @@ package Wber;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
-public class Test implements Runnable{
-    @Override
-    public void run() {
-        Input input = new Input("D:\\123\\456.txt");/*读入文件建立地图*/
+public class Test{
+    public static void main(String[] args) {
+        Input input = new Input("D:\\123\\test.txt");/*读入文件建立地图*/
         try {
             input.buildMap();
         } catch (IOException e) {
@@ -16,13 +14,16 @@ public class Test implements Runnable{
         Center center = new Center();
         Car car = new Car(input.getPoints());
         center.addCars(car);
-        ArrayList<Integer> cars = car.findPath(new Location(2, 2), new Location(2, 4));
+        new Thread(center).start();
+//        ArrayList<Integer> cars = car.findPath(new Location(2, 26), new Location(1, 1));
+        ArrayList<Integer> cars = car.singleFindPathByFlow(new Location(1, 1), new Location(79, 79));
         for (Integer anArrayList : cars) {
             System.out.println(anArrayList / 80 + " " + anArrayList % 80);
         }
-        Passenger passenger = new Passenger(center);
-        new Thread(center).start();
+//        for(int i = 0; i < cars.size() - 1; i++){
+//            System.out.println(Map.getFlows(cars.get(i), cars.get(i+1)));
+//        }
+        new Thread(new Passenger(center, new Location(2, 2), new Location(79, 79))).start();
         new Thread(car).start();
-        new Thread(passenger).start();
     }
 }

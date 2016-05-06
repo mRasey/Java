@@ -13,6 +13,9 @@ public class Input {
     private Point[][] points = new Point[80][80];
 
     public Input(String inputPath){
+        //Requires: 输入地图文件路径
+        //Modifies: none
+        //Effects: 构造器
         this.inputPath = inputPath;
         for(int i = 0; i < 80; i++){
             for(int j = 0; j < 80; j++){
@@ -22,6 +25,9 @@ public class Input {
     }
 
     public Point[][] getPoints(){
+        //Requires: none
+        //Modifies: none
+        //Effects: 返回地图
         return points;
     }
 
@@ -31,6 +37,9 @@ public class Input {
      * @throws IOException
      */
     public void buildMap() throws IOException {
+        //Requires: none
+        //Modifies: none
+        //Effects: 建立地图
         try {
             File file = new File(inputPath);
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -55,6 +64,9 @@ public class Input {
      * @param j 列数
      */
     public void setConnection(int model, int i, int j){
+        //Requires: 指定的点以及边连接方式
+        //Modifies: none
+        //Effects: 改变地图上点的属性
         if(model == 0){
 
         }

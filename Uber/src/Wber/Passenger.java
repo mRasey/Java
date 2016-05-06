@@ -22,12 +22,11 @@ public class Passenger implements Runnable{
      * 构造器1
      */
     public Passenger(Center center) {
+        //Requires: Center
+        //Modifies: none
+        //Effects: 构造器
         passengerCount.addAndGet(1);
         num = passengerCount.get();
-//        if(num > 300){
-//            System.out.println("生成的乘客超过300个，程序结束");
-//            System.exit(0);
-//        }
         startLocation = new Location(new Random().nextInt(80), new Random().nextInt(80));
         destinationLocation = new Location(new Random().nextInt(80), new Random().nextInt(80));
         this.cars = center.getCars();
@@ -38,12 +37,11 @@ public class Passenger implements Runnable{
      * 构造器2
      */
     public Passenger(Center center, Location startLocation, Location destinationLocation) {
+        //Requires: Center，起点位置，终点位置
+        //Modifies: none
+        //Effects: 构造器
         passengerCount.addAndGet(1);
         num = passengerCount.get();
-//        if(num > 300){
-//            System.out.println("生成的乘客超过300个，程序结束");
-//            System.exit(0);
-//        }
         this.startLocation = startLocation;
         this.destinationLocation = destinationLocation;
         this.cars = center.getCars();
@@ -51,14 +49,23 @@ public class Passenger implements Runnable{
     }
 
     public int getNum() {
+        //Requires: none
+        //Modifies: none
+        //Effects: 返回乘客编号
         return num;
     }
 
     public Location getStartLocation() {
+        //Requires: none
+        //Modifies: none
+        //Effects: 返回乘客位置
         return startLocation;
     }
 
     public Location getDestinationLocation() {
+        //Requires: none
+        //Modifies: none
+        //Effects: 返回乘客的终点位置
         return destinationLocation;
     }
 
@@ -67,6 +74,9 @@ public class Passenger implements Runnable{
      * @return 找到满足条件的出租车，返回真
      */
     public boolean traverseCars(){
+        //Requires: none
+        //Modifies: none
+        //Effects: 遍历寻找合适的出租车
         Iterator<Car> carIterator = cars.iterator();
         while (carIterator.hasNext()) {
             Car car = carIterator.next();
@@ -83,6 +93,9 @@ public class Passenger implements Runnable{
      * @return 最终选择的出租车
      */
     public Car findBestFitCar(){
+        //Requires: none
+        //Modifies: none
+        //Effects: 寻找最终选择的出租车
         Iterator<Car> carIterator = fitCars.iterator();
         Car chosenCar = carIterator.next();
         int chosenCarPathSize = chosenCar.findPath(chosenCar.getLocation(), startLocation).size();
@@ -112,6 +125,9 @@ public class Passenger implements Runnable{
      * @return 如果在请求范围内，返回true
      */
     public boolean inPassengerRange(Location passengerLocation, Location carLocation) {
+        //Requires: 出租车的位置和乘客的位置
+        //Modifies: none
+        //Effects: 如果出租车的位置在乘客的呼叫范围内，返回真
         return (carLocation.getX() >= passengerLocation.getX() - 2
                 && carLocation.getX() <= passengerLocation.getX() + 2
                 && carLocation.getY() >= passengerLocation.getY() - 2
@@ -120,6 +136,13 @@ public class Passenger implements Runnable{
 
     @Override
     public void run(){
+        if (startLocation.getX() < 0 || startLocation.getX() >= 80
+                || startLocation.getY() < 0 || startLocation.getY() >= 80
+                || destinationLocation.getX() < 0 || destinationLocation.getX() >= 80
+                || destinationLocation.getY() < 0 || destinationLocation.getY() >= 80) {
+            System.out.println("输入的 " + num + " 号乘客位置超出合法范围");
+            Thread.currentThread().interrupt();
+        }
         long startTime = System.currentTimeMillis();
         try {
             while (true) {
@@ -146,8 +169,9 @@ public class Passenger implements Runnable{
                 }
             }
         } catch (InterruptedException i) {
-            System.out.println("乘客线程发生故障，程序退出");
-            System.exit(0);
+//            i.printStackTrace();
+//            System.out.println("乘客线程发生故障，程序退出");
+            Thread.currentThread().interrupt();
         }
     }
 }
