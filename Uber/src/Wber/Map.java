@@ -1,8 +1,27 @@
 package Wber;
 
 public class Map implements Runnable{
+    /*Overview
+    这个类是用于保存地图上的流量以及阻塞情况的类，flows记录整个地图的流量，blocked记录整个地图道路的开关状态
+    */
+
     static int[][] flows = new int[6400][6400];
     static boolean[][] blocked = new boolean[6400][6400];
+
+    public  static boolean repOK(){
+        //Effects: returns true if the rep variant holds for this, otherwise returns false
+        for(int i = 0; i < 6400; i++){
+            for(int j = 0; j < 6400; j++){
+                if(flows[i][j] < 0) return false;
+            }
+        }
+//        for(int i = 0; i < 6400; i++){
+//            for(int j = 0; j < 6400; j++){
+//                if(!blocked[i][j] && blocked[i][j]) return false;
+//            }
+//        }
+        return true;
+    }
 
     /**
      * 增加道路流量
@@ -10,9 +29,9 @@ public class Map implements Runnable{
      * @param to 终点
      */
     public static void setFlows(int from, int to){
-        //Requires: 起点和终点
-        //Modifies: none
-        //Effects: 增加起点和终点之间的道路流量
+        //Requires: from和to均为0到6399之间
+        //Modifies: flows属性
+        //Effects: 增加flows[from][to]的道路流量一
         if(from < to)
             flows[from][to]++;
         else if(from > to)
@@ -26,9 +45,9 @@ public class Map implements Runnable{
      * @return 指定道路的流量
      */
     public static int getFlows(int from, int to) {
-        //Requires: 起点和终点
+        //Requires: from和to均为0到6399之间
         //Modifies: none
-        //Effects: 获取起点和终点之间的道路的流量
+        //Effects: 获取flows[from][to]的道路的流量
         if(from < to
                 && 0 <= from / 80 && from / 80 <= 79
                 && 0 <= from % 80 && from % 80 <= 79
@@ -52,9 +71,9 @@ public class Map implements Runnable{
      * @param blockState 道路状态
      */
     public static void setBlocked(int from, int to, boolean blockState) {
-        //Requires: 起点，终点以及指定的道路状态
-        //Modifies: none
-        //Effects: 将起点终点之间的道路的开闭状态设为指定状态
+        //Requires: from和to均为0到6399之间
+        //Modifies: blocked[from][to]
+        //Effects: 将blocked[from][to]设为blockState状态
         if(from < to) {
             blocked[from][to] = blockState;
         }
@@ -70,9 +89,9 @@ public class Map implements Runnable{
      * @return 道路状态
      */
     public static boolean getBlocked(int from, int to) {
-        //Requires: 起点和终点
+        //Requires: from和to均为0到6399之间
         //Modifies: none
-        //Effects: 返回起点和终点之间的道路的开闭状态
+        //Effects: 返回blocked[from][to]的道路的开闭状态,当from和to相等时返回false
         if(from < to)
             return blocked[from][to];
         else if(from > to)

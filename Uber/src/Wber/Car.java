@@ -7,103 +7,145 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 出租车类
  */
 public class Car implements Runnable {
-    private static AtomicInteger count = new AtomicInteger();
-    private int num;
-    private Location location;/*坐标*/
-    private int credit = 0;/*信用度*/
-    private CarState carState;/*运行状态*/
-    private Point[][] points = new Point[80][80];/*地图*/
-    private Location startLocation;/*乘客起点*/
-    private Location destinationLocation;/*乘客终点*/
-    private boolean hasPassenger = false;
+    /*Overview:
+    这个类是出租车类，用于产生出租车，含有出租车正常运行所需的方法，count用于计算车的编号，num表示车的编号，
+    location表示车当前的坐标，credit表示车的信用度，carState表示车的运行状态，points表示地图，startLocation
+    表示车接受的乘客所在的位置，destinationLocation表示接受的乘客的目的地，hasPassenger表示车当前是否分配有
+    未完成的乘客请求，direction表示车的运行方向，servedPassengerQueue保存了每一次请求的乘客。
+    */
+
+    static AtomicInteger count = new AtomicInteger();
+    int num;
+    Location location;/*坐标*/
+    int credit = 0;/*信用度*/
+    CarState carState;/*运行状态*/
+    Point[][] points = new Point[80][80];/*地图*/
+    Location startLocation;/*乘客起点*/
+    Location destinationLocation;/*乘客终点*/
+    boolean hasPassenger = false;
+    Direction direction = Direction.UP;
+    ArrayList<Passenger> servedPassengerQueue = new ArrayList<>();
+
 
     /**
      * 构造器
      */
     public Car(Point[][] points) {
-        //Requires: Point[][]
-        //Modifies: none
+        //Requires: 80X80的points[][]数组
         //Effects: 构造器
         carState = CarState.Waiting;
         this.points = points;
         location = new Location();
-        count.addAndGet(1);
-        num = count.get();
+        num = count.addAndGet(1);
+        if(num > 100){
+            System.out.println("生成了过多的出租车，程序退出");
+            System.exit(0);
+        }
     }
 
     /**
      * 构造器2
      */
     public Car(Point[][] points, int x, int y){
-        //Requires: Point，横坐标，纵坐标
-        //Modifies: none
-        //Effects: 构造器
+        //Requires: 80X80的points[][]数组，x范围[0,79]，y范围[0,79]
+        //Effects: 构造器，初始化变量
         carState = CarState.Waiting;
         this.points = points;
         location = new Location(x, y);
         num = count.addAndGet(1);
+        if(num > 100){
+            System.out.println("生成了过多的出租车，程序退出");
+            System.exit(0);
+        }
     }
+
+    public boolean repOK(){
+        //Effects: returns true if the rep variant holds for this, otherwise returns false
+        if(count.intValue() < 0 || count.intValue() > 100) return false;
+        if(num < 0 || num >100) return false;
+        if(location.getX() < 0 || location.getX() >= 80
+                || location.getY() < 0 || location.getY() >= 80) return false;
+        if(credit < 0) return false;
+        if(servedPassengerQueue.size() < 0) return false;
+//        if(startLocation.getX() < 0 || startLocation.getX() >= 80
+//                || startLocation.getY() < 0 || startLocation.getY() >= 80) return false;
+//        if(destinationLocation.getX() < 0 || destinationLocation.getX() >= 80
+//                || destinationLocation.getY() < 0 || destinationLocation.getY() >= 80) return false;
+//        if(carState != CarState.Waiting && carState != CarState.Serving
+//                && carState != CarState.Stopping && carState != CarState.WaitServing) return false;
+//        if(direction != Direction.UP && direction != Direction.DOWN
+//                && direction != Direction.LEFT && direction != Direction.RIGHT) return false;
+//        if(!hasPassenger && hasPassenger) return false;
+//        for(int i = 0; i < 80; i++){
+//            for(int j = 0; j < 80; j++){
+//                if(!(points[i][j] instanceof Point))
+//                    return false;
+//            }
+//        }
+        return true;
+    }
+
     /*获取当前出租车是否有乘客*/
     public void setHasPassenger(boolean hasPassenger) {
-        //Requires: 要设置的状态
-        //Modifies: 出租车的是否带有乘客的状态
-        //Effects: 设置出租车的是否带有乘客的状态
+        //Requires: boolean型的hasPassenger
+        //Modifies: hasPassenger属性
+        //Effects: 设置hasPassenger属性为hasPassenger
         this.hasPassenger = hasPassenger;
     }
     /*设置是否有乘客*/
     public boolean isHasPassenger() {
         //Requires: none
         //Modifies: none
-        //Effects: 返回出租车是否带有乘客的状态
+        //Effects: 返回hasPassenger属性
         return hasPassenger;
     }
     /*设置起始的位置*/
     public void setStartLocation(Location startLocation) {
-        //Requires: 要设置的位置
-        //Modifies: none
-        //Effects: 出租车的位置
+        //Requires: startLocation不为NULL
+        //Modifies: startLocation属性
+        //Effects: 设置startLocation属性为startLocation
         this.startLocation = startLocation;
     }
     /*设置目的地*/
     public void setDestinationLocation(Location destinationLocation) {
-        //Requires: 要设置的位置
-        //Modifies: 出租车当前的位置
-        //Effects: 改变出租车当前的位置
+        //Requires: destinationLocation不为NULL
+        //Modifies: destinationLocation属性
+        //Effects: 改变destinationLocation属性为destinationLocation
         this.destinationLocation = destinationLocation;
     }
     /*获取出租车当前位置*/
     public Location getLocation() {
         //Requires: none
         //Modifies: none
-        //Effects: 返回车当前的位置
+        //Effects: 返回location属性
         return location.clone();
     }
     /*增加出租车指定大小信用度*/
     public void addCredit(int i) {
-        //Requires: 增加的信用度
-        //Modifies: 出租车的信用度
-        //Effects: 增加指定大小的出租车信用度
+        //Requires: i为1或3
+        //Modifies: credit属性
+        //Effects: credit属性增加i
         credit += i;
     }
     /*获取出租车信用度*/
     public int getCredit() {
         //Requires: none
         //Modifies: none
-        //Effects: 返回出租车信用度
+        //Effects: 返回credit属性
         return credit;
     }
     /*获取出租车编号*/
     public int getNum() {
         //Requires: none
         //Modifies: none
-        //Effects: 返回出租车编号
+        //Effects: 返回num属性
         return num;
     }
     /*设置出租车运行状态*/
     public void setCarState(CarState carState) {
-        //Requires: 要设置的出租车运行状态
-        //Modifies: 出租车的运行状态
-        //Effects: 将出租车的运行状态改为指定状态
+        //Requires: carState不为NULL
+        //Modifies: carState属性
+        //Effects: 将carState属性设置为carState
         this.carState = carState;
     }
     /*获取出租车状态*/
@@ -127,11 +169,12 @@ public class Car implements Runnable {
         //Effects: 返回出租车的当前时间
         return System.currentTimeMillis();
     }
+
     /*输出出租车当前状态*/
     public void print() {
         //Requires: none
         //Modifies: none
-        //Effects: 输出出租车的当前信息
+        //Effects: 输出出租车的location属性和当前系统时间
         System.out.println(num + " 号出租车：");
         System.out.println("出租车坐标 " + location.getX() + " " + location.getY());
         System.out.println("当前时间 " + System.currentTimeMillis() + "ms  " + new Date(System.currentTimeMillis()));
@@ -144,9 +187,9 @@ public class Car implements Runnable {
      * @return 最短路径
      */
     public ArrayList<Integer> singleFindPathByFlow(Location startLocation, Location destinationLocation) {
-        //Requires: 起始位置和终点位置
+        //Requires: startLocation和destinationLocation不为NULL
         //Modifies: none
-        //Effects: 返回起点与终点之间的最短路径
+        //Effects: 返回startLocation与destinationLocation之间的最短路径
         Point[][] pointMap = new Point[80][80];
         for(int i = 0; i < 80; i++){
             for(int j = 0; j < 80; j++)
@@ -289,9 +332,9 @@ public class Car implements Runnable {
      * @return 最短路径
      */
     public ArrayList<Integer> findPath(Location startLocation, Location destinationLocation) {
-        //Requires: 起始位置和终点位置
+        //Requires: startLocation和destinationLocation不为NULL
         //Modifies: none
-        //Effects: 返回起点与终点之间的最短路径
+        //Effects: 返回startLocation与destinationLocation之间的最短路径
         Point[][] point = new Point[80][80];
         for(int i = 0; i < 80; i++){
             for(int j = 0; j < 80; j++)
@@ -453,6 +496,7 @@ public class Car implements Runnable {
         Stack<Integer> backPath = new Stack<>();
         int parentLoc = preSonLoc;
         if(preSonLoc == -1) {
+//            System.out.println("hahahhhahahahaha");
 //            System.out.println(startLocation.getX() + " " + startLocation.getY());
 //            System.out.println(destinationLocation.getX() + " " + destinationLocation.getY());
         }
@@ -486,9 +530,9 @@ public class Car implements Runnable {
     }
 
     public boolean inRange(int num) {
-        //Requires: 要判断的数字
+        //Requires: none
         //Modifies: none
-        //Effects: 返回数字是否合法
+        //Effects: 如果num在0和79之间，返回true，否则返回false
         return 0 <= num && num <= 79;
     }
 
@@ -498,32 +542,46 @@ public class Car implements Runnable {
      * @throws InterruptedException
      */
     public void moveToDestination(ArrayList<Integer> path, Location destinationLocation) throws InterruptedException {
-        //Requires: 路径, 终点
-        //Modifies: none
-        //Effects: 将出租车在路径上移动
-//        for (Integer anArrayList : path) {
-//            System.out.println(anArrayList / 80 + " " + anArrayList % 80);
-//        }
+        //Requires: destinationLocation不为NULL
+        //Modifies: location和carState属性，经过道路的流量
+        //Effects: 将car按照path移动到指定的destinationLocation
         Location preLocation = location.clone();
+        Location nextLocation = new Location();
         for (int i = 0; i < path.size(); i++) {
-            Thread.sleep(100);
             if(Map.getBlocked(preLocation.oneDimensionalLoc(), path.get(i))){
                 moveToDestination(singleFindPathByFlow(preLocation, destinationLocation), destinationLocation);
                 break;
             }
+            nextLocation.setXY(path.get(i) / 80, path.get(i) % 80);
+            while(points[preLocation.getX()][preLocation.getY()].hasTrafficLight && nextLocation.equals(preLocation.upLocation())
+                    && direction != Direction.LEFT && TrafficLight.verticalLight == LightColor.RED){
+                Thread.sleep(1);
+                direction = Direction.UP;
+//                System.out.println("向上红灯");
+            }
+            while(points[preLocation.getX()][preLocation.getY()].hasTrafficLight && nextLocation.equals(preLocation.downLocation())
+                    && direction != Direction.RIGHT && TrafficLight.verticalLight == LightColor.RED){
+                Thread.sleep(1);
+                direction = Direction.DOWN;
+//                System.out.println("向下红灯");
+            }
+            while(points[preLocation.getX()][preLocation.getY()].hasTrafficLight && nextLocation.equals(preLocation.leftLocation())
+                    && direction != Direction.DOWN && TrafficLight.crossLight == LightColor.RED){
+                Thread.sleep(1);
+                direction = Direction.LEFT;
+//                System.out.println("向左红灯");
+            }
+            while(points[preLocation.getX()][preLocation.getY()].hasTrafficLight && nextLocation.equals(preLocation.rightLocation())
+                    && direction != Direction.UP && TrafficLight.crossLight == LightColor.RED){
+                Thread.sleep(1);
+                direction = Direction.RIGHT;
+//                System.out.println("向右红灯");
+            }
+            Thread.sleep(100);
             location.setXY(path.get(i) / 80, path.get(i) % 80);
             Map.setFlows(preLocation.oneDimensionalLoc(), location.oneDimensionalLoc());
-//            System.out.println(Map.getFlows(preLocation.oneDimensionalLoc(), location.oneDimensionalLoc()));
             preLocation = location.clone();
         }
-//        while(path.size() == 0){
-//            Thread.sleep(100);
-//            location.setXY(path.get(0) / 80, path.get(0) % 80);
-//            Map.setFlows(preLocation.oneDimensionalLoc(), location.oneDimensionalLoc());
-//            preLocation = location.clone();
-//            path.clear();
-//            path.addAll(singleFindPathByFlow(location, destinationLocation));
-//        }
     }
 
     /**
@@ -531,8 +589,8 @@ public class Car implements Runnable {
      */
     public void waitingMove() throws InterruptedException {
         //Requires: none
-        //Modifies: none
-        //Effects: 随机改变出租车的位置
+        //Modifies: location和direction属性
+        //Effects: 随机改变location和direction属性
         Random random = new Random();
         long startTime = System.currentTimeMillis();
         while (carState == CarState.Waiting) {
@@ -552,16 +610,16 @@ public class Car implements Runnable {
                 moveRight();
             }
             if (endTime - startTime > 20000) {/*运行时间到达20秒，停止1秒*/
-                startTime = endTime;
                 Thread.sleep(1000);
+                startTime = System.currentTimeMillis();
             }
         }
     }
 
     public void waitingMoveFlow() throws InterruptedException {
         //Requires: none
-        //Modifies: 出租车的位置
-        //Effects: 随机移动出租车改变出租车的位置
+        //Modifies: location和direction属性
+        //Effects: 随机改变location和direction属性
         Random random = new Random();
         long startTime = System.currentTimeMillis();
         while(carState == CarState.Waiting){
@@ -575,36 +633,44 @@ public class Car implements Runnable {
             long endTime = System.currentTimeMillis();
             Point point = points[location.getX()][location.getY()];
 
-            if(upFlow < flag && point.up) {
+            if(upFlow < flag && point.up
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.upLocation().oneDimensionalLoc())) {
                 arrayList.clear();
                 arrayList.add(Direction.UP);
                 flag = upFlow;
             }
-            else if(upFlow == flag && point.up) {
+            else if(upFlow == flag && point.up
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.upLocation().oneDimensionalLoc())) {
                 arrayList.add(Direction.UP);
             }
-            if(downFlow < flag && point.down) {
+            if(downFlow < flag && point.down
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.downLocation().oneDimensionalLoc())) {
                 arrayList.clear();
                 arrayList.add(Direction.DOWN);
                 flag = downFlow;
             }
-            else if(downFlow == flag && point.down) {
+            else if(downFlow == flag && point.down
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.downLocation().oneDimensionalLoc())) {
                 arrayList.add(Direction.DOWN);
             }
-            if(leftFlow < flag && point.left) {
+            if(leftFlow < flag && point.left
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.leftLocation().oneDimensionalLoc())) {
                 arrayList.clear();
                 arrayList.add(Direction.LEFT);
                 flag = leftFlow;
             }
-            else if(leftFlow == flag && point.left) {
+            else if(leftFlow == flag && point.left
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.leftLocation().oneDimensionalLoc())) {
                 arrayList.add(Direction.LEFT);
             }
-            if(rightFlow < flag && point.right) {
+            if(rightFlow < flag && point.right
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.rightLocation().oneDimensionalLoc())) {
                 arrayList.clear();
                 arrayList.add(Direction.RIGHT);
                 flag = rightFlow;
             }
-            else if(rightFlow == flag && point.right) {
+            else if(rightFlow == flag && point.right
+                    && !Map.getBlocked(location.oneDimensionalLoc(), location.rightLocation().oneDimensionalLoc())) {
                 arrayList.add(Direction.RIGHT);
             }
 
@@ -619,46 +685,66 @@ public class Car implements Runnable {
                 moveRight();
 
             if (endTime - startTime > 20000) {/*运行时间到达20秒，停止1秒*/
-                startTime = endTime;
                 Thread.sleep(1000);
+                startTime = System.currentTimeMillis();
             }
         }
     }
 
     public void moveUp() throws InterruptedException {
         //Requires: none
-        //Modifies: 出租车的位置
-        //Effects: 将出租车向上移动
+        //Modifies: location和direction属性，移动过的道路的流量
+        //Effects: location的X加一，direction属性改为UP
+        while(points[location.getX()][location.getY()].hasTrafficLight
+                && direction != Direction.LEFT && TrafficLight.verticalLight == LightColor.RED) {
+            Thread.sleep(1);
+//            System.out.println("纵向红灯");
+        }
         Map.setFlows(location.oneDimensionalLoc(), location.setX(location.getX() - 1).oneDimensionalLoc());
-//        location.setX(location.getX() - 1);
         Thread.sleep(100);
+        direction = Direction.UP;
     }
 
     public void moveDown() throws InterruptedException {
         //Requires: none
-        //Modifies: 出租车的位置
-        //Effects: 将出租车向下移动
+        //Modifies: location和direction属性，移动过的道路的流量
+        //Effects: location的X减一，direction属性改为DOWN
+        while(points[location.getX()][location.getY()].hasTrafficLight
+                && direction != Direction.RIGHT && TrafficLight.verticalLight == LightColor.RED) {
+            Thread.sleep(1);
+//            System.out.println("纵向红灯");
+        }
         Map.setFlows(location.oneDimensionalLoc(), location.setX(location.getX() + 1).oneDimensionalLoc());
-//        location.setX(location.getX() + 1);
         Thread.sleep(100);
+        direction = Direction.DOWN;
     }
 
     public void moveLeft() throws InterruptedException {
         //Requires: none
-        //Modifies: 出租车的位置
-        //Effects: 将出租车向左移动
+        //Modifies: location和direction属性，移动过的道路的流量
+        //Effects: location的Y减一，direction属性改为LEFT
+        while(points[location.getX()][location.getY()].hasTrafficLight
+                && direction != Direction.DOWN && TrafficLight.crossLight == LightColor.RED) {
+            Thread.sleep(1);
+//            System.out.println("横向红灯");
+        }
         Map.setFlows(location.oneDimensionalLoc(), location.setY(location.getY() - 1).oneDimensionalLoc());
-//        location.setY(location.getY() - 1);
         Thread.sleep(100);
+        direction = Direction.LEFT;
     }
 
     public void moveRight() throws InterruptedException {
         //Requires: none
-        //Modifies: 出租车的位置
-        //Effects: 将出租车向右移动
+        //Modifies: location和direction属性，移动过的道路的流量
+        //Effects: location的Y加一，direction属性改为RIGHT
+        while(points[location.getX()][location.getY()].hasTrafficLight
+                && direction != Direction.UP && TrafficLight.crossLight == LightColor.RED) {
+            Thread.sleep(1);
+//            System.out.println("横向红灯");
+        }
         Map.setFlows(location.oneDimensionalLoc(), location.setY(location.getY() + 1).oneDimensionalLoc());
-//        location.setY(location.getY() + 1);
         Thread.sleep(100);
+        direction = Direction.RIGHT;
     }
 
     @Override
@@ -684,13 +770,12 @@ public class Car implements Runnable {
                     Thread.sleep(1000);/*等待乘客下车*/
                     carState = CarState.Waiting;
                 } else if (carState == CarState.WaitServing) {
-                    addCredit(1);/*抢单成功，信用度加一*/
-//                    System.out.println("location " + location.getX() + " " + location.getY());
-//                    System.out.println("startLocation " + startLocation.getX() + " " + startLocation.getY());
                     path.clear();
                     path.addAll(singleFindPathByFlow(location, startLocation));
-//                    path.addAll(findPath(location, startLocation));
+//                    path.addAll(findPath(location, destinationLocation));
                     moveToDestination(path, startLocation);/*去乘客所在位置*/
+                    System.out.println(servedPassengerQueue.get(servedPassengerQueue.size()-1).getNum()
+                            +  " 号乘客上了 " + num + " 号车");
                     carState = CarState.Stopping;
                     Thread.sleep(1000);/*等待乘客上车*/
                     carState = CarState.Serving;
