@@ -15,6 +15,7 @@ public class Main {
         while(s != null){
             String[] strings = s.split(" ");
             map[Integer.parseInt(strings[1]) - 1][Integer.parseInt(strings[2]) - 1] = 1;
+            map[Integer.parseInt(strings[2]) - 1][Integer.parseInt(strings[1]) - 1] = 1;
             s = bufferedReader.readLine();
         }
         System.out.println("finish build map");

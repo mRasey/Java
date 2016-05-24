@@ -117,11 +117,13 @@ class Trygetmore {
 		
 		HashSet<Integer> serchSet = new HashSet<>();
 		
-		for(int i=0;i<2;i++){
-			bestClique.addAll(wzj_tabu.getans());
-			System.out.println(i+" set size: "+bestClique.size());
+		for(int i=0;i<3;i++){
+            HashSet<Integer> clique = wzj_tabu.getans();
+			bestClique.addAll(clique);
+			System.out.println(i+" set size: "+clique.size());
 		}
-		
+
+		System.out.println(bestClique.size());
 		MaxClique max = new MaxClique(bestClique);
 		System.out.println("serch answer:"+max.maxClique());
 		

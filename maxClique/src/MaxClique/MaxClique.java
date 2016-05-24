@@ -76,6 +76,7 @@ public class MaxClique implements Runnable{
                 int next = neighbours.next();
                 if(input1.contains(next)){
                     points[hashMap.get(father)][hashMap.get(next)] = 1;
+                    points[hashMap.get(next)][hashMap.get(father)] = 1;
                 }
             }
         }
