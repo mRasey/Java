@@ -52,6 +52,13 @@ public class Operation {
 		}		
 		return subset;
 	}
+
+	public static Integer getRandomPoint(HashSet<Integer> set){
+		LinkedList<Integer> list = new LinkedList<>();
+		list.addAll(set);
+		Random random = new Random();
+		return list.get(random.nextInt(list.size()));
+	}
 	
 	public static void toMaxClique(HashSet<Integer> clique){
 		HashSet<Integer> neighbour = Operation.getNeighbour(clique);

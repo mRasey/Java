@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 public class Main {
+
     public static void main(String [] args){
         try {
             InputHandler ih = new InputHandler();
@@ -21,7 +22,7 @@ public class Main {
         }
         Operation.PointArray = InputHandler.PointArray.clone();
         
-        HashSet<Integer> clique = Trygetmore.getMore3();
+        HashSet<Integer> clique = Trygetmore.getMore();
         System.out.println("answer:"+clique.size());
         System.out.println(new Date(System.currentTimeMillis()));
 

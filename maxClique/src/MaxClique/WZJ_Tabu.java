@@ -7,6 +7,7 @@ public class WZJ_Tabu {
 
     int n_diedai=500000;
     HashSet<Integer> Clique0;
+    HashSet<Integer> antSet;
 
     class Tabu_Table{
         int sizemax=0;
@@ -36,14 +37,18 @@ public class WZJ_Tabu {
         }
     }
 
-
-
-    WZJ_Tabu(HashSet<Integer> Clique000){//传入作为初始解
+    public WZJ_Tabu(HashSet<Integer> Clique000){//传入作为初始解
         Clique0=Clique000;
-
+        antSet = new HashSet<>();
     }
 
-    HashSet<Integer> getans(){
+    public WZJ_Tabu(HashSet<Integer> Clique000,
+                    HashSet<Integer> antSet){//传入作为初始解
+        Clique0=Clique000;
+        this.antSet = (HashSet<Integer>) antSet.clone();
+    }
+
+    HashSet<Integer> getans(int gaiLv){
         HashSet<Integer> nowClique=(HashSet<Integer>)Clique0.clone();
         HashSet<Integer> bestClique=(HashSet<Integer>)Clique0.clone();
         //Tabu_Table tb_remove=new Tabu_Table(4);
@@ -52,18 +57,23 @@ public class WZJ_Tabu {
         for(int t=1;t<=n_diedai;t++){
             int a;
             do {
-                a = random.nextInt(InputHandler.PointsNum) + 1;
+                if(random.nextInt(100) < gaiLv) {
+                    a = Operation.getRandomPoint(antSet) + 1;
+                }
+                else{
+                    a = random.nextInt(InputHandler.PointsNum) + 1;
+                }
             }
             while (nowClique.contains(a));
             //加入a
-            HashSet<Integer> jyClique=(HashSet<Integer>)nowClique.clone();
+            HashSet<Integer> jyClique = (HashSet<Integer>) nowClique.clone();
 
-            HashSet<Integer> maybenextClique=(HashSet<Integer>)nowClique.clone();
+            HashSet<Integer> maybenextClique = (HashSet<Integer>) nowClique.clone();
             maybenextClique.retainAll(InputHandler.PointArray[a].Neighbour);
             maybenextClique.add(a);
 
-            int maybenextsize=maybenextClique.size();
-            int nowsize=nowClique.size();
+            int maybenextsize = maybenextClique.size();
+            int nowsize = nowClique.size();
             //int bestsize=bestClique.size();
            // boolean bintbadd=false,bintbremove=false;
             //bintbadd=tb_add.isin(a);
@@ -111,8 +121,6 @@ public class WZJ_Tabu {
                 nowClique = (HashSet<Integer>) maybenextClique.clone();
                 bestClique=nowClique;
             }
-
-
         }
         System.out.println(bestClique.size());
         return  bestClique;
