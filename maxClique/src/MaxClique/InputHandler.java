@@ -9,7 +9,7 @@ public class InputHandler {
     static public Point[] PointArray;
     static public Point[] SortedArray;
     public InputHandler() throws IOException {//输入处理
-        File file = new File("D:\\frb100-40.clq");
+        File file = new File("src/benchworks/bhoslib/frb59-26-2.mis");
         if(!file.exists()){
             throw new FileNotFoundException();
         }

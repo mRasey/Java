@@ -31,19 +31,22 @@ public class MaxClique implements Runnable{
             return false;
         }
         for(int i = 0; i < current; i++){
-            if(current - i + total <= answer)
+            if(current - i + total <= answer) {
                 return false;
+            }
             int u = alt[total][i];
-            if(max[u] + total <= answer)
+            if(max[u] + total <= answer) {
                 return false;
+            }
             int nxt = 0;
             for(int j = i + 1; j < current; j++){
                 if(map[u][alt[total][j]] == 1){
                     alt[total + 1][nxt++] = alt[total][j];
                 }
             }
-            if(dfs(nxt, total + 1))
+            if(dfs(nxt, total + 1)) {
                 return true;
+            }
         }
         return false;
     }

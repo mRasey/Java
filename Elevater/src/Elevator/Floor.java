@@ -2,14 +2,11 @@ package Elevator;
 
 import java.util.Scanner;
 
-/**
- * Created by billy on 16-3-7.
- */
 public class Floor {
     private AskQueue askQueue = new AskQueue();//每层楼有一个请求队列
 
     public void setAskQueue(Asking asking){
-        askQueue.getM_askingQueue().add(asking);
+        askQueue.getAskingQueue().add(asking);
     }
 
     public AskQueue getAskQueue(){
@@ -36,7 +33,7 @@ public class Floor {
                     Asking asking = new Asking(input);
                     if(ifFirstInput) {
                         //第一次输入
-                        if (asking.getM_askingTime() != 0)
+                        if (asking.getAskingTime() != 0)
                             System.out.println("起始时间不为0，请重新输入");
                         else {
                             currentTime = askQueue.addAskingQueue(asking, currentTime);
@@ -54,19 +51,19 @@ public class Floor {
                 input = scanner.nextLine();
             }
             //电梯开始运动
-            for(int i = 0; i < askQueue.getM_askingQueue().size(); i++){
-                if(askQueue.getM_askingQueue().get(i) != null){
+            for(int i = 0; i < askQueue.getAskingQueue().size(); i++){
+                if(askQueue.getAskingQueue().get(i) != null){
                     //do{
                     elevator.starToMove(askQueue, i);
                     do{
-                        while (elevator.getCurrentFloor() != elevator.getM_primaryFloor()) {
+                        while (elevator.getCurrentFloor() != elevator.getPrimaryFloor()) {
                             //还没有到主请求楼层，则继续移动
                             elevator.moveStepByStep(askQueue);
                         }
                         elevator.printCarryRequests();//输出捎带序列
-                        //elevator.rebuildCarryRequesets();
-                    }while(elevator.rebuildCarryRequesets() && elevator.ifStillHaveTrueFloor());//当重建捎带序列成功,继续循环
-                    elevator.getM_carryRequests().removeAllElements();
+                        //elevator.rebuildCarryRequests();
+                    }while(elevator.rebuildCarryRequests() && elevator.ifStillHaveTrueFloor());//当重建捎带序列成功,继续循环
+                    elevator.getCarryRequests().removeAllElements();
                 }
             }
 

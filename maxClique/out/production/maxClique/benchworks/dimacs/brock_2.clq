@@ -1,0 +1,20 @@
+c FILE:  brock200_2.b
+c
+c Graph Generator
+c
+c By: Mark Brockington (brock@cs.ualberta.ca)
+c and Joe Culberson (joe@cs.ualberta.ca)
+c
+c Graph Size:200, Clique Size: 12
+c Seed:20, Edge Density:  0.50000
+c Depth 1 Hiding
+c
+c Clique Elements are:
+c 26 120 119 157 69 182 47 148 104 134 
+c 54 144 
+c
+c Estimated Size of Uncompressed File:   0.1MB
+c
+p edge 3 2
+e 3 1
+e 2 1

@@ -1,26 +1,23 @@
 package Elevator;
 
-/**
- * Created by billy on 16-3-7.
- */
 public class Scheduler {
-    private int m_nextFloor;
-    private int m_nextTime;
+    private int nextFloor;
+    private int nextTime;
 
-    public int getM_nextFloor(){
-        return m_nextFloor;
+    public int getNextFloor(){
+        return nextFloor;
     }
 
-    public void setM_nextFloor(int nextFloor){
-        m_nextFloor = nextFloor;
+    public void setNextFloor(int nextFloor){
+        this.nextFloor = nextFloor;
     }
 
-    public void setM_nextTime(int nextTime){
-        m_nextTime = nextTime;
+    public void setNextTime(int nextTime){
+        this.nextTime = nextTime;
     }
 
-    public int getM_nextTime(){
-        return m_nextTime;
+    public int getNextTime(){
+        return nextTime;
     }
 }
 

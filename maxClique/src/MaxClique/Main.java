@@ -21,7 +21,13 @@ public class Main {
             System.exit(0);
         }
         Operation.PointArray = InputHandler.PointArray.clone();
-        
+
+//        Integer a[] = {3,4,5,6,7,8,9};
+//        HashSet<Integer> set = new HashSet<>();
+//        set.addAll(Arrays.asList(a));
+//        MaxClique maxClique = new MaxClique(set);
+//        System.out.print(maxClique.maxClique());
+
         HashSet<Integer> clique = Trygetmore.getMore();
         System.out.println("answer:"+clique.size());
         System.out.println(new Date(System.currentTimeMillis()));
@@ -30,7 +36,7 @@ public class Main {
         try {
 			FileWriter fWriter = new FileWriter(output);
 			Iterator<Integer> iterator = clique.iterator();
-			Integer i; 
+			Integer i;
 			while(iterator.hasNext()){
 				i = iterator.next();
 				fWriter.write(i+" ");

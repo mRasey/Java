@@ -8,8 +8,8 @@ import java.util.Timer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        int[][] map = new int[450][450];
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("D:\\frb30-15-1.clq")));
+        int[][] map = new int[10][10];
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(new File("D:\\12.clq")));
         bufferedReader.readLine();
         String s = bufferedReader.readLine();
         while(s != null){
@@ -19,7 +19,7 @@ public class Main {
             s = bufferedReader.readLine();
         }
         System.out.println("finish build map");
-        MaxClique maxClique = new MaxClique(450, map);
+        MaxClique maxClique = new MaxClique(10, map);
         Print print = new Print(maxClique);
         new Thread(maxClique).start();
         new Timer().schedule(print, 1000, 1000);

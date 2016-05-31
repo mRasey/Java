@@ -1,80 +1,56 @@
 package Elevator;
 
-import java.util.*;
+import java.util.Vector;
 
-/**
- * Created by billy on 16-3-7.
- */
-class AskQueueCompare implements Comparator{ //实现Comparator，定义自己的比较方法
+public class AskQueue {
+    private Vector<Asking> askingQueue = new Vector<Asking>();
 
-    public int compare(Object o1, Object o2) {
-        Asking a1 = (Asking)o1;
-        Asking a2 = (Asking)o2;
-
-        if(a1.getM_askingTime() > a2.getM_askingTime()){ //这样比较是升序,如果把1改成-1就是降序.
-            return 1;
-        }
-        else if(a1.getM_askingTime() < a2.getM_askingTime()){
-            return -1;
-        }
-        else{
-            return 0;
-        }
+/*
+    public Asking getNextAsking() {
+        //Requires: none
+        //Modified: current
+        //Effects: return the next asking in askingQueue
+        return askingQueue.get(current++);
     }
-}
-
-public class AskQueue{
-    private int m_current = 0;
-    private Vector<Asking> m_askingQueue = new Vector<Asking>();
-    private boolean firstInput = true;//是否是第一次输入
-
-    /*public Asking getNextAsking(){
-        return m_askingQueue.get(m_current++);
-    }*/
 
     public int getNextAskingFloor(){
-        return m_askingQueue.get(m_current).getM_askingFloorNumber();
+        //Requires: none
+        //Modified: none
+        //Effects: return the current
+        return askingQueue.get(current).getAskingFloorNumber();
     }
 
     public int getNextAskingTime(){
-        return m_askingQueue.get(m_current).getM_askingTime();
+        return askingQueue.get(current).getAskingTime();
     }
 
     public void moveCurrentVectorOneStep(){
-        m_current++;
+        current++;
     }
+*/
 
-    public int addAskingQueue(Asking asking, int currentTime){
-        if(currentTime <= asking.getM_askingTime()) {
+    public int addAskingQueue(Asking asking, int currentTime) {
+        //Requires: asking != null, current >= 0
+        //Modified: System.out, askingQueue
+        //Effects: if the time of this asking is not smaller than currentTime,
+                // then add the asking to askingQueue and return the time, else
+                // print the invalid tip and return currentTime
+        if (currentTime <= asking.getAskingTime()) {
             //输入时间必须递增
-            m_askingQueue.add(asking);
-            firstInput = false;
-            return asking.getM_askingTime();
-        }
-        else {
+            askingQueue.add(asking);
+            return asking.getAskingTime();
+        } else {
             System.out.println("输入无效，未按照递增时间排序");
             return currentTime;
         }
     }
 
-    public Vector<Asking> getM_askingQueue(){
-        return m_askingQueue;
+    public Vector<Asking> getAskingQueue() {
+        //Requires: none
+        //Modified: none
+        //Effects: return the askingQueue
+        return askingQueue;
     }
 
-    public void sort(){
-        //Comparator cp = new AskQueueCompare();
-        Collections.sort(m_askingQueue, new AskQueueCompare());
-    }
-
-    public void removeSameAsking(){
-        //去除时间相同的请求
-        int currentTime = m_askingQueue.get(0).getM_askingTime();
-        for(int i = 1; i < m_askingQueue.size(); i++){
-            if(currentTime == m_askingQueue.get(i).getM_askingTime())
-                m_askingQueue.remove(i);
-            else
-                currentTime = m_askingQueue.get(0).getM_askingTime();
-        }
-    }
 }
 

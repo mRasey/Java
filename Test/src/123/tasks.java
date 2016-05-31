@@ -1,1 +1,0 @@
-public enum tasks {summary,detail,recover}

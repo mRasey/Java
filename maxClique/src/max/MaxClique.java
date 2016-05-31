@@ -2,7 +2,7 @@ package max;
 
 import java.util.Currency;
 
-public class MaxClique implements Runnable{
+class MaxClique implements Runnable{
     int size;
     int[][] map;
     int[][] alt;
