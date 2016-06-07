@@ -8,8 +8,9 @@ public class InputHandler {
     static public int EdgeNum;
     static public Point[] PointArray;
     static public Point[] SortedArray;
-    public InputHandler() throws IOException {//输入处理
-        File file = new File("src/benchworks/bhoslib/frb59-26-2.mis");
+    
+    public static void Initial() throws IOException {//输入处理
+        File file = new File("D:\\frb100-40.clq");
         if(!file.exists()){
             throw new FileNotFoundException();
         }
@@ -44,6 +45,7 @@ public class InputHandler {
         }
         SortedArray = PointArray.clone();//这个排序数组用来决定由哪个先开始搜
         Arrays.sort(SortedArray);
+        br.close();
     }
 
 }

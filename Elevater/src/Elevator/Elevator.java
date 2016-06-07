@@ -8,15 +8,45 @@ enum ElevatorState{
     STABLE//稳定
 }
 
-public class Elevator implements Move{
+public class Elevator implements Move {
+    /**
+     * OVERVIEW:
+     * This class is about a elevator, it has some methods to run, currentFloor means the floor which
+     * the elevator was right now, currentTime means the current time now, time means when the elevator
+     * arrived, elevatorState means the current state the elevator is, ifStay records if one floor has
+     * askings now, primaryFloor means the floor which was the current main request asked. and carryRequests
+     * records the askings which were carried by a main request.
+     * <p>
+     * 表示对象:
+     * currentFloor, currentTime, time, elevatorState, ifStay[], primaryFloor, carryRequests
+     * <p>
+     * 抽象函数:
+     * AF(c) = (currentFloor, currentTime, time, elevatorState, ifStay[], primaryFloor, carryRequests)
+     *         where currentFloor = c.currentFloor, currentTime = c.currentTime, time = c.time,
+     *         elevatorState = c.elevatorState, ifStay = c.ifStay, primaryFloor = c.primaryFloor,
+     *         carryRequests = c.carryRequests
+     * <P>
+     * 不变式;
+     * 1 <= currentFloor <= 10 && time >= 0 && 1 <= primaryFloor <= 10
+     */
+
     int currentFloor = 1;
-    double currentTime = 0;//电梯当前时间
+    private double currentTime = 0;//电梯当前时间
     double time = 0;//电梯到达目标楼层时间
-    ElevatorState elevatorState = ElevatorState.STABLE;
+    private ElevatorState elevatorState = ElevatorState.STABLE;
     boolean[] ifStay = new boolean[10];
     int primaryFloor = 0;
     Vector<Asking> carryRequests = new Vector<>();
 
+    public boolean repOK(){
+        if(currentFloor <= 0 || currentFloor > 10)
+            return false;
+        if(time < 0)
+            return false;
+        if(primaryFloor <= 0)
+            return false;
+        return true;
+    }
     //构造方法
     public Elevator() {
         //Requires: none
@@ -27,39 +57,25 @@ public class Elevator implements Move{
         }
     }
 
-    public double getTime(){
+    public double getTime() {
         //Requires: none
         //Modified: none
         //Effects: return time
         return time;
     }
-    public int getCurrentFloor(){
+
+    public int getCurrentFloor() {
         //Requires: none
         //Modified: none
         //Effects: return currentFloor
         return currentFloor;
     }
-    public double getCurrentTime(){
+
+    public double getCurrentTime() {
         //Requires: none
         //Modified: none
         //Effects: return currentTime
-        return  currentTime;
-    }
-
-    //设置电梯运动状态
-    public void setElevatorState(int nextFloor) {
-        //Requires: none
-        //Modified: none
-        //Effects: compare the value of nextFloor with currentFloor
-                // if nextFloor > currentFloor, set ElevatorState with UP
-                // if nextFloor < currentFloor, set ElevatorState with DOWN
-                // if nextFloor = currentFloor, set ElevatorState with STABLE
-        if (nextFloor > currentFloor)
-            elevatorState = ElevatorState.UP;
-        else if (nextFloor < currentFloor)
-            elevatorState = ElevatorState.DOWN;
-        else
-            elevatorState = ElevatorState.STABLE;
+        return currentTime;
     }
 
     //获得主请求的楼层数
@@ -78,6 +94,36 @@ public class Elevator implements Move{
         return carryRequests;
     }
 
+    public ElevatorState getElevatorState() {
+        //Requires: none
+        //Modified: none
+        //Effects: return elevatorState
+        return elevatorState;
+    }
+
+    public boolean[] getIfStay() {
+        //Requires: none
+        //Modified: none
+        //Effects: return ifStay[]
+        return ifStay;
+    }
+
+    //设置电梯运动状态
+    public void setElevatorState(int nextFloor) {
+        //Requires: none
+        //Modified: elevatorState
+        //Effects: compare the value of nextFloor with currentFloor
+        // if nextFloor > currentFloor, set ElevatorState with UP
+        // if nextFloor < currentFloor, set ElevatorState with DOWN
+        // if nextFloor = currentFloor, set ElevatorState with STABLE
+        if (nextFloor > currentFloor)
+            elevatorState = ElevatorState.UP;
+        else if (nextFloor < currentFloor)
+            elevatorState = ElevatorState.DOWN;
+        else
+            elevatorState = ElevatorState.STABLE;
+    }
+
     /*public boolean getIfStay(int i) {
         //Requires: i is within the bond of ifStay
         //Modified: ifStay[]
@@ -90,13 +136,14 @@ public class Elevator implements Move{
         //Requires: AskQueue != null
         //Modified: ifStay[], askQueue
         //Effects: Traverse the askQueue everytime when the elevator arrive a floor,
-                // if there are askings which are within the time and has the same
-                // direction with the elevator and the elevator can carry them,
-                // then add them to carryRequests
+        // if there are askings which are within the time and has the same
+        // direction with the elevator and the elevator can carry them,
+        // then add them to carryRequests, else ignore them
         if (elevatorState == ElevatorState.UP) {
             for (int j = 0; j < askQueue.getAskingQueue().size(); j++) {
                 Asking asking = askQueue.getAskingQueue().get(j);
-                if (asking != null && asking.getAskingTime() < time
+                if (asking != null 
+                		&& asking.getAskingTime() < time
                         && asking.getAskingFloorNumber() >= currentFloor) {
                     if (asking.getEntryState() == EntryState.ER) {
                         //如果是在电梯内部的指令就直接响应
@@ -118,7 +165,8 @@ public class Elevator implements Move{
         } else if (elevatorState == ElevatorState.DOWN) {
             for (int j = 0; j < askQueue.getAskingQueue().size(); j++) {
                 Asking asking = askQueue.getAskingQueue().get(j);
-                if (asking != null && asking.getAskingTime() < time
+                if (asking != null 
+                		&& asking.getAskingTime() < time
                         && asking.getAskingFloorNumber() <= currentFloor) {
                     if (asking.getEntryState() == EntryState.ER) {
                         //如果是在电梯内部的指令就直接响应
@@ -155,7 +203,7 @@ public class Elevator implements Move{
         //Requires: asking != null
         //Modified: carryRequests
         //Effects: if carryRequests contains the asking, return false
-                // else add the asking to carryRequests and return true
+        // else add the asking to carryRequests and return true
         for (int i = 0; i < carryRequests.size(); i++) {
             if (asking.equals(carryRequests.get(i)))
                 return false;
@@ -169,7 +217,7 @@ public class Elevator implements Move{
         //Requires: none
         //Modified: none
         //Effects: if one of the ifStay is false, return true,
-                // else return false
+        // else return false
         for (int i = 0; i < 10; i++) {
             if (ifStay[i])
                 return true;
@@ -180,10 +228,10 @@ public class Elevator implements Move{
     //电梯刚刚从静止状态开始运动,取整个队列中最近的请求
     public void starToMove(AskQueue askQueue, int i) {
         //Requires:askQueue != null,
-                // i is the first element that make the askQueue.getAskingQueue().get(i) != null
+        // i is the first element that make the askQueue.getAskingQueue().get(i) != null
         //Modified: primaryFloor, carryRequests, time, ifStay[], askQueue
         //Effects: the elevator choose the ith request as the main request to move,
-                // and if the elevator is in stable state then printElevatorState
+        // and if the elevator is in stable state then printElevatorState
         Asking asking = askQueue.getAskingQueue().get(i);
         primaryFloor = asking.getAskingFloorNumber();
         carryRequests.add(asking);//将主请求加入队首
@@ -197,7 +245,8 @@ public class Elevator implements Move{
             ifStay[asking.getAskingFloorNumber() - 1] = false;
             for (int j = 0; j < askQueue.getAskingQueue().size(); j++) {
                 asking = askQueue.getAskingQueue().get(j);
-                if (asking != null && asking.getAskingTime() <= time && asking.getAskingFloorNumber() == currentFloor) {
+                if (asking.getAskingTime() <= time 
+                		&& asking.getAskingFloorNumber() == currentFloor) {
                     askQueue.getAskingQueue().set(j, null);
                 }
             }
@@ -238,9 +287,10 @@ public class Elevator implements Move{
         System.out.println(toString());
         time++;//开关门附加时间
     }
+
     //重载toString()
     @Override
-    public String toString(){
+    public String toString() {
         //Requires: elevatorState != null
         //Modified: none
         //Effects: override the toString method with currentFloor, elevatorState and time
@@ -298,12 +348,13 @@ public class Elevator implements Move{
         //Requires: none
         //Modified: carryRequests, primaryFloor
         //Effects: rebuild carryRequests and clear all the askings which askingFloorNumber
-                // is not bigger than the primaryFloor, and then set the first not null
-                // request as the main request and return true, if there is no asking left,
-                // return false
+        // is not bigger than the primaryFloor, and then set the first not null
+        // request as the main request and return true, if there is no asking left,
+        // return false
         for (int i = 0; i < carryRequests.size(); i++) {
             Asking asking = carryRequests.get(i);
-            if (asking != null && asking.getAskingFloorNumber() <= primaryFloor) {
+            if (asking != null 
+            		&& asking.getAskingFloorNumber() <= primaryFloor) {
                 carryRequests.set(i, null);
             }
         }

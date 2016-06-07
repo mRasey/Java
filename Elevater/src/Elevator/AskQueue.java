@@ -3,8 +3,25 @@ package Elevator;
 import java.util.Vector;
 
 public class AskQueue {
+    /**
+     * OVERVIEW:
+     * This class is a queue which saves the askings, all the askings was saved in askingQueue.
+     *
+     * 表示对象:
+     * askingQueue
+     *
+     * 抽象函数:
+     * AF(c) = (askingQueue) where askingQueue = c.askingQueue
+     *
+     * 不变式:
+     * always true
+     */
+
     private Vector<Asking> askingQueue = new Vector<Asking>();
 
+    public boolean repOK(){
+        return true;
+    }
 /*
     public Asking getNextAsking() {
         //Requires: none
@@ -33,8 +50,8 @@ public class AskQueue {
         //Requires: asking != null, current >= 0
         //Modified: System.out, askingQueue
         //Effects: if the time of this asking is not smaller than currentTime,
-                // then add the asking to askingQueue and return the time, else
-                // print the invalid tip and return currentTime
+        // then add the asking to askingQueue and return the time, else
+        // print the invalid tip and return currentTime
         if (currentTime <= asking.getAskingTime()) {
             //输入时间必须递增
             askingQueue.add(asking);

@@ -2,7 +2,6 @@ package MaxClique;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 public class MaxClique implements Runnable{
@@ -14,7 +13,7 @@ public class MaxClique implements Runnable{
     boolean flag;
     public static HashMap<Integer, Integer> hashMap = new HashMap<>();
 
-    public MaxClique(HashSet<Integer> set) {
+    public MaxClique(Set set) {
         this.size = set.size();
         alt = new int[size][size];
         this.map = changeForm(set);
@@ -31,22 +30,19 @@ public class MaxClique implements Runnable{
             return false;
         }
         for(int i = 0; i < current; i++){
-            if(current - i + total <= answer) {
+            if(current - i + total <= answer)
                 return false;
-            }
             int u = alt[total][i];
-            if(max[u] + total <= answer) {
+            if(max[u] + total <= answer)
                 return false;
-            }
             int nxt = 0;
             for(int j = i + 1; j < current; j++){
                 if(map[u][alt[total][j]] == 1){
                     alt[total + 1][nxt++] = alt[total][j];
                 }
             }
-            if(dfs(nxt, total + 1)) {
+            if(dfs(nxt, total + 1))
                 return true;
-            }
         }
         return false;
     }
@@ -64,9 +60,9 @@ public class MaxClique implements Runnable{
         return answer;
     }
 
-    public int[][] changeForm(HashSet<Integer> input1){
+    public int[][] changeForm(Set set){
         ArrayList<Integer> input = new ArrayList<>();
-        input.addAll(input1);
+        input.addAll(set.getAllElements());
         int[][] points = new int[input.size()][input.size()];
         for(int i = 0; i < input.size(); i++){
             hashMap.put(input.get(i), i);
@@ -74,12 +70,11 @@ public class MaxClique implements Runnable{
         Iterator<Integer> iterator = input.iterator();
         while(iterator.hasNext()){
             int father = iterator.next();
-            Iterator<Integer> neighbours = InputHandler.PointArray[father].Neighbour.iterator();
-            while(neighbours.hasNext()){
-                int next = neighbours.next();
-                if(input1.contains(next)){
-                    points[hashMap.get(father)][hashMap.get(next)] = 1;
-                    points[hashMap.get(next)][hashMap.get(father)] = 1;
+            Set neighbours = InputHandler.PointArray[father].Neighbour;
+            for(int i =0; i <= InputHandler.PointsNum;i++){
+                if(neighbours.contains(i) && set.contains(i)){
+                    points[hashMap.get(father)][hashMap.get(i)] = 1;
+                    points[hashMap.get(i)][hashMap.get(father)] = 1;
                 }
             }
         }

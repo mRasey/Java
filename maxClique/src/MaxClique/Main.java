@@ -5,14 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.LinkedList;
 
 public class Main {
 
     public static void main(String [] args){
         try {
-            InputHandler ih = new InputHandler();
+            InputHandler.Initial();
         } catch (FileNotFoundException e) {
             System.out.println("Graph file doesn't exist.");
             System.exit(0);
@@ -21,24 +20,21 @@ public class Main {
             System.exit(0);
         }
         Operation.PointArray = InputHandler.PointArray.clone();
-
-//        Integer a[] = {3,4,5,6,7,8,9};
-//        HashSet<Integer> set = new HashSet<>();
-//        set.addAll(Arrays.asList(a));
-//        MaxClique maxClique = new MaxClique(set);
-//        System.out.print(maxClique.maxClique());
-
-        HashSet<Integer> clique = Trygetmore.getMore();
+        long startTime = System.currentTimeMillis();      
+        
+        Set clique = new Set();
+        
+        clique = Trygetmore.getMore5();
+        System.out.println(Operation.correctTest(clique));
         System.out.println("answer:"+clique.size());
-        System.out.println(new Date(System.currentTimeMillis()));
+        //Trygetmore.getMore4();
+        System.out.println("time:"+(System.currentTimeMillis()-startTime)+"ms");
 
         File output = new File("output.txt");
         try {
 			FileWriter fWriter = new FileWriter(output);
-			Iterator<Integer> iterator = clique.iterator();
-			Integer i;
-			while(iterator.hasNext()){
-				i = iterator.next();
+			LinkedList<Integer> list = clique.getAllElements();
+			for(Integer i:list){
 				fWriter.write(i+" ");
 			}
 			fWriter.close();

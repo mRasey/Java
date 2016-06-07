@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class AskQueueTest {
 
-    AskQueue askQueue = new AskQueue();
+    private AskQueue askQueue = new AskQueue();
 
     @Before
     public void setUp() throws Exception {
@@ -18,6 +18,11 @@ public class AskQueueTest {
     @After
     public void tearDown() throws Exception {
 
+    }
+
+    @Test
+    public void repOK(){
+        assertEquals(true, askQueue.repOK());
     }
 
     @Test

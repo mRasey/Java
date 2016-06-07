@@ -1,101 +1,104 @@
 package MaxClique;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
-class Trygetmore {
+public class Trygetmore {
 	
-	public static HashSet<Integer> getMore(){
+	public static Set getMore1(){
+		//从不同基础团往外扩
+		Random random = new Random();
 		
-		HashSet<Integer> nowClique = new HashSet<>();
-			
-		Algorithm ag=new Algorithm(InputHandler.SortedArray[0].id);
-		ag.run();		
-		for(int i=0;i<25;i++){		
-			WZJ_Tabu wzj_tabu=new WZJ_Tabu(ag.Clique);
-			nowClique.addAll(wzj_tabu.getans(0));
+		Set nowClique = new Set();
+		int initPoint = random.nextInt(InputHandler.PointsNum);
+		Algorithm ag  = new Algorithm(InputHandler.PointArray[initPoint].id);
+		ag.run();
+		
+		for(int i=0;i<25;i++){
+			//Union 25 clique
+			XJBS xjbs=new XJBS(ag.Clique);
+			nowClique = Set.Union(nowClique,xjbs.getans());
 		}
 		System.out.println("nowClique:"+nowClique.size());
 		
-		HashSet<Integer> bestClique = new HashSet<>();
+		//randomly get a clique from the Union point set
+		Set bestClique = new Set();
 		int bestNum = 0;
-		HashSet<Integer> clique = new HashSet<>();
+		Set clique = new Set();
 		ArrayList<Integer> list = new ArrayList<>(nowClique.size());
-		list.addAll(nowClique);
+		list.addAll(nowClique.getAllElements());
 		for(int i=0;i<1000;i++){
-			clique.clear();
+			clique = new Set();
 			
 			//get a random point
-			
-			Random random = new Random();
-			int initPoint = list.get(random.nextInt(list.size()));
+			initPoint = list.get(random.nextInt(list.size()));
 			clique.add(initPoint);
 			
-			HashSet<Integer> neighbour = (HashSet<Integer>)nowClique.clone();
-			neighbour.retainAll(InputHandler.PointArray[initPoint].Neighbour);
+			Set neighbour = (Set)nowClique.clone();
+			neighbour = Set.Intersection(neighbour,InputHandler.PointArray[initPoint].Neighbour);
 			LinkedList<Integer> neighbourList = new LinkedList<>();
 			while(neighbour.size()!=0){
 				neighbourList.clear();
-				neighbourList.addAll(neighbour);
+				neighbourList.addAll(neighbour.getAllElements());
 				clique.add(neighbourList.get(random.nextInt(neighbourList.size())));
 				neighbour = Operation.getNeighbour(clique);
-				neighbour.retainAll(nowClique);
+				neighbour = Set.Intersection(nowClique,neighbour);
 			}
 			
 			if(clique.size()>bestNum){
-				bestClique = (HashSet<Integer>) clique.clone();
+				bestClique = (Set) clique.clone();
 				bestNum = bestClique.size();
 			}
+		
 		}
 		
-		HashSet<Integer> tempClique;
-		WZJ_Tabu wzj_tabu=new WZJ_Tabu(clique);
-		wzj_tabu.n_diedai = 1000000;
+		Set tempClique;
+		XJBS xjbs=new XJBS(clique);
+		xjbs.ite = 1000000;
 
-        HashSet<Integer> searchSet = new HashSet<>();
-        bestClique = wzj_tabu.getans(0);
+        //Set searchSet = new Set();
+        bestClique = xjbs.getans();
         bestNum = bestClique.size();
-        searchSet.addAll(bestClique);
+        //searchSet.addAll(bestClique);
 		for(int i=0;i<30;i++){
 
-            wzj_tabu.antSet = searchSet;
-			tempClique = wzj_tabu.getans(20);
-            searchSet.addAll(tempClique);
+            //xjbs.antSet = searchSet;
+			tempClique = xjbs.getans();
+            //searchSet.addAll(tempClique);
 			if(tempClique.size()>bestNum){
-				bestClique = (HashSet<Integer>) tempClique.clone();
+				bestClique = (Set) tempClique.clone();
 				bestNum = bestClique.size();
 			}
 		}
-		
-		System.out.println(Operation.correctTest(bestClique));
+
 		return  bestClique;
-		 
 	}
 	
-	public static HashSet<Integer> getMore2(){
-		HashSet<Integer> nowClique = new HashSet<>();
+	public static Set getMore2(){
+		//用两个团，从一个团删除若干点，然后用其邻居交另一个点
+		
+		Set nowClique = new Set();
 		
 		Algorithm ag=new Algorithm(InputHandler.SortedArray[0].id);
 		ag.run();
-		WZJ_Tabu wzj_tabu=new WZJ_Tabu(ag.Clique);
-		nowClique.addAll(wzj_tabu.getans(0));
+		XJBS xjbs=new XJBS(ag.Clique);
+		nowClique = xjbs.getans();
 		int bestNum = nowClique.size();
 		
 		for(int i=0;i<10;i++){
-			HashSet<Integer> crossset = wzj_tabu.getans(0);
+			Set crossset = xjbs.getans().clone();
 			for(int j=2;j<4;j++){
 				boolean flag = false;
 				for(int k=0;k<1000;k++){
-					HashSet<Integer> subset = Operation.getRandomSubset(nowClique, bestNum-j);	
+					Set subset = Operation.getRandomSubset(nowClique, bestNum-j);	;
 					
-					HashSet<Integer>subnb=Operation.getNeighbour(subset);
-					subnb.retainAll(crossset);
+					Set subnb=Operation.getNeighbour(subset);
+					subnb = Set.Intersection(crossset,subnb);
 					
 					//System.out.println("j: "+j+", subnb size: "+subnb.size());
 					if(subnb.size()>=j){
-						nowClique.clear();
+						nowClique = new Set();
 						nowClique.addAll(subset);
 						nowClique.addAll(subnb);
 						Operation.toMaxClique(nowClique);
@@ -111,62 +114,73 @@ class Trygetmore {
 			}
 		}
 		
-		System.out.println(Operation.correctTest(nowClique));
-		return nowClique;
-		
+		return nowClique;	
 	}
 	
-	public static HashSet<Integer> getMore3(){
-		HashSet<Integer> bestClique = new HashSet<>();
+	public static Set getMore3(){
+		//一次替换多个点
 		
 		Algorithm ag=new Algorithm(InputHandler.SortedArray[0].id);
 		ag.run();
-		WZJ_Tabu wzj_tabu=new WZJ_Tabu(ag.Clique);
+		XJBS xjbs=new XJBS(ag.Clique);
+		Set clique = xjbs.getans();
+		xjbs=new XJBS(clique);
+		clique = xjbs.getans3();
+		return clique;
+	}
+	
+	public static void getMore4(){
+		//蚁群尝试1
+		Set serchClique = new Set();
 		
-		HashSet<Integer> serchSet = new HashSet<>();
+		Algorithm ag=new Algorithm(InputHandler.SortedArray[0].id);
+		ag.run();
+		XJBS xjbs=new XJBS(ag.Clique);
 		
+		//并三个团
 		for(int i=0;i<3;i++){
-            HashSet<Integer> clique = wzj_tabu.getans(0);
-			bestClique.addAll(clique);
+            Set clique = xjbs.getans();
+            serchClique.addAll(clique);
 			System.out.println(i+" set size: "+clique.size());
 		}
-
-		System.out.println(bestClique.size());
-		MaxClique max = new MaxClique(bestClique);
+		
+		//将并的团传入精确算法计算
+		System.out.println(serchClique.size());
+		MaxClique max = new MaxClique(serchClique);
 		System.out.println("serch answer:"+max.maxClique());
 		
-		return bestClique;
+		return;
 	}
 
-	public static HashSet<Integer> getMore4(){
-		HashSet<Integer> bestClique = new HashSet<>();
+	public static Set getMore5(){
+		//蚁群2
+		Set bestClique = new Set();
 
 		Algorithm ag=new Algorithm(InputHandler.SortedArray[0].id);
 		ag.run();
-		WZJ_Tabu wzj_tabu=new WZJ_Tabu(ag.Clique);
+		XJBS xjbs=new XJBS(ag.Clique);
 
 		//first time
-		HashSet<Integer> serchSet = new HashSet<>();
-		bestClique = wzj_tabu.getans(0);
+		Set serchSet = new Set();
+		bestClique = xjbs.getans();
 		int bestSize = bestClique.size();
-		serchSet = (HashSet<Integer>) bestClique.clone();
+		serchSet = (Set) bestClique.clone();		//已搜到的团的并集
 
-		for(int i=0;i<30;i++){
+		for(int i=0;i<10;i++){
 
 			ag=new Algorithm(InputHandler.SortedArray[new Random().nextInt(4000)+1].id);
 			ag.run();
-			wzj_tabu=new WZJ_Tabu(ag.Clique, serchSet);
+			xjbs=new XJBS(ag.Clique, serchSet);
 
-			HashSet<Integer> clique = wzj_tabu.getans(30);
+			Set clique = xjbs.getans2(20);
 			serchSet.addAll(clique);
-			System.out.println(i+" set size: "+serchSet.size());
+			//System.out.println(i+" set size: "+serchSet.size());
 
 			if(clique.size()>bestSize){
 				bestClique = clique;
 				bestSize=clique.size();
 			}
 		}
-		System.out.println(Operation.correctTest(bestClique));
 		return bestClique;
 	}
 	

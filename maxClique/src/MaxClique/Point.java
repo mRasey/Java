@@ -1,14 +1,14 @@
 package MaxClique;
 
-import java.util.HashSet;
 
 public class Point implements Comparable{
     int id;
-    HashSet<Integer> Neighbour;
-
+    Set Neighbour;
+    double weight;
     public Point(int id){
-        Neighbour = new HashSet<>();
+        Neighbour = new Set();
         this.id = id;
+        weight = 0;
     }
 
     public void addToNeighbour(int t){
@@ -20,12 +20,17 @@ public class Point implements Comparable{
         return Neighbour.size();
     }
 
+    public double updateweight(Set clique)
+    {
+        Set nowclique = clique.clone();
+        nowclique = Set.Intersection(Neighbour,nowclique);
+        weight = nowclique.size()*0.8+(InputHandler.PointsNum-nowclique.size())*0.2;
+        return weight;
+    }
     public String toString()
     {
         String s = "id : "+ id + "\n" +" Neighbour : ";
-        for(Integer i : Neighbour){
-            s += i +" ";
-        }
+        s+=Neighbour;
         return  s;
     }
 

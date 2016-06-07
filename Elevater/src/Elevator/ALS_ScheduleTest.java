@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class ALS_ScheduleTest {
 
-    ALS_Schedule als_schedule = new ALS_Schedule();
+    private ALS_Schedule als_schedule = new ALS_Schedule();
 
     @Before
     public void setUp() throws Exception {
@@ -18,6 +18,11 @@ public class ALS_ScheduleTest {
     @After
     public void tearDown() throws Exception {
 
+    }
+
+    @Test
+    public void repOK(){
+        assertEquals(true, als_schedule.repOK());
     }
 
     @Test
@@ -34,6 +39,7 @@ public class ALS_ScheduleTest {
     public void ifCanCarry() throws Exception {
         als_schedule.ifCanCarry(new Elevator(), new Asking("(FR,1,UP,0)"));
         als_schedule.ifCanCarry(new Elevator(), new Asking("(FR,1,UP,2)"));
+        als_schedule.ifCanCarry(new Elevator(), new Asking("(FR,0,UP,1)"));
     }
 
 }
