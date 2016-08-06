@@ -11,8 +11,6 @@
     <title>论文格式校正</title>
 </head>
 <body>
-    <div align="center">
-        查看结果<br>
-    </div>
+
 </body>
 </html>

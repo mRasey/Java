@@ -12,13 +12,14 @@
   </head>
   <script type="javascript">
       function checkFileType() {
-
+          alert("请输入有效的Word文件");
+          return false;
       }
   </script>
   <body>
   <div align="center">
-      <form method="post" action="UploadFile.jsp" enctype="multipart/form-data">
-          <input type="file"><br />
+      <form onsubmit="return checkFileType()" method="post" action="UploadFile.jsp" enctype="multipart/form-data">
+          <input type="file" name="file"><br />
           <input type="submit" value="提交">
       </form>
   </div>
