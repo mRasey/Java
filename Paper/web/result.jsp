@@ -16,7 +16,6 @@
         String dirPath = "data/";
         String txtPath = dirPath + fileName + "/" + "check_out.txt";
         String wordPath = dirPath + fileName + "/" + "result.docx";
-        String test = "data/check_out.txt";
     %>
     <div align="center">
         查看结果<br>
