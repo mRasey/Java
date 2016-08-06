@@ -11,10 +11,17 @@
     <title>论文格式校正</title>
 </head>
 <body>
+    <%
+        String fileName = (String) request.getAttribute("fileName");
+        String dirPath = "data/";
+        String txtPath = dirPath + fileName + "/" + "check_out.txt";
+        String wordPath = dirPath + fileName + "/" + "result.docx";
+        String test = "data/check_out.txt";
+    %>
     <div align="center">
         查看结果<br>
-        <a href="">查看错误信息</a><br>
-        <a href="">下载Word文档</a>
+        <a href="<%=txtPath%>">查看错误信息</a><br>
+        <a href="<%=wordPath%>">下载Word文档</a>
     </div>
 </body>
 </html>

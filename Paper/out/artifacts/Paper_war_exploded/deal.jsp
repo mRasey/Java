@@ -23,7 +23,7 @@
         String PyDirPath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\web\\";
         String checkPy = PyDirPath + "check.py";
         String modifyPy = PyDirPath + "modify.py";
-        String DataDirPath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\data\\" + request.getAttribute("fileName") + "\\";
+        String DataDirPath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\web\\data\\" + request.getAttribute("fileName") + "\\";
 
         System.out.println("check start");
         Process checkProcess = Runtime.getRuntime().exec("python" + " " + checkPy + " " + PyDirPath + " " + DataDirPath);
@@ -63,10 +63,11 @@
         System.out.println("modify end");
 
         request.setAttribute("fileName", request.getAttribute("fileName"));
-        response.sendRedirect("result.jsp");//跳转到结果界面
+//        response.sendRedirect("result.jsp");//跳转到结果界面
 
     } catch (Exception e){
         e.printStackTrace();
     }
 %>
+<jsp:forward page="result.jsp"/>
 </html>

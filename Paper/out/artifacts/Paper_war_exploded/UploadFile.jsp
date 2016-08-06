@@ -20,12 +20,13 @@
 
 <%
 //    String fileSavePath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\data";
+    String fileCode=(String)System.getProperties().get("file.encoding");
     File file ;
     int maxFileSize = 5000 * 1024;
     int maxMemSize = 5000 * 1024;
     ServletContext context = pageContext.getServletContext();
 //    String filePath = context.getInitParameter("file-upload");
-    String filePath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\data\\";
+    String filePath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\web\\data\\";
     // 验证上传内容了类型
     String contentType = request.getContentType();
     if ((contentType.indexOf("multipart/form-data") >= 0)) {
@@ -60,12 +61,13 @@
                     // 获取上传文件的参数
                     String fieldName = fi.getFieldName();
                     String fileName = fi.getName();//上传文件名
+                    fileName = new String (fileName.getBytes(fileCode),fileCode);//按照系统默认编码重新读取文件名
                     boolean isInMemory = fi.isInMemory();
                     long sizeInBytes = fi.getSize();
                     // 写入文件
                     String name;//上传文件的短名称
                     if( fileName.lastIndexOf("\\") >= 0 ){
-                         name = fileName.substring( fileName.lastIndexOf("\\"));
+                        name = fileName.substring( fileName.lastIndexOf("\\"));
                         new File(filePath + name).mkdirs();
                         file = new File( filePath + name + "\\", "origin.docx");//上传文件命名为origin
                     }else{
@@ -81,7 +83,7 @@
             }
             out.println("</body>");
             out.println("</html>");
-            response.sendRedirect("uploadResult.jsp");//上传成功，跳转到上传结果界面
+//            response.sendRedirect("uploadResult.jsp");//上传成功，跳转到上传结果界面
         }catch(Exception ex) {
             System.out.println(ex);
         }
@@ -96,6 +98,6 @@
         out.println("</html>");
     }
 %>
-<%--<jsp:forward page="deal.jsp"/>--%>
+<jsp:forward page="deal.jsp"/>
 </body>
 </html>
