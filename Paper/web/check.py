@@ -8,8 +8,12 @@ import shutil
 import time
 import os
 import tempfile
-Docx_Filename='test1.docx'
-Rule_Filename='rules.txt'
+
+Input_DirPath = sys.argv[1]#输入文件夹的路径,命令行的第二个参数
+Out_DirPath = sys.argv[2]#输出文件夹的路径，命令行的第三个参数
+
+Docx_Filename = Input_DirPath + 'test1.docx'
+Rule_Filename = Input_DirPath + 'rules.txt'
 
 word_schema='{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 Unicode_bt ='gb2312'#中文字符编码方式，我的机器上是gb2312，服务器上是utf-8，还有个别机器上是GBK
@@ -636,9 +640,9 @@ warninglist = second_locate()
 #sys.exit()
 Report='['
 Report1 = '['
-rp = open('check_out.txt','w')
-rp1 = open('check_out1.txt','w')
-rp2 = open('space.txt','w')
+rp = open(Out_DirPath + 'check_out.txt','w')
+rp1 = open(Out_DirPath + 'check_out1.txt','w')
+rp2 = open(Out_DirPath + 'space.txt','w')
 eInfo = ''
 section_seq = 0
 rp.write('''论文格式检查报告文档使用说明：

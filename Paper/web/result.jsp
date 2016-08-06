@@ -13,6 +13,8 @@
 <body>
     <div align="center">
         查看结果<br>
+        <a href="">查看错误信息</a><br>
+        <a href="">下载Word文档</a>
     </div>
 </body>
 </html>

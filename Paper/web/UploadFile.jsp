@@ -76,7 +76,7 @@
             }
             out.println("</body>");
             out.println("</html>");
-            response.sendRedirect("result.jsp");//上传成功，跳转到结果界面
+            response.sendRedirect("uploadResult.jsp");//上传成功，跳转到上传结果界面
         }catch(Exception ex) {
             System.out.println(ex);
         }
