@@ -5,16 +5,16 @@
   Time: 13:37
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=gbk" language="java" pageEncoding="gbk" %>
 <%@ page import="java.lang.*" %>
 <%@ page import="java.io.*" %>
 <html>
 <head>
-    <title>è®ºæ–‡æ ¼å¼ä¿®æ”¹</title>
+    <title>ÂÛÎÄ¸ñÊ½ÐÞ¸Ä</title>
 </head>
 <body>
     <div align="center">
-        æ­£åœ¨å¤„ç†<br>
+        ÕýÔÚ´¦Àí<br>
     </div>
 </body>
 <%
@@ -41,7 +41,7 @@
         }
         errorStream.close();
 
-        checkProcess.waitFor();//ç­‰å¾…checkç¨‹åºæ‰§è¡Œå®Œæ¯•
+        checkProcess.waitFor();//µÈ´ýcheck³ÌÐòÖ´ÐÐÍê±Ï
         System.out.println("check end");
 
         System.out.println("modify start");
@@ -59,13 +59,15 @@
         }
         errorStream.close();
 
-        modifyProcess.waitFor();//ç­‰å¾…modifyç¨‹åºæ‰§è¡Œå®Œæ¯•
+        modifyProcess.waitFor();//µÈ´ýmodify³ÌÐòÖ´ÐÐÍê±Ï
         System.out.println("modify end");
 
-        response.sendRedirect("result.jsp");//è·³è½¬åˆ°ç»“æžœç•Œé¢
+        request.setAttribute("fileName", request.getAttribute("fileName"));
+//        response.sendRedirect("result.jsp");//Ìø×ªµ½½á¹û½çÃæ
 
     } catch (Exception e){
         e.printStackTrace();
     }
 %>
+<jsp:forward page="result.jsp"/>
 </html>

@@ -14,6 +14,9 @@
     <div align="center">
         上传成功<br>
         <a href="deal.jsp">开始处理</a>
+        <%
+            request.setAttribute("fileName", request.getAttribute("fileName"));
+        %>
     </div>
 </body>
 </html>

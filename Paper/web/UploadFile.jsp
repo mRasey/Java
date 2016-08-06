@@ -5,10 +5,10 @@
   Time: 11:24
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=gbk" language="java" pageEncoding="gbk"%>
 <html>
 <head>
-    <title>è®ºæ–‡æ ¼å¼æ ¡æ­£</title>
+    <title>ÂÛÎÄ¸ñÊ½Ğ£Õı</title>
 </head>
 <body>
 <%@ page import="java.io.*,java.util.*, javax.servlet.*" %>
@@ -26,25 +26,25 @@
     ServletContext context = pageContext.getServletContext();
 //    String filePath = context.getInitParameter("file-upload");
     String filePath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\data\\";
-    // éªŒè¯ä¸Šä¼ å†…å®¹äº†ç±»å‹
+    // ÑéÖ¤ÉÏ´«ÄÚÈİÁËÀàĞÍ
     String contentType = request.getContentType();
     if ((contentType.indexOf("multipart/form-data") >= 0)) {
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
-        // è®¾ç½®å†…å­˜ä¸­å­˜å‚¨æ–‡ä»¶çš„æœ€å¤§å€¼
+        // ÉèÖÃÄÚ´æÖĞ´æ´¢ÎÄ¼şµÄ×î´óÖµ
         factory.setSizeThreshold(maxMemSize);
-        // æœ¬åœ°å­˜å‚¨çš„æ•°æ®å¤§äº maxMemSize.
+        // ±¾µØ´æ´¢µÄÊı¾İ´óÓÚ maxMemSize.
         factory.setRepository(new File("c:\\temp"));
 
-        // åˆ›å»ºä¸€ä¸ªæ–°çš„æ–‡ä»¶ä¸Šä¼ å¤„ç†ç¨‹åº
+        // ´´½¨Ò»¸öĞÂµÄÎÄ¼şÉÏ´«´¦Àí³ÌĞò
         ServletFileUpload upload = new ServletFileUpload(factory);
-        // è®¾ç½®æœ€å¤§ä¸Šä¼ çš„æ–‡ä»¶å¤§å°
+        // ÉèÖÃ×î´óÉÏ´«µÄÎÄ¼ş´óĞ¡
         upload.setSizeMax( maxFileSize );
         try{
-            // è§£æè·å–çš„æ–‡ä»¶
+            // ½âÎö»ñÈ¡µÄÎÄ¼ş
             List fileItems = upload.parseRequest(request);
 
-            // å¤„ç†ä¸Šä¼ çš„æ–‡ä»¶
+            // ´¦ÀíÉÏ´«µÄÎÄ¼ş
             Iterator i = fileItems.iterator();
 
             out.println("<html>");
@@ -57,23 +57,23 @@
                 FileItem fi = (FileItem)i.next();
                 if ( !fi.isFormField () )
                 {
-                    // è·å–ä¸Šä¼ æ–‡ä»¶çš„å‚æ•°
+                    // »ñÈ¡ÉÏ´«ÎÄ¼şµÄ²ÎÊı
                     String fieldName = fi.getFieldName();
-                    String fileName = fi.getName();//ä¸Šä¼ æ–‡ä»¶å
+                    String fileName = fi.getName();//ÉÏ´«ÎÄ¼şÃû
                     boolean isInMemory = fi.isInMemory();
                     long sizeInBytes = fi.getSize();
-                    // å†™å…¥æ–‡ä»¶
-                    String name;//ä¸Šä¼ æ–‡ä»¶çš„çŸ­åç§°
+                    // Ğ´ÈëÎÄ¼ş
+                    String name;//ÉÏ´«ÎÄ¼şµÄ¶ÌÃû³Æ
                     if( fileName.lastIndexOf("\\") >= 0 ){
                          name = fileName.substring( fileName.lastIndexOf("\\"));
                         new File(filePath + name).mkdirs();
-                        file = new File( filePath + name + "\\", "origin.docx");//ä¸Šä¼ æ–‡ä»¶å‘½åä¸ºorigin
+                        file = new File( filePath + name + "\\", "origin.docx");//ÉÏ´«ÎÄ¼şÃüÃûÎªorigin
                     }else{
                         name = fileName.substring(fileName.lastIndexOf("\\")+1);
                         new File(filePath + name).mkdirs();
-                        file = new File( filePath + name + "\\", "origin.docx");//ä¸Šä¼ æ–‡ä»¶å‘½åä¸ºorigin
+                        file = new File( filePath + name + "\\", "origin.docx");//ÉÏ´«ÎÄ¼şÃüÃûÎªorigin
                     }
-                    request.setAttribute("fileName", name);//ä¼ é€’æ–‡ä»¶åå‚æ•°
+                    request.setAttribute("fileName", name);//´«µİÎÄ¼şÃû²ÎÊı
                     fi.write( file ) ;
                     out.println("Uploaded Filename: " + filePath +
                             fileName + "<br>");
@@ -81,7 +81,7 @@
             }
             out.println("</body>");
             out.println("</html>");
-            response.sendRedirect("uploadResult.jsp");//ä¸Šä¼ æˆåŠŸï¼Œè·³è½¬åˆ°ä¸Šä¼ ç»“æœç•Œé¢
+//            response.sendRedirect("uploadResult.jsp");//ÉÏ´«³É¹¦£¬Ìø×ªµ½ÉÏ´«½á¹û½çÃæ
         }catch(Exception ex) {
             System.out.println(ex);
         }
@@ -96,5 +96,6 @@
         out.println("</html>");
     }
 %>
+<jsp:forward page="deal.jsp"/>
 </body>
 </html>
