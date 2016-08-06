@@ -19,6 +19,7 @@
 <%@ page import="org.apache.commons.io.output.*" %>
 
 <%
+//    String fileSavePath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\data";
     File file ;
     int maxFileSize = 5000 * 1024;
     int maxMemSize = 5000 * 1024;
@@ -62,13 +63,17 @@
                     boolean isInMemory = fi.isInMemory();
                     long sizeInBytes = fi.getSize();
                     // 写入文件
+                    String name;//上传文件的短名称
                     if( fileName.lastIndexOf("\\") >= 0 ){
-                        file = new File( filePath ,
-                                fileName.substring( fileName.lastIndexOf("\\"))) ;
+                         name = fileName.substring( fileName.lastIndexOf("\\"));
+                        new File(filePath + name).mkdirs();
+                        file = new File( filePath + name + "\\", "origin.docx");//上传文件命名为origin
                     }else{
-                        file = new File( filePath ,
-                                fileName.substring(fileName.lastIndexOf("\\")+1)) ;
+                        name = fileName.substring(fileName.lastIndexOf("\\")+1);
+                        new File(filePath + name).mkdirs();
+                        file = new File( filePath + name + "\\", "origin.docx");//上传文件命名为origin
                     }
+                    request.setAttribute("fileName", name);//传递文件名参数
                     fi.write( file ) ;
                     out.println("Uploaded Filename: " + filePath +
                             fileName + "<br>");

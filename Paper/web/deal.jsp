@@ -20,8 +20,13 @@
 <%
     try{
 
+        String PyDirPath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\web\\";
+        String checkPy = PyDirPath + "check.py";
+        String modifyPy = PyDirPath + "modify.py";
+        String DataDirPath = "C:\\Users\\Billy\\Documents\\GitHub\\Java\\Paper\\data\\" + request.getAttribute("fileName") + "\\";
+
         System.out.println("check start");
-        Process checkProcess = Runtime.getRuntime().exec("python test.py");
+        Process checkProcess = Runtime.getRuntime().exec("python" + " " + checkPy + " " + PyDirPath + " " + DataDirPath);
         String line;
 
         BufferedReader inputStream = new BufferedReader(new InputStreamReader(checkProcess.getInputStream()));
@@ -40,7 +45,7 @@
         System.out.println("check end");
 
         System.out.println("modify start");
-        Process modifyProcess = Runtime.getRuntime().exec("python test.py");
+        Process modifyProcess = Runtime.getRuntime().exec("python" + " " + modifyPy + " " + DataDirPath);
 
         inputStream = new BufferedReader(new InputStreamReader(modifyProcess.getInputStream()));
         while ((line = inputStream.readLine()) != null) {

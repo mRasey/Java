@@ -9,12 +9,11 @@ import time
 import os
 import tempfile
 
-Input_DirPath = sys.argv[1]#输入文件夹的路径,命令行的第二个参数
-Out_DirPath = sys.argv[2]#输出文件夹的路径，命令行的第三个参数
+Data_DirPath = sys.argv[1]#输入文件夹的路径,命令行的第二个参数
 
-Docx_Filename = Input_DirPath + 'test1.docx'
-Checkout_Filename = Input_DirPath + 'check_out1.txt'
-ModifySpace_FileName = Input_DirPath + 'space.txt'
+Docx_Filename = Data_DirPath + 'origin.docx'
+Checkout_Filename = Data_DirPath + 'check_out1.txt'
+ModifySpace_FileName = Data_DirPath + 'space.txt'
 
 word_schema='{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
 Unicode_bt = 'gb2312'#中文字符编码方式，我的机器上是gb2312，服务器上是utf-8，还有个别机器上是GBK
@@ -269,7 +268,7 @@ with open(os.path.join(tmp_dir,'word/document.xml'),'w') as f:
 # Get a list of all the files in the original docx zipfile
 filenames = zipF.namelist()
 # Now, create the new zip file and add all the filex into the archive
-zip_copy_filename = Out_DirPath + 'result.docx'
+zip_copy_filename = Data_DirPath + 'result.docx'
 with zipfile.ZipFile(zip_copy_filename, "w") as docx:
     for filename in filenames:
         docx.write(os.path.join(tmp_dir,filename),  filename)
