@@ -1,5 +1,18 @@
 package instructions;
-
+/*“add-type”：vBB寄存器与vCC寄存器值进行加法运算（vBB + vCC）
+"sub-type"：vBB寄存器与vCC寄存器值进行减法运算（vBB - vCC）
+"mul-type"：vBB寄存器与vCC寄存器值进行乘法运算（vBB * vCC）
+"div-type"：vBB寄存器与vCC寄存器值进行除法运算（vBB / vCC）
+"rem-type"：vBB寄存器与vCC寄存器值进行模运算（vBB % vCC）
+"and-type"：vBB寄存器与vCC寄存器值进行与运算（vBB & vCC）
+"or-type"：vBB寄存器与vCC寄存器值进行或运算（vBB | vCC）
+"xor-type"：vBB寄存器与vCC寄存器值进行异或运算（vBB ^ vCC）
+"shl-type"：vBB寄存器值（有符号数）左移vCC位（vBB << vCC ）
+"shr-type"：vBB寄存器值（有符号）右移vCC位（vBB >> vCC）
+"ushr-type"：vBB寄存器值（无符号数）右移vCC位（vBB >>> vCC）
+其中基础字节码后面的-type可以是-int，-long， -float，-double。后面3类指令与之类似。
+至此，Dalvik虚拟机支持的所有指令就介绍完了。在android4.0系统以前，每个指令的字节码只占用一个字节，范围是0x0~0x0ff。
+在android4.0系统中，又扩充了一部分指令，这些指令被称为扩展指令，主要是在指令助记符后添加了jumbo后缀，增加了寄存器与常量的取值范围。*/
 public class _op extends Instruction {
 
     public _op(String instrName) {
