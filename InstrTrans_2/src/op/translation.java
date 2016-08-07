@@ -1,3 +1,5 @@
+package op;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -38,9 +40,9 @@ public class translation {
 	//翻译
 	public void translateIns(){
 		switch(instruction.get(0)){
-			case "nop":
+			case "instructions.nop":
 				Main.dexToclass.put(insNumber, classCodeNumber);
-				System.out.println(classCodeNumber+": "+"nop");
+				System.out.println(classCodeNumber+": "+"instructions.nop");
 				classCodeNumber++;
 				break;
 			//const 应该只有int型            /16 扩展在smail文件里处理?

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/src/Main.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/ReadFile.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/src/translation.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/op/Main.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/op/ReadFile.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/op/translation.java" charset="GBK" />
   </component>
 </project>
