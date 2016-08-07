@@ -1,4 +1,4 @@
-<%--
+<%@ page import="java.io.File" %><%--
   Created by IntelliJ IDEA.
   User: Billy
   Date: 2016/8/6
@@ -16,7 +16,17 @@
         String dirPath = "data/";
         String txtPath = dirPath + fileName + "/" + "check_out.txt";
         String wordPath = dirPath + fileName + "/" + "result.docx";
-        String test = "data/check_out.txt";
+//        out.print("<div align='center'>");
+//        out.print("查看结果");
+//        out.print("<br>");
+//        out.print("<a href=\'" + txtPath + "\'>");
+//        out.print("查看错误信息");
+//        out.print("</a>");
+//        out.print("<br>");
+//        out.print("<a href=\'" + wordPath + "\'>");
+//        out.print("下载Word文档");
+//        out.print("</a>");
+//        out.print("</div>");
     %>
     <div align="center">
         查看结果<br>
