@@ -8,4 +8,13 @@ public class _return extends Instruction {
         super(instrName);
     }
 
+    @Override
+    public void analyze() {
+        switch (dexCodes[0]){
+            case "return" :
+            case "return-void" :
+            case "return-wide" :
+            case "return-object" :
+        }
+    }
 }

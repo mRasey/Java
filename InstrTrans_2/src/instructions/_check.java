@@ -6,4 +6,11 @@ public class _check extends Instruction {
         super(instrName);
     }
 
+    @Override
+    public void analyze() {
+        switch (dexCodes[0]){
+            case "check-cast" :
+            case "check-cast/jumbo" :
+        }
+    }
 }
