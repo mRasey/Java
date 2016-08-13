@@ -5,7 +5,7 @@
   Time: 11:24
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=gbk" language="java" pageEncoding="gbk"%>
+<%@ page contentType="text/html;charset=gbk" language="java" pageEncoding="gbk" autoFlush="true" %>
 <html>
 <head>
     <title>论文格式校正</title>
@@ -71,12 +71,14 @@
                         new File(filePath + name).mkdirs();
                         file = new File( filePath + name + "\\", "origin.docx");//上传文件命名为origin
                     }else{
-                        name = fileName.substring(fileName.lastIndexOf("\\")+1);
+                        name = fileName.substring(fileName.lastIndexOf("\\") + 1);
                         new File(filePath + name).mkdirs();
                         file = new File( filePath + name + "\\", "origin.docx");//上传文件命名为origin
                     }
                     request.setAttribute("fileName", name);//传递文件名参数
-                    fi.write( file ) ;
+                    fi.write(file);
+//                    new File(filePath + name + "\\", "check_out.txt").createNewFile();
+//                    new File(filePath + name + "\\", "check_out1.txt").createNewFile();
                     out.println("Uploaded Filename: " + filePath +
                             fileName + "<br>");
                 }

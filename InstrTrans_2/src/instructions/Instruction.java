@@ -1,23 +1,20 @@
 package instructions;
 
+import op.globalArguments;
+
 import java.util.ArrayList;
 
 public class Instruction {
-    String instrName = "";
-    String[] dexCodes;
-    ArrayList<String> byteInstr = new ArrayList<>();
 
-    public Instruction(String instrName) {
-        this.instrName = instrName;
-        dexCodes = instrName.split(" ");
+    public void analyze(String[] dexCodes) {
+    	globalArguments.dexToClass.put(globalArguments.dexCodeNumber, globalArguments.finalByteCodePC);
     }
 
-    public void analyze() {
-
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        return false;
     }
 
-    public ArrayList<String> getByteInstr() {
-        return byteInstr;
+    public boolean ifUpgrade(ArrayList<String> firstDexCode, ArrayList<String> secondDexCode, int lineNum) {
+        return false;
     }
-
 }

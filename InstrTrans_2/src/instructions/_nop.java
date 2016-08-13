@@ -1,11 +1,17 @@
 package instructions;
 
-import instructions.Instruction;
+import op.globalArguments;
 
 public class _nop extends Instruction {
 
-    public _nop(String instrName) {
-        super(instrName);
+    @Override
+    public void analyze(String[] dexCodes){
+        super.analyze(dexCodes);
+        switch (dexCodes[0]) {
+            case "nop" :
+            	globalArguments.finalByteCode.add("nop");
+                break;
+        }
     }
 
 }

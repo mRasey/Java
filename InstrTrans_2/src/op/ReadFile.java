@@ -1,15 +1,10 @@
 package op;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 /*
- * ¸ºÔğÃ¿´Î¶ÁÈ¡Ò»ĞĞÊı¾İ£¬ÅĞ¶ÏÊÇ·ñÊÇÖ¸Áî»ò·½·¨£¬²¢½«Ö¸Áî·Ö½â´«³ö
+ * è´Ÿè´£æ¯æ¬¡è¯»å–ä¸€è¡Œæ•°æ®ï¼Œåˆ¤æ–­æ˜¯å¦æ˜¯æŒ‡ä»¤æˆ–æ–¹æ³•ï¼Œå¹¶å°†æŒ‡ä»¤åˆ†è§£ä¼ å‡º
  * */
 
 
@@ -26,10 +21,9 @@ public class ReadFile {
 	
 	
 	ArrayList<ArrayList<String>> instructions = new ArrayList<ArrayList<String>>();
-	int order = 0;
 	
 	
-	//×¢ÒâÖ»ÓĞ¼Ä´æÆ÷²ÎÊıµÄÇé¿ö
+	//æ³¨æ„åªæœ‰å¯„å­˜å™¨å‚æ•°çš„æƒ…å†µ
 	String regex1 = "[p,v]\\d+(\\,)?";
 	String regex2 = "[{][p,v]\\d+[}](\\,)?";
 	String regex3 = "[{][p,v]\\d+\\,";
@@ -50,7 +44,7 @@ public class ReadFile {
 	
 	
 	
-	//¶ÁÒ»ĞĞ,½áÊø·µ»Øfalse
+	//è¯»ä¸€è¡Œ,ç»“æŸè¿”å›false
 	public boolean readLine(){
 		try {
 			if((str = br.readLine()) != null){
@@ -67,7 +61,7 @@ public class ReadFile {
 		return true;
 	}
 	
-	//¿ÕĞĞ
+	//æ˜¯å¦æ˜¯ç©º
 	public boolean ifNull(){
 		if(str.equals("")){
 			return true;
@@ -77,7 +71,7 @@ public class ReadFile {
 	
 	
 	
-	//ÊÇ·ñÊÇ·½·¨µÄ¿ªÊ¼ .method
+	//æ˜¯å¦æ˜¯æ–¹æ³•çš„å¼€å§‹ .method
 	public boolean ifNewMethod(){
 		if(str.indexOf(".method") != -1){
 			return true;
@@ -85,7 +79,7 @@ public class ReadFile {
 		return false;
 	}
 	
-	//ÊÇ·ñÊÇÒ»ÌõÖ¸Áî
+	//åˆ¤æ–­æ˜¯å¦æ˜¯ä¸€æ¡æŒ‡ä»¤
 	public boolean ifAnInstruction(String ins){
 		char []temp = ins.toCharArray();
 		int i = 0;
@@ -95,7 +89,7 @@ public class ReadFile {
 		return true;
 	}
 	
-	//·Ö½âÖ¸Áî
+	//åˆ†è§£æŒ‡ä»¤
 	public ArrayList<String> getInstruction(){
 		int i = 0;
 		ArrayList<String> tempins = new ArrayList<String>();
@@ -105,10 +99,37 @@ public class ReadFile {
 			i++;
 		}
 		tempins.add(temp[i]);
+		
+		//å¤„ç† invoke/range
+		if(temp[i].contains("range") || temp[i].contains("array/jumbo")){
+			String tempType = temp[i+1].substring(1,2);
+			String begin = temp[i+1].substring(2);
+			String end = temp[i+3].substring(1, temp[i+3].length()-2);
+			int beginNumber = Integer.parseInt(begin);
+			int endNumber = Integer.parseInt(end);
+			
+			if(beginNumber == endNumber){
+				temp[i+1] = temp[i+1].replace("{", "");
+				tempins.add(temp[i+1]);
+			}
+			else{
+				temp[i+1] = temp[i+1].replace("{", "");
+				tempins.add(temp[i+1]);
+				beginNumber++;
+				while(beginNumber <= endNumber){
+					tempins.add(tempType+beginNumber);
+					beginNumber++;
+				}
+			}
+			tempins.add(temp[i+4]);
+			instructions.add(tempins);
+			return tempins;
+		}
+		
+		
 		i++;
-		//Ã»ÓĞ²ÎÊıµÄÖ¸Áî
+		//æ²¡æœ‰å‚æ•°çš„æŒ‡ä»¤
 		if(i >= temp.length){
-			order++;
 			instructions.add(tempins);
 			return tempins;
 		}
@@ -153,7 +174,7 @@ public class ReadFile {
 			}
 			
 		}
-		else{//Ã»ÓĞ¼Ä´æÆ÷²ÎÊıµÄÇé¿ö
+		else{//æ²¡æœ‰å¯„å­˜å™¨å‚æ•°çš„æƒ…å†µ
 			while(i<temp.length){
 				tempins.add(temp[i]);
 				i++;
@@ -161,7 +182,6 @@ public class ReadFile {
 		}
 		i++;
 		if(i >= temp.length){
-			order++;
 			instructions.add(tempins);
 			return tempins;
 		}
@@ -174,7 +194,6 @@ public class ReadFile {
 			}
 		}
 		
-		order++;
 		instructions.add(tempins);
 		return tempins;
 	}

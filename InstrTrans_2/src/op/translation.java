@@ -1,130 +1,86 @@
 package op;
 
+import instructions.*;
+
 import java.util.ArrayList;
-import java.util.Map;
 
 /*
- * ÌØ±ğ×¢ÒâÌø×ªÖ¸Áî¡£
- * Ã¿ÌõÖ¸Áî¶¼¼ÇÂ¼ÏÂÀ´Ëû·­ÒëºóµÄÆğÊ¼±àºÅ£¬Ìø×ªÖ¸ÁîÏÈ¼ÇÂ¼ÏÂ¶ÔÓ¦µÄÔ­Ö¸ÁîºÅ£¬×îºóÈ«·­ÒëÍêÖ®ºóÔÙ¸ù¾İÔ­Ö¸ÁîºÅÇó³öÌø×ªÎ»ÖÃ
+ * ç‰¹åˆ«æ³¨æ„è·³è½¬æŒ‡ä»¤ã€‚
+ * æ¯æ¡æŒ‡ä»¤éƒ½è®°å½•ä¸‹æ¥ä»–ç¿»è¯‘åçš„èµ·å§‹ç¼–å·ï¼Œè·³è½¬æŒ‡ä»¤å…ˆè®°å½•ä¸‹å¯¹åº”çš„åŸæŒ‡ä»¤å·ï¼Œæœ€åå…¨ç¿»è¯‘å®Œä¹‹åå†æ ¹æ®åŸæŒ‡ä»¤å·æ±‚å‡ºè·³è½¬ä½ç½®
  * 
- *·½·¨µ÷ÓÃÊ±¶¼»áÏÈÊ¹ÓÃaload_0½«this²ÎÊı·ÅÈë²Ù×÷ÊıÕ»
+ *æ¯ä¸ªæ–¹æ³•è°ƒç”¨æŒ‡ä»¤ç¿»è¯‘æ—¶éƒ½å¾—å…ˆç”¨aload_0å°†thisæ”¾å…¥æ“ä½œæ ˆä¸­
  * 
  * */
 public class translation {
-	//´æ·ÅÖ¸ÁîµÄĞÅÏ¢
+	//å­˜æ”¾æŒ‡ä»¤çš„ä¿¡æ¯
 	ArrayList<String> instruction; 
-	int insNumber = 0; //dexÖ¸Áî±àºÅ
-	String className = "";
-	String methodName = "";
-	//¼Ä´æÆ÷ -> Õ»±àºÅ
-	Map <String,Integer> register;
-	//¼Ä´æÆ÷ÀàĞÍ
-	Map <String,String> registerType;
 	
-	//java×Ö½ÚÂëÖ¸Áî±àºÅ
+    String[] dexCodes;
+	//javaå­—èŠ‚ç æŒ‡ä»¤ç¼–å·
 	int classCodeNumber = 0;
+
+    public translation(ArrayList<String> instruction, int dexCodeNumber) {
+        this.instruction = instruction;
+        globalArguments.dexCodeNumber = dexCodeNumber;
+        dexCodes = instruction.toArray(new String[instruction.size()]);
+    }
 	
-	//-1?
-	String []i6 = new String[]{"0x0","0x1","0x2","0x3","0x4","0x5"};
-	
-	//»ñÈ¡ĞÅÏ¢
-	public void getInformation(ArrayList<String> i, int in,String cn, String mn, Map <String,Integer> r, Map <String,String> rt){
-		instruction = i;
-		insNumber = in;
-		className = cn;
-		methodName = mn;
-		register = r;
-		registerType = rt;
-	}
-	
-	//·­Òë
+	//ç¿»è¯‘
 	public void translateIns(){
-		switch(instruction.get(0)){
-			case "instructions.nop":
-				Main.dexToclass.put(insNumber, classCodeNumber);
-				System.out.println(classCodeNumber+": "+"instructions.nop");
-				classCodeNumber++;
-				break;
-			//const Ó¦¸ÃÖ»ÓĞintĞÍ            /16 À©Õ¹ÔÚsmailÎÄ¼şÀï´¦Àí?
-			case "const/4":
-			case "const/16":
-			case "const/high16":
-			case "const":
-				Main.dexToclass.put(insNumber, classCodeNumber);
-				char []tempchar = instruction.get(2).toCharArray();
-				int tempint = 0;
-				for(int i=2;i<tempchar.length;i++){
-					tempint = tempint*10 + (tempchar[i] - '0');
-				}
-				if(tempint < 6){
-					System.out.println(classCodeNumber+": "+"iconst_"+tempint);
-					classCodeNumber++;
-				}
-				else{
-					System.out.println(classCodeNumber+": "+"ldc            "+instruction.get(2));
-					classCodeNumber++;
-				}
-				if(register.get(instruction.get(1)) < 4){
-					System.out.println(classCodeNumber+": "+"istore_"+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				else{
-					System.out.println(classCodeNumber+": "+"istore         "+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				break;
-				
-			case "const-wide/4":
-			case "const-wide/16":
-			case "const-wide/32":
-			case "const-wide/high16":
-			case "const-wide":
-				System.out.println(classCodeNumber+": "+"ldc2_w         "+instruction.get(2));
-				classCodeNumber++;
-				if(register.get(instruction.get(1)) < 4){
-					System.out.println(classCodeNumber+": "+"istore_"+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				else{
-					System.out.println(classCodeNumber+": "+"istore         "+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				break;
-			
-			case "const-string":
-				System.out.println(classCodeNumber+": "+"ldc            "+instruction.get(2));
-				classCodeNumber++;
-				if(register.get(instruction.get(1)) < 4){
-					System.out.println(classCodeNumber+": "+"istore_"+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				else{
-					System.out.println(classCodeNumber+": "+"istore         "+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				break;
-			//¿íË÷Òı£¿£¿£¿
-			case "const-string/jumbo":
-				System.out.println(classCodeNumber+": "+"ldc_w          "+instruction.get(2));
-				classCodeNumber++;
-				if(register.get(instruction.get(1)) < 4){
-					System.out.println(classCodeNumber+": "+"istore_"+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				else{
-					System.out.println(classCodeNumber+": "+"istore         "+register.get(instruction.get(1)));
-					classCodeNumber++;
-				}
-				break;
-				
-			case "const-class":
-				break;
-			case "const-class/jumbo":
-				break;
-			
-			default:
-				break;
-		}
+		if(dexCodes[0].contains("array"))
+            new _array().analyze(dexCodes);
+        else if(dexCodes[0].contains("check"))
+            new _check().analyze(dexCodes);
+        else if(dexCodes[0].contains("cmp"))
+            new _cmp().analyze(dexCodes);
+        else if(dexCodes[0].contains("const"))
+            new _const().analyze(dexCodes);
+        else if(dexCodes[0].contains("goto"))
+            new _goto().analyze(dexCodes);
+        else if(dexCodes[0].contains("if"))
+            new _if().analyze(dexCodes);
+        else if(dexCodes[0].contains("iget"))
+            new _iget().analyze(dexCodes);
+        else if(dexCodes[0].contains("instance"))
+            new _instance().analyze(dexCodes);
+        else if(dexCodes[0].contains("invoke"))
+            new _invoke().analyze(dexCodes);
+        else if(dexCodes[0].contains("iput"))
+            new _iput().analyze(dexCodes);
+        else if(dexCodes[0].contains("monitor"))
+            new _monitor().analyze(dexCodes);
+        else if(dexCodes[0].contains("move"))
+            new _move().analyze(dexCodes);
+        else if(dexCodes[0].contains("neg") || dexCodes[0].contains("not") || dexCodes[0].contains("to"))
+            new _neg_not_to().analyze(dexCodes);
+        else if(dexCodes[0].contains("nop"))
+            new _nop().analyze(dexCodes);
+        else if(  dexCodes[0].contains("add")
+                || dexCodes[0].contains("sub")
+                || dexCodes[0].contains("mul")
+                || dexCodes[0].contains("div")
+                || dexCodes[0].contains("rem")
+                || dexCodes[0].contains("and")
+                || dexCodes[0].contains("or")
+                || dexCodes[0].contains("xor")
+                || dexCodes[0].contains("shl")
+                || dexCodes[0].contains("shr")
+                || dexCodes[0].contains("ushr")) {
+            new _op().analyze(dexCodes);
+        }
+        else if(dexCodes[0].contains("return"))
+            new _return().analyze(dexCodes);
+        else if(dexCodes[0].contains("sget"))
+            new _sget().analyze(dexCodes);
+        else if(dexCodes[0].contains("sput"))
+            new _sput().analyze(dexCodes);
+        else if(dexCodes[0].contains("switch"))
+            new _switch().analyze(dexCodes);
+        else if(dexCodes[0].contains("throw"))
+            new _throw().analyze(dexCodes);
+        else {
+            System.out.println("error instruction");
+        }
 	}
 	
 }

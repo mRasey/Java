@@ -1,13 +1,22 @@
 package instructions;
+
+import op.Register;
+import op.globalArguments;
+
+import java.util.ArrayList;
+
+import static op.globalArguments.registerQueue;
+
+
 /*数据转换指令
 数据转换指令用于将一种类型的数值转换成另一种类型。它的格式为“unop vA, vB”，vB寄存器或vB寄存器对存放需要转换的数据，
 转换后的结果保存在vA寄存器或vA寄存器对中。
 “neg-int”：对整型数求补。
-“not-int”：对整型数求反。
 “neg-long”：对长整型数求补。
-“not-long”：对长整型数求反。
 “neg-float”：对单精度浮点型数求补。
 “neg-double”：对双精度浮点型数求补。
+“not-int”：对整型数求反。
+“not-long”：对长整型数求反。
 “int-to-long”：将整型数转换为长整型。
 “int-to-float”：将整型数转换为单精度浮点型数。
 “int-to-dobule”：将整型数转换为双精度浮点数。
@@ -25,19 +34,55 @@ package instructions;
 “int-to-short”：将整型转换为短整型。*/
 public class _neg_not_to extends Instruction {
 
-    public _neg_not_to(String instrName) {
-        super(instrName);
-    }
-
     @Override
-    public void analyze() {
-        switch (dexCodes[0]) {
+    public void analyze(String[] dexCodes) {
+        super.analyze(dexCodes);
+        Register firstRegister = registerQueue.getByDexName(dexCodes[1]);
+        
+        if(dexCodes[0].contains("neg")) {
+            String dataType = dexCodes[0].substring(dexCodes[0].indexOf("-") + 1, dexCodes[0].indexOf("-") + 2);
+            globalArguments.finalByteCode.add(dataType + "load" + " " + firstRegister.stackNum);
+            globalArguments.finalByteCode.add("iconst_m1");
+            globalArguments.finalByteCode.add(dataType + "xor");
+            globalArguments.finalByteCode.add(dataType + "const_1");
+            globalArguments.finalByteCode.add(dataType + "add");
+            globalArguments.finalByteCode.add(dataType + "store" + " " + firstRegister.stackNum);
+            dataType = dataType.toUpperCase();//变为大写
+//            if(dataType.equals("L"))
+//                dataType = "J";
+            globalArguments.finalByteCodePC += 6;
+        }
+        else if(dexCodes[0].contains("not")) {
+            String dataType = dexCodes[0].substring(dexCodes[0].indexOf("-") + 1, dexCodes[0].indexOf("-") + 2);
+            globalArguments.finalByteCode.add(dataType + "load" + " " + firstRegister.stackNum);
+            globalArguments.finalByteCode.add("iconst_m1");//将-1推至栈顶
+            globalArguments.finalByteCode.add(dataType + "xor");
+            globalArguments.finalByteCode.add(dataType + "store" + " " + firstRegister.stackNum);
+            dataType = dataType.toUpperCase();//变为大写
+//            if(dataType.equals("L"))
+//                dataType = "J";
+            globalArguments.finalByteCodePC += 4;
+        }
+        else if(dexCodes[0].contains("to")) {
+            String oldType = dexCodes[0].charAt(0) + "";
+            String newType = dexCodes[0].substring(dexCodes[0].lastIndexOf("-") + 1, dexCodes[0].lastIndexOf("-") + 2);
+            globalArguments.finalByteCode.add(oldType + "load" + " " + firstRegister.stackNum);
+            globalArguments.finalByteCode.add(oldType + "2" + newType);
+            globalArguments.finalByteCode.add(oldType + "store" + firstRegister.stackNum);
+            newType = newType.toUpperCase();
+            if(newType.equals("L"))
+                newType = "J";
+            firstRegister.updateType(globalArguments.dexCodeNumber, newType);//更新类型
+            globalArguments.finalByteCodePC += 3;
+        }
+
+        /*switch (dexCodes[0]) {
             case "neg-int" :
-            case "not-int" :
             case "neg-long" :
-            case "not-long" :
             case "neg-float" :
             case "neg-double" :
+            case "not-int" :
+            case "not-long" :
             case "int-to-long" :
             case "int-to-float" :
             case "int-to-double" :
@@ -53,6 +98,11 @@ public class _neg_not_to extends Instruction {
             case "int-to-byte" :
             case "int-to-char" :
             case "int-to-short" :
-        }
+        }*/
+    }
+
+    @Override
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        return false;
     }
 }
