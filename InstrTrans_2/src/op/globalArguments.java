@@ -6,9 +6,11 @@ import java.util.Map;
 
 public class globalArguments {
     public static RegisterQueue registerQueue = new RegisterQueue();
-    static String smailFilePath = "C:\\MainActivity.smali";
+    static String smailFilePath = "E:\\MainActivity.smali";
     public static ReadFile rf = new ReadFile(smailFilePath);
     public static int LineNumber = 0;   //编号
+    
+    public static output ot = new output();
 
 
     /*		常量池相关变量																	*/
@@ -49,7 +51,24 @@ public class globalArguments {
     //记录数组标签和他后面的数据
     public static Map <String,ArrayList<String>> arrayData = new HashMap<>();
 
-    //记录switch标签后后面的数据
-    public static HashMap<String, ArrayList<String>> switchData = new HashMap<>();
+    //记录switch标签和后面的数据
+    public static HashMap<String, ArrayList<SwitchData>> switchData = new HashMap<>();
+    //default编号
+    public static int switchDefaultIndex = 0;
+    
+    
+    public static void clear(){
+    	//清除寄存器信息
+    	stackNumber = 0;
+		registerQueue.clear();
+		registerQueue.addNewRegister(new Register("p0", "this", globalArguments.stackNumber++));
+		//清除数组信息
+		arrayData.clear();
+		//清除标签信息
+		jumpAndTab.clear();
+		tabAndNextInstr.clear();
+		jumpToAim.clear();
+		
+    }
 		
 }

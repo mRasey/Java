@@ -17,4 +17,8 @@ public class Instruction {
     public boolean ifUpgrade(ArrayList<String> firstDexCode, ArrayList<String> secondDexCode, int lineNum) {
         return false;
     }
+    
+    public boolean ifUpgrade(ArrayList<String> firstDexCode, ArrayList<String> secondDexCode,ArrayList<String> thirdDexCode, int lineNum) {
+        return false;
+    }
 }

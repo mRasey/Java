@@ -22,7 +22,7 @@ public class _invoke extends Instruction {
     	super.analyze(dexCodes);
     	//先提取数据到操作数栈
     	int i = 1;
-    	for(i=0; i<dexCodes.length-1;i++){
+    	for(i=1; i<dexCodes.length-1;i++){
     		Register register = globalArguments.registerQueue.getByDexName(dexCodes[i]);
     		String dataType = register.getType(globalArguments.dexCodeNumber).toLowerCase();
     		if(dataType.equals("j")) {
@@ -58,16 +58,17 @@ public class _invoke extends Instruction {
 
     @Override
     public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
-    	//先求出所有参数的类型，保存在regTypes中，最后再依次赋值
-    	ArrayList<String> regTypes = new ArrayList<>();
-    	regTypes = getRegType(dexCode);
-    	//为寄存器分配类型
+        //先求出所有参数的类型，保存在regTypes中，最后再依次赋值
+        ArrayList<String> regTypes = new ArrayList<>();
+        regTypes = getRegType(dexCode);
+        //为寄存器分配类型
+        int i = 1;
         for (String aRegType : regTypes) {
-            Register register1 = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+            Register register1 = globalArguments.registerQueue.getByDexName(dexCode.get(i++));
             register1.updateType(lineNum, aRegType);
             //long double 为两个连续寄存器赋类型
             if (aRegType.equals("J") || aRegType.equals("D")) {
-                Register register2 = globalArguments.registerQueue.getByDexName(dexCode.get(2));
+                Register register2 = globalArguments.registerQueue.getByDexName(dexCode.get(i++));
                 register2.updateType(lineNum, aRegType);
             }
         }
@@ -75,7 +76,7 @@ public class _invoke extends Instruction {
     }
 
     public ArrayList<String> getRegType(ArrayList<String> dexCode){
-    	ArrayList<String> regTypes = new ArrayList<>();
+        ArrayList<String> regTypes = new ArrayList<>();
         String[] temp = dexCode.get(dexCode.size() - 1).split(";->");
         regTypes.add(temp[0]);//默认this的类型
         String types = temp[1].substring(temp[1].indexOf("(") + 1, temp[1].indexOf(")") + 1);//括号中参数的类型 example: ILstring;D)

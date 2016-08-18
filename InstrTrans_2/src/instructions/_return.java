@@ -17,7 +17,10 @@ public class _return extends Instruction {
     @Override
     public void analyze(String[] dexCodes) {
         super.analyze(dexCodes);
-        Register firstRegister = globalArguments.registerQueue.getByDexName(dexCodes[1]);
+        Register firstRegister = null;
+        if(dexCodes.length > 1){
+            firstRegister = globalArguments.registerQueue.getByDexName(dexCodes[1]);
+        }
 
         switch (dexCodes[0]){
             case "return" :
@@ -49,14 +52,14 @@ public class _return extends Instruction {
 
     @Override
     public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
-    	if(dexCode.size() > 1){
-    		String methodInf = globalArguments.methodName;
-    	    String dataType = methodInf.substring(methodInf.indexOf(")"));
-    	    	
-    	    Register register = globalArguments.registerQueue.getByDexName(dexCode.get(1));
-    	    register.updateType(lineNum, dataType);
-    	    return true;
-    	}
+        if(dexCode.size() > 1){
+            String methodInf = globalArguments.methodName;
+            String dataType = methodInf.substring(methodInf.indexOf(")")+1);
+
+            Register register = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+            register.updateType(lineNum, dataType);
+            return true;
+        }
         return false;
     }
 }

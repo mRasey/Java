@@ -20,7 +20,7 @@ public class ReadFile {
 	//String [][]instructions = new String[10000][5];
 	
 	
-	ArrayList<ArrayList<String>> instructions = new ArrayList<ArrayList<String>>();
+	public ArrayList<ArrayList<String>> instructions = new ArrayList<>();
 	
 	
 	//注意只有寄存器参数的情况
@@ -81,12 +81,10 @@ public class ReadFile {
 	
 	//判断是否是一条指令
 	public boolean ifAnInstruction(String ins){
-		char []temp = ins.toCharArray();
-		int i = 0;
-		if(temp[0] == '.' || temp[0] == '#' || temp[0] == ':'){
-			return false;
+		if(ins.charAt(0) > 'a' && ins.charAt(0) < 'z'){
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	//分解指令
@@ -199,6 +197,7 @@ public class ReadFile {
 	}
 	
 	public ArrayList<String> getInstruction(int order){
+		
 		return instructions.get(order);
 	}
 }

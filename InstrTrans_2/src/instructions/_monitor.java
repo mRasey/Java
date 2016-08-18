@@ -3,6 +3,8 @@ package instructions;
 import op.Register;
 import op.globalArguments;
 
+import java.util.ArrayList;
+
 import static op.globalArguments.dexCodeNumber;
 import static op.globalArguments.registerQueue;
 
@@ -28,5 +30,12 @@ public class _monitor extends Instruction {
             	globalArguments.finalByteCodePC += 2;
                 break;
         }
+    }
+
+    @Override
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+        firstRegister.updateType(lineNum, firstRegister.currentType);
+        return true;
     }
 }

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=gbk" language="java" pageEncoding="gbk" autoFlush="true" %>
 <html>
 <head>
-    <title>论文格式校正</title>
+    <title>正在处理</title>
 </head>
 <body>
 <%@ page import="java.io.*,java.util.*, javax.servlet.*" %>

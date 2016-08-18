@@ -155,6 +155,57 @@ public class _array extends Instruction{
 
     @Override
     public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
-        return super.ifUpgrade(dexCode, lineNum);
+        Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+        Register secondRegister = null;
+        if(dexCode.get(2).matches("[p,v]\\d+")) {
+            secondRegister = globalArguments.registerQueue.getByDexName(dexCode.get(2));
+        }
+
+        Register thirdRegister = null;
+        if(dexCode.size() == 4) {
+            thirdRegister = globalArguments.registerQueue.getByDexName(dexCode.get(3));
+        }
+        switch (dexCode.get(0)) {
+            case "array-length" :
+                firstRegister.updateType(lineNum, "I");
+                //在这个方法调用之前应该就指定了这个寄存器的类型了
+                secondRegister.updateType(lineNum, secondRegister.currentType);
+                break;
+            case "new-array" :
+            case "new-array/jumbo" :
+                firstRegister.updateType(lineNum, dexCode.get(3));
+                secondRegister.updateType(lineNum, "I");
+                break;
+            case "filled-new-array" :
+            case "filled-new-array/range" :
+            case "filled-new-array/jumbo" :
+                //这里创建的新数组会放在栈顶，用move-result-object赋给寄存器
+
+                String arrayType = dexCode.get(dexCode.size()-1);
+                String dataType = arrayType.substring(arrayType.indexOf("[") + 1);
+
+                int j = 1;
+                Register register;
+                while(j<dexCode.size()){
+                    register = globalArguments.registerQueue.getByDexName(dexCode.get(j));
+                    register.updateType(lineNum, dataType);
+                }
+                break;
+
+            case "fill-array-data" :
+                firstRegister.updateType(lineNum, firstRegister.currentType);
+                break;
+
+            case "aget" :
+            case "aput" :
+                firstRegister.updateType(lineNum, secondRegister.currentType.substring(secondRegister.currentType.indexOf("[") + 1));
+                secondRegister.updateType(lineNum, secondRegister.currentType);
+                thirdRegister.updateType(lineNum, "I");
+                break;
+
+        }
+
+
+        return true;
     }
 }

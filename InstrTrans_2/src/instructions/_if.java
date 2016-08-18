@@ -4,6 +4,8 @@ import op.Main;
 import op.Register;
 import op.globalArguments;
 
+import java.util.ArrayList;
+
 /*“if-test vA, vB, +CCCC”：条件跳转指令。比较vA寄存器与vB寄存器的值，如果比较结果满足就跳转到CCCC指定的偏移处。偏移量CCCC不能为0。
 if-test类型的指令有以下几条：
 “if-eq”：如果vA等于vB则跳转。Java语法表示为“if(vA == vB)”
@@ -60,5 +62,22 @@ public class _if extends Instruction{
                 globalArguments.finalByteCodePC += 3;
                 break;
         }
+    }
+
+    @Override
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        if(dexCode.get(0).contains("z")){
+            Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+            firstRegister.updateType(lineNum, firstRegister.currentType);
+        }
+        else{
+            Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+            firstRegister.updateType(lineNum, firstRegister.currentType);
+
+            Register secondRegister = globalArguments.registerQueue.getByDexName(dexCode.get(2));
+            secondRegister.updateType(lineNum, secondRegister.currentType);
+        }
+
+        return true;
     }
 }

@@ -2,6 +2,9 @@ package instructions;
 
 import op.Register;
 import op.globalArguments;
+
+import java.util.ArrayList;
+
 public class _iput extends Instruction {
 
 
@@ -24,7 +27,7 @@ public class _iput extends Instruction {
             case "iput-char/jumbo" :
             case "iput-short" :
             case "iput-short/jumbo" :
-                Register firstRegister = globalArguments.registerQueue.getByDexName(dexCodes[0]);
+                Register firstRegister = globalArguments.registerQueue.getByDexName(dexCodes[1]);
                 String dataType = firstRegister.getType(globalArguments.dexCodeNumber).toLowerCase();
                 globalArguments.finalByteCode.add("aload 0");
                 if(dataType.startsWith("l")) {
@@ -43,5 +46,15 @@ public class _iput extends Instruction {
                 globalArguments.finalByteCodePC += 3;
                 break;
         }
+    }
+
+    @Override
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+        Register secondRegister = globalArguments.registerQueue.getByDexName(dexCode.get(2));
+        firstRegister.updateType(lineNum, dexCode.get(3).substring(dexCode.get(3).lastIndexOf(":")+1));
+        secondRegister.updateType(lineNum, secondRegister.currentType);
+
+        return true;
     }
 }

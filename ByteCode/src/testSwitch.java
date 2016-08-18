@@ -1,17 +1,22 @@
 public class testSwitch {
+    int a;
     public static void main(String[] args) {
-        Character a = '1';
-        switch (a) {
-            case '4' :
+        char a = '1';
+        String s = "hello";
+        switch (s) {
+            case "hello" :
                 System.out.println(1);
                 break;
-            case '2' :
+            case "world" :
                 System.out.println(2);
                 break;
         }
 
-        E e = E.A;
+        Enum e = Enum.A;
         switch (e) {
+            case A :
+                System.out.println(3);
+                break;
             case D :
                 System.out.println(1);
                 break;
@@ -22,7 +27,7 @@ public class testSwitch {
     }
 }
 
-enum E {
+enum Enum {
     A,
     B,
     C,

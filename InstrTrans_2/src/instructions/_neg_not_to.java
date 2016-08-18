@@ -103,6 +103,28 @@ public class _neg_not_to extends Instruction {
 
     @Override
     public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
-        return false;
+        if(dexCode.get(0).contains("to")){
+            String firstDataType = (dexCode.get(0).charAt(0)+"").toUpperCase();
+            String secondDataType = (dexCode.get(0).charAt(0)+"").toUpperCase();
+            if(firstDataType.equals("L")){
+                firstDataType = "J";
+            }
+            if(secondDataType.equals("L")){
+                secondDataType = "J";
+            }
+            Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+            Register secondRegister = globalArguments.registerQueue.getByDexName(dexCode.get(2));
+            firstRegister.updateType(lineNum, secondDataType);
+            secondRegister.updateType(lineNum, firstDataType);
+        }
+        else{
+            String dataType = dexCode.get(0).substring(dexCode.get(0).indexOf("-")+1, dexCode.get(0).indexOf("-")+2).toUpperCase();
+            if(dataType.equals("L")){
+                dataType = "J";
+            }
+            Register register = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+            register.updateType(lineNum, dataType);
+        }
+        return true;
     }
 }

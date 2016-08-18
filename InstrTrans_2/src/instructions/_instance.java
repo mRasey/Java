@@ -37,12 +37,23 @@ public class _instance extends Instruction {
 
     @Override
     public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
-        if(dexCode.get(1).equals(dexCode.get(2))) {
-            globalArguments.registerQueue.getByDexName(dexCode.get(1)).currentType = "Z";
+        if(dexCode.get(0).contains("new")){
+            Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+            firstRegister.updateType(lineNum, dexCode.get(2));
         }
-        else {
-            globalArguments.registerQueue.getByDexName(dexCode.get(1)).updateType(lineNum, "Z");
+        else{
+            if(dexCode.get(1).equals(dexCode.get(2))) {
+                Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+                firstRegister.updateType(lineNum, firstRegister.currentType);
+                firstRegister.currentType = "I";
+            }
+            else {
+                Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+                firstRegister.updateType(lineNum, "I");
+                Register secondRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+                secondRegister.updateType(lineNum, secondRegister.currentType);
+            }
         }
-        return super.ifUpgrade(dexCode, lineNum);
+        return true;
     }
 }

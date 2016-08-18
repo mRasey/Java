@@ -3,6 +3,8 @@ package instructions;
 import op.Register;
 import op.globalArguments;
 
+import java.util.ArrayList;
+
 
 /*“add-type”：vBB寄存器与vCC寄存器值进行加法运算（vBB + vCC）
 "sub-type"：vBB寄存器与vCC寄存器值进行减法运算（vBB - vCC）
@@ -25,15 +27,23 @@ public class _op extends Instruction {
         String dataType = dexCodes[0].substring(dexCodes[0].indexOf("-") + 1, dexCodes[0].indexOf("-") + 2);//获得数据类型
         Register firstRegister = globalArguments.registerQueue.getByDexName(dexCodes[1]);
         Register secondRegister = globalArguments.registerQueue.getByDexName(dexCodes[2]);
-        Register thirdRegister = globalArguments.registerQueue.getByDexName(dexCodes[3]);
 
         if(dexCodes[0].contains("2addr")) {
-        	globalArguments.finalByteCode.add(dataType + "load" + " " + firstRegister.stackNum);  //load dexCode[1]
-        	globalArguments.finalByteCode.add(dataType + "load" + " " + secondRegister.stackNum);  //load dexCode[2]
+            globalArguments.finalByteCode.add(dataType + "load" + " " + firstRegister.stackNum);  //load dexCode[1]
+            globalArguments.finalByteCode.add(dataType + "load" + " " + secondRegister.stackNum);  //load dexCode[2]
+        }
+        else if(dexCodes[0].contains("lit8")) {
+            globalArguments.finalByteCode.add(dataType + "load" + " " + secondRegister.stackNum); //load dexCode[2]
+            globalArguments.finalByteCode.add("bipush" + " " + dexCodes[3]);
+        }
+        else if(dexCodes[0].contains("lit16")) {
+            globalArguments.finalByteCode.add(dataType + "load" + " " + secondRegister.stackNum); //load dexCode[2]
+            globalArguments.finalByteCode.add("sipush" + " " + dexCodes[3]);
         }
         else {
-        	globalArguments.finalByteCode.add(dataType + "load" + " " + secondRegister.stackNum);  //load dexCode[2]
-        	globalArguments.finalByteCode.add(dataType + "load" + " " + thirdRegister.stackNum);  //load dexCode[3]
+            Register thirdRegister = globalArguments.registerQueue.getByDexName(dexCodes[3]);
+            globalArguments.finalByteCode.add(dataType + "load" + " " + secondRegister.stackNum);  //load dexCode[2]
+            globalArguments.finalByteCode.add(dataType + "load" + " " + thirdRegister.stackNum);  //load dexCode[3]
         }
         globalArguments.finalByteCode.add(dataType + opType);                                          //Type
         globalArguments.finalByteCode.add(dataType + "store" + " " + firstRegister.stackNum); //store dexCode[1]
@@ -73,31 +83,18 @@ public class _op extends Instruction {
 
             case "or-int" :
             case "or-long" :
-//            case "or-float" :
-//            case "or-double" :
 
             case "xor-int" :
             case "xor-long" :
-//            case "xor-float" :
-//            case "xor-double" :
 
             case "shl-int" :
             case "shl-long" :
-//            case "shl-float" :
-//            case "shl-double" :
 
             case "shr-int" :
             case "shr-long" :
-//            case "shr-float" :
-//            case "shr-double" :
 
             case "ushr-int" :
             case "ushr-long" :
-//            case "ushr-float" :
-//            case "ushr-double" :
-
-
-
 
             case "add-int/2addr" :
             case "add-long/2addr" :
@@ -126,148 +123,82 @@ public class _op extends Instruction {
 
             case "and-int/2addr" :
             case "and-long/2addr" :
-//            case "and-float/2addr" :
-//            case "and-double/2addr" :
 
             case "or-int/2addr" :
             case "or-long/2addr" :
-//            case "or-float/2addr" :
-//            case "or-double/2addr" :
 
             case "xor-int/2addr" :
             case "xor-long/2addr" :
-//            case "xor-float/2addr" :
-//            case "xor-double/2addr" :
 
             case "shl-int/2addr" :
             case "shl-long/2addr" :
-//            case "shl-float/2addr" :
-//            case "shl-double/2addr" :
 
             case "shr-int/2addr" :
             case "shr-long/2addr" :
-//            case "shr-float/2addr" :
-//            case "shr-double/2addr" :
 
             case "ushr-int/2addr" :
             case "ushr-long/2addr" :
-//            case "ushr-float/2addr" :
-//            case "ushr-double/2addr" :
-
-
 
             case "add-int/lit8" :
-//            case "add-long/lit8" :
-//            case "add-float/lit8" :
-//            case "add-double/lit8" :
 
             case "rsub-int/lit8" :
-//            case "rsub-long/lit8" :
-//            case "rsub-float/lit8" :
-//            case "rsub-double/lit8" :
 
             case "mul-int/lit8" :
-//            case "mul-long/lit8" :
-//            case "mul-float/lit8" :
-//            case "mul-double/lit8" :
 
             case "div-int/lit8" :
-//            case "div-long/lit8" :
-//            case "div-float/lit8" :
-//            case "div-double/lit8" :
 
             case "rem-int/lit8" :
-//            case "rem-long/lit8" :
-//            case "rem-float/lit8" :
-//            case "rem-double/lit8" :
 
             case "and-int/lit8" :
-//            case "and-long/lit8" :
-//            case "and-float/lit8" :
-//            case "and-double/lit8" :
 
             case "or-int/lit8" :
-//            case "or-long/lit8" :
-//            case "or-float/lit8" :
-//            case "or-double/lit8" :
 
             case "xor-int/lit8" :
-//            case "xor-long/lit8" :
-//            case "xor-float/lit8" :
-//            case "xor-double/lit8" :
 
             case "shl-int/lit8" :
-//            case "shl-long/lit8" :
-//            case "shl-float/lit8" :
-//            case "shl-double/lit8" :
 
             case "shr-int/lit8" :
-//            case "shr-long/lit8" :
-//            case "shr-float/lit8" :
-//            case "shr-double/lit8" :
 
             case "ushr-int/lit8" :
-//            case "ushr-long/lit8" :
-//            case "ushr-float/lit8" :
-//            case "ushr-double/lit8" :
-
-
-
 
             case "add-int/lit16" :
-//            case "add-long/lit16" :
-//            case "add-float/lit16" :
-//            case "add-double/lit16" :
 
             case "rsub-int/lit16" :
-//            case "rsub-long/lit16" :
-//            case "rsub-float/lit16" :
-//            case "rsub-double/lit16" :
 
             case "mul-int/lit16" :
-//            case "mul-long/lit16" :
-//            case "mul-float/lit16" :
-//            case "mul-double/lit16" :
 
             case "div-int/lit16" :
-//            case "div-long/lit16" :
-//            case "div-float/lit16" :
-//            case "div-double/lit16" :
 
             case "rem-int/lit16" :
-//            case "rem-long/lit16" :
-//            case "rem-float/lit16" :
-//            case "rem-double/lit16" :
 
             case "and-int/lit16" :
-//            case "and-long/lit16" :
-//            case "and-float/lit16" :
-//            case "and-double/lit16" :
 
             case "or-int/lit16" :
-//            case "or-long/lit16" :
-//            case "or-float/lit16" :
-//            case "or-double/lit16" :
 
             case "xor-int/lit16" :
-//            case "xor-long/lit16" :
-//            case "xor-float/lit16" :
-//            case "xor-double/lit16" :
-
-//            case "shl-int/lit16" :
-//            case "shl-long/lit16" :
-//            case "shl-float/lit16" :
-//            case "shl-double/lit16" :
-
-//            case "shr-int/lit16" :
-//            case "shr-long/lit16" :
-//            case "shr-float/lit16" :
-//            case "shr-double/lit16" :
-
-//            case "ushr-int/lit16" :
-//            case "ushr-long/lit16" :
-//            case "ushr-float/lit16" :
-//            case "ushr-double/lit16" :
         }*/
+    }
+
+    //像double这种用到两个寄存器的，第二个寄存器怎么搞？
+    @Override
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        String dataType = dexCode.get(0).substring(dexCode.get(0).indexOf("-") + 1,dexCode.get(0).indexOf("-") + 2).toUpperCase();//获得数据类型
+        if(dataType.equals("L")){
+        	dataType = "J";
+        }
+    	Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+        Register secondRegister = globalArguments.registerQueue.getByDexName(dexCode.get(2));
+        if(dexCode.get(0).contains("/")){
+        	
+            firstRegister.updateType(lineNum, dataType);
+            secondRegister.updateType(lineNum, dataType);
+        }
+        else{
+            Register thirdRegister = globalArguments.registerQueue.getByDexName(dexCode.get(3));
+            firstRegister.updateType(lineNum, dataType);
+            secondRegister.updateType(lineNum, dataType);
+            thirdRegister.updateType(lineNum, dataType);
+        }
+        return true;
     }
 }

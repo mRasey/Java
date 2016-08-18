@@ -1,6 +1,10 @@
 package instructions;
 
+import op.Register;
 import op.globalArguments;
+
+import java.util.ArrayList;
+
 /*实例操作指令
 与实例相关的操作包括实例的类型转换，检查及新建等：
 “check-cast vAA, type@BBBB”：将vAA寄存器中的对象引用转换成指定的类型，如果失败会抛出ClassCastException异常。如果类型B指定的是基本类型，对于非基本类型的A来说，运行时始终会失败。
@@ -19,5 +23,12 @@ public class _check extends Instruction {
                 globalArguments.finalByteCodePC++;
                 break;
         }
+    }
+
+    @Override
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        Register register = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+        register.updateType(lineNum, dexCode.get(2));
+        return true;
     }
 }

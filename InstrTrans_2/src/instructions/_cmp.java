@@ -2,6 +2,9 @@ package instructions;
 
 import op.Register;
 import op.globalArguments;
+
+import java.util.ArrayList;
+
 /*比较指令
 比较指令用于对两个寄存器的值（浮点型或长整型）进行比较。它的格式为“cmpkind vAA, vBB, vCC”，
 其中vBB寄存器与vCC寄存器是需要比较的两个寄存器或寄存器对，比较的结果放到vAA寄存器。Dalvik指令集中共有5条比较指令：
@@ -33,5 +36,18 @@ public class _cmp extends Instruction {
             case "cmpg-double" :
             case "cmp-long" :
         }*/
+    }
+
+    @Override
+    public boolean ifUpgrade(ArrayList<String> dexCode, int lineNum) {
+        Register firstRegister = globalArguments.registerQueue.getByDexName(dexCode.get(1));
+        firstRegister.updateType(lineNum, "I");
+
+        Register secondRegister = globalArguments.registerQueue.getByDexName(dexCode.get(2));
+        secondRegister.updateType(lineNum, secondRegister.currentType);
+        Register thirdRegister = globalArguments.registerQueue.getByDexName(dexCode.get(3));
+        thirdRegister.updateType(lineNum, thirdRegister.currentType);
+
+        return true;
     }
 }

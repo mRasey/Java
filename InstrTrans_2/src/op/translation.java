@@ -1,7 +1,6 @@
 package op;
 
 import instructions.*;
-
 import java.util.ArrayList;
 
 /*
@@ -27,7 +26,7 @@ public class translation {
 	
 	//翻译
 	public void translateIns(){
-		if(dexCodes[0].contains("array"))
+		if(dexCodes[0].contains("array") || dexCodes[0].contains("aget") || dexCodes[0].contains("aput"))
             new _array().analyze(dexCodes);
         else if(dexCodes[0].contains("check"))
             new _check().analyze(dexCodes);
@@ -55,17 +54,17 @@ public class translation {
             new _neg_not_to().analyze(dexCodes);
         else if(dexCodes[0].contains("nop"))
             new _nop().analyze(dexCodes);
-        else if(  dexCodes[0].contains("add")
-                || dexCodes[0].contains("sub")
-                || dexCodes[0].contains("mul")
-                || dexCodes[0].contains("div")
-                || dexCodes[0].contains("rem")
-                || dexCodes[0].contains("and")
-                || dexCodes[0].contains("or")
-                || dexCodes[0].contains("xor")
-                || dexCodes[0].contains("shl")
-                || dexCodes[0].contains("shr")
-                || dexCodes[0].contains("ushr")) {
+        else if(  dexCodes[0].contains("add-")
+                || dexCodes[0].contains("sub-")
+                || dexCodes[0].contains("mul-")
+                || dexCodes[0].contains("div-")
+                || dexCodes[0].contains("rem-")
+                || dexCodes[0].contains("and-")
+                || dexCodes[0].contains("or-")
+                || dexCodes[0].contains("xor-")
+                || dexCodes[0].contains("shl-")
+                || dexCodes[0].contains("shr-")
+                || dexCodes[0].contains("ushr-")) {
             new _op().analyze(dexCodes);
         }
         else if(dexCodes[0].contains("return"))
@@ -79,6 +78,7 @@ public class translation {
         else if(dexCodes[0].contains("throw"))
             new _throw().analyze(dexCodes);
         else {
+        	System.out.println(dexCodes[0]);
             System.out.println("error instruction");
         }
 	}

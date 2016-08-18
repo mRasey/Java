@@ -27,14 +27,17 @@ public class _move extends Instruction {
     @Override
     public void analyze(String[] dexCodes) {
 		super.analyze(dexCodes);
-//    	String newInstr;
     	//保存dex->class
         Register firstRegister = registerQueue.getByDexName(dexCodes[1]);
         Register secondRegister = null;
-        if(dexCodes.length == 3)
-            secondRegister = registerQueue.getByDexName(dexCodes[2]);
         String firstDataType = firstRegister.getType(dexCodeNumber).toLowerCase();
-        String secondDataType = secondRegister.getType(dexCodeNumber).toLowerCase();
+        String secondDataType = null;
+        if(dexCodes.length == 3){
+        	secondRegister = registerQueue.getByDexName(dexCodes[2]);
+        	secondDataType = secondRegister.getType(dexCodeNumber).toLowerCase();
+        }
+            
+        
         if(firstDataType.equals("j")) {
             firstDataType = "l";
         }
@@ -67,6 +70,7 @@ public class _move extends Instruction {
                 case "s":
                 case "c":
                 case "i":
+                case "z":
                 	globalArguments.finalByteCode.add("iload" + " " + secondRegister.stackNum);
                 	globalArguments.finalByteCode.add("istore" + " " + firstRegister.stackNum);
                     break;
@@ -77,148 +81,36 @@ public class _move extends Instruction {
             }
             globalArguments.finalByteCodePC += 2;
         }
-
-        /*switch (dexCodes[0]){
-            case "move" :
-            case "move/16" :
-            case "move/from16" :
-            	switch(firstRegister.getType(dexCodeNumber)){
-            		//这几个都用的是i
-            		case "B":
-            		case "S":
-            		case "C":
-            		case "I":
-                        newInstr = "iload" + " " + dexCodes[2];
-                        globalArguments.finalByteCode.add(newInstr);
-            			globalArguments.finalByteCodePC++;
-        			
-            			newInstr = "istore" + " " + firstRegister.stackNum;
-            			globalArguments.finalByteCode.add(newInstr);
-            			globalArguments.finalByteCodePC++;
-            			break;
-            		case "F":
-            			newInstr = "fload"+" "+ dexCodes[2];
-            			globalArguments.finalByteCode.add(newInstr);
-            			globalArguments.finalByteCodePC++;
-        			
-            			newInstr = "fstore" + " " + firstRegister.stackNum;
-            			globalArguments.finalByteCode.add(newInstr);
-            			globalArguments.finalByteCodePC++;
-            			break;
-            		default:
-            			System.err.println("error:");
-            			for(int i=0; i<dexCodes.length;i++){
-            				System.err.print(dexCodes[i]+" ");
-            			}
-            			break;
-            	}
-            	break;
-            	
-            case "move-wide" :
-            case "move-wide/from16" :
-            	switch(firstRegister.getType(dexCodeNumber)){
-        			case "J":
-                        newInstr = "lload" + " " + dexCodes[2];
-                        globalArguments.finalByteCode.add(newInstr);
-        				globalArguments.finalByteCodePC++;
-        			
-        				newInstr = "lstore" + " " + firstRegister.stackNum;
-        				globalArguments.finalByteCode.add(newInstr);
-        				globalArguments.finalByteCodePC++;
-        				break;
-        			case "D":
-                        newInstr = "dload" + " " + dexCodes[2];
-                        globalArguments.finalByteCode.add(newInstr);
-        				globalArguments.finalByteCodePC++;
-        			
-        				newInstr = "dstore" + " " + firstRegister.stackNum;
-        				globalArguments.finalByteCode.add(newInstr);
-        				globalArguments.finalByteCodePC++;
-        				break;
-        			default:
-        				System.err.println("error:");
-        				for(int i=0; i<dexCodes.length;i++){
-        					System.err.print(dexCodes[i]+" ");
-        				}
-        				break;
-            		}
-            	break;
-            
-            //这几个用的是引用
-            case "move-object" :
-            case "move-object/16" :
-            case "move-object/from16" :
-            	newInstr = "aload"+" "+dexCodes[2];
-    			globalArguments.finalByteCode.add(newInstr);
-    			globalArguments.finalByteCodePC++;
-    			
-    			newInstr = "astore" + " " + firstRegister.stackNum;
-    			globalArguments.finalByteCode.add(newInstr);
-    			globalArguments.finalByteCodePC++;
-    			break;
-            	
-            case "move-result" :
-            	switch(firstRegister.getType(dexCodeNumber)){
-            		case "B":
-            		case "S":
-            		case "C":
-            		case "I":
-            			newInstr = "istore" + " " + firstRegister.stackNum;
-            			globalArguments.finalByteCode.add(newInstr);
-            			globalArguments.finalByteCodePC++;
-            			break;
-            		case "F":
-            			newInstr = "fstore" + " " + firstRegister.stackNum;
-            			globalArguments.finalByteCode.add(newInstr);
-            			globalArguments.finalByteCodePC++;
-            			break;
-            		default:
-            			System.err.println("error:");
-            			for(int i=0; i<dexCodes.length;i++){
-            				System.err.print(dexCodes[i]+" ");
-            			}
-            			break;
-            	}
-            	break;
-            	
-            case "move-result-wide" :
-            	switch(firstRegister.getType(dexCodeNumber)){
-        		case "J":
-        			newInstr = "lstore" + " " + firstRegister.stackNum;
-        			globalArguments.finalByteCode.add(newInstr);
-        			globalArguments.finalByteCodePC++;
-        			break;
-        		case "D":
-        			newInstr = "dstore" + " " + firstRegister.stackNum;
-        			globalArguments.finalByteCode.add(newInstr);
-        			globalArguments.finalByteCodePC++;
-        			break;
-        		default:
-        			System.err.println("error:");
-        			for(int i=0; i<dexCodes.length;i++){
-        				System.err.print(dexCodes[i]+" ");
-        			}
-        			break;
-            	}
-            	break;
-        			
-            case "move-result-object" :
-            case "move-exception" :
-            	newInstr = "astore" + " " + firstRegister.stackNum;
-    			globalArguments.finalByteCode.add(newInstr);
-    			globalArguments.finalByteCodePC++;
-    			break;
-        }*/
     }
 
     @Override
     public boolean ifUpgrade(ArrayList<String> firstDexCode, ArrayList<String> secondDexCode, int lineNum) {
-        String methodInf = firstDexCode.get(firstDexCode.size()-1);
-    	String dataType = methodInf.substring(methodInf.indexOf(")"));
-    	
-    	Register register = globalArguments.registerQueue.getByDexName(secondDexCode.get(1));
-    	register.updateType(lineNum, dataType);
-    	
-    	return true;
+        if(secondDexCode.get(0).contains("result")){
+            Register firstRegister = globalArguments.registerQueue.getByDexName(secondDexCode.get(1));
+
+            if(firstDexCode.get(0).contains("invoke")){
+                String methodInf = firstDexCode.get(firstDexCode.size()-1);
+                String dataType = methodInf.substring(methodInf.indexOf(")")+1);
+                firstRegister.updateType(lineNum, dataType);
+            }
+            else if(firstDexCode.get(0).contains("filled-new-array")){
+                String arrayType = firstDexCode.get(firstDexCode.size()-1);
+                String dataType = arrayType.substring(arrayType.indexOf("[") + 1);
+                firstRegister.updateType(lineNum, dataType);
+            }
+
+        }
+        //异常类型不确定？？？
+        else if(secondDexCode.get(0).contains("exception")){
+            Register firstRegister = globalArguments.registerQueue.getByDexName(secondDexCode.get(1));
+        }
+        else{
+            Register firstRegister = globalArguments.registerQueue.getByDexName(secondDexCode.get(1));
+            Register secondRegister = globalArguments.registerQueue.getByDexName(secondDexCode.get(2));
+
+            firstRegister.updateType(lineNum, secondRegister.currentType);
+            secondRegister.updateType(lineNum, secondRegister.currentType);
+        }
+        return true;
     }
 }
