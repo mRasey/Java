@@ -26,6 +26,8 @@
             readLine = bf.readLine();
         }
     %>
+    <br>
+    <br>
     <a href="checkWordResult.jsp?dirName=<%=dirName%>">下载Word文档</a>
 </body>
 </html>

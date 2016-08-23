@@ -11,6 +11,8 @@
     <title>正在处理</title>
 </head>
 <body>
+    正在处理。。。
+</body>
 <%@ page import="java.io.*,java.util.*, javax.servlet.*" %>
 <%@ page import="javax.servlet.http.*" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
@@ -101,5 +103,4 @@
     }
 %>
 <jsp:forward page="deal.jsp"/>
-</body>
 </html>

@@ -18,7 +18,7 @@
               return true;
           }
           else {
-              alert("请输入有效的Word文件" + fileName);
+              alert("请输入有效的.docx文件" + fileName);
               return false;
           }
       }
