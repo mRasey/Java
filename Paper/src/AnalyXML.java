@@ -14,7 +14,7 @@ import java.util.*;
 public class AnalyXML {
 
     private static final String docPath = "C:\\Users\\Billy\\Desktop\\paper\\";// word文档的位置
-    private static final String docName = "test";
+    private static final String docName = "origin";
     private static final String txtPath = docPath + "check_out.txt";//存储信息的TXT文件路径
     private static final String docXmlPath = docPath + docName + "/word/document.xml";//document.xml的文件路径
     private static final String comXmlPath = "res/comments.xml";//comment.xml的文件路径
@@ -43,7 +43,7 @@ public class AnalyXML {
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         currentTime = format.format(date).replace(' ', 'T') + "Z";
-        System.out.println(currentTime);
+//        System.out.println(currentTime);
     }
 
     /**
@@ -56,7 +56,7 @@ public class AnalyXML {
         String readIn = bfr.readLine();
         commentIdIndex = 0;
         while(readIn != null) {
-            System.out.println(readIn);
+//            System.out.println(readIn);
             if(readIn.contains("id")) {
                 readIn = bfr.readLine();
                 ArrayList<String> comments = new ArrayList<>();
@@ -124,9 +124,6 @@ public class AnalyXML {
                 return this;
             }
         }
-//        Element element = DocumentHelper.createElement("Override");
-//        elements.add(element);
-
         root.addElement("Override");
         Element element = (Element) root.elements("Override").get(root.elements("Override").size() - 1);
         element.addAttribute("PartName", "/word/comments.xml");
@@ -155,9 +152,6 @@ public class AnalyXML {
                     maxId = id;
             }
         }
-//        Element element = DocumentHelper.createElement("Relationship");
-//        elements.add(element);
-
         root.addElement("Relationship");
         Element element = (Element) root.elements("Relationship").get(root.elements("Relationship").size() - 1);
         element.addAttribute("Id", "rId" + (maxId + 1));
@@ -212,24 +206,19 @@ public class AnalyXML {
         addToContentType(conDocument.getRootElement());
         addToDocXmlRels(docRelsDocument.getRootElement());
 
-        //输出修改过的文件
-//        output(comDocument, docPath + "result/comments.xml");
-//        output(docDocument, docPath + "result/document.xml");
-//        output(conDocument, docPath + "result/[Content_Types].xml");
-//        output(docRelsDocument, docPath + "result/document.xml.rels");
-
         //删除原始文件
         docXmlFile.delete();
         contentTypeFile.delete();
         docXmlRelsFile.delete();
 
+        //输出修改过的文件
         output(comDocument, docPath + docName + "/word/comments.xml");
         output(docDocument, docXmlPath);
         output(conDocument, contentTypeXmlPath);
         output(docRelsDocument, docXmlRelsPath);
 
         new ExtractXML(docPath + docName, docPath + "result.docx").buildZip();
-        ExtractXML.deleteAllDir(docPath, "test");
+        ExtractXML.deleteAllDir(docPath, "origin");
     }
 
     /**

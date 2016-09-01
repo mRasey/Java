@@ -45,20 +45,17 @@ public class ExtractXML {
 
     public static void unzipAllDoc(String filePath, String fileName) throws IOException {
         int BUFFER = 2048;
-        System.out.println(new File(filePath + fileName.substring(0, fileName.lastIndexOf(".") + 1)).mkdirs());
+//        System.out.println(new File(filePath + fileName.substring(0, fileName.lastIndexOf(".") + 1)).mkdirs());
         ZipFile zipFile = new ZipFile(filePath + fileName);
         Enumeration enumeration = zipFile.entries();
         while(enumeration.hasMoreElements()) {
             ZipEntry zipEntry = (ZipEntry) enumeration.nextElement();
             BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(zipEntry));
-            System.out.println(zipEntry.getName());
+//            System.out.println(zipEntry.getName());
             String absolutePath = zipEntry.getName();
             String dir = fileName.substring(0, fileName.indexOf(".") + 1) + "/" + absolutePath.substring(0, absolutePath.lastIndexOf("/") + 1);
             String name = absolutePath.substring(absolutePath.lastIndexOf("/") + 1);
             new File(filePath + dir).mkdirs();
-//            System.out.println(filePath);
-//            System.out.println(dir);
-//            System.out.println(name);
             FileOutputStream fos = new FileOutputStream(filePath + dir + name);
             BufferedOutputStream bos = new BufferedOutputStream(fos, BUFFER);
             byte[] data = new byte[BUFFER];
@@ -98,9 +95,7 @@ public class ExtractXML {
     public void fileToZip(String sourceFilePath, String relativePath) throws IOException {
         File sourceFile = new File(sourceFilePath);
         if(sourceFile.isFile()) {
-//            String zipEntryName = relativePath + sourceFile.getName();
             ZipEntry zipEntry = new ZipEntry(relativePath + sourceFile.getName());
-            System.out.println(relativePath + sourceFile.getName());
             zos.putNextEntry(zipEntry);
             BufferedInputStream bis = new BufferedInputStream(new FileInputStream(sourceFile));
             int read;
@@ -137,7 +132,6 @@ public class ExtractXML {
     }
 
     public static void main(String[] args) throws IOException {
-//        ExtractXML.unzipAllDoc("C:/Users/Billy/Desktop/zip/", "test.docx");
         ExtractXML.deleteAllDir("C:\\Users\\Billy\\Desktop\\paper\\", "test");
     }
 }
