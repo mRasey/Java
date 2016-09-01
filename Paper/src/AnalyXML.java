@@ -14,12 +14,12 @@ import java.util.*;
 public class AnalyXML {
 
     private static final String docPath = "C:\\Users\\Billy\\Desktop\\paper\\";// word文档的位置
-    private static final String docName = "test.docx";
+    private static final String docName = "test";
     private static final String txtPath = "res/check_out.txt";//存储信息的TXT文件路径
-    private static final String docXmlPath = docPath + "document.xml";//document.xml的文件路径
+    private static final String docXmlPath = docPath + docName + "/word/document.xml";//document.xml的文件路径
     private static final String comXmlPath = "res/comments.xml";//comment.xml的文件路径
-    private static final String contentTypeXmlPath = docPath + "[Content_Types].xml";
-    private static final String docXmlRelsPath = docPath + "document.xml.rels";
+    private static final String contentTypeXmlPath = docPath + docName + "/[Content_Types].xml";
+    private static final String docXmlRelsPath = docPath + docName + "/word/_rels/document.xml.rels";
     private HashMap<Integer, ArrayList<String>> idToComment = new HashMap<>();
     private File txtFile;
     private File docXmlFile;
@@ -38,7 +38,7 @@ public class AnalyXML {
         contentTypeFile = new File(AnalyXML.contentTypeXmlPath);
         docXmlRelsFile = new File(AnalyXML.docXmlRelsPath);
 
-        new File(docPath + "result").mkdirs();
+//        new File(docPath + "result").mkdirs();
 
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -188,7 +188,7 @@ public class AnalyXML {
      * @throws DocumentException
      */
     public void run() throws IOException, DocumentException {
-        ExtractXML.unzipXml(docPath, docName);
+        ExtractXML.unzipAllDoc(docPath, docName + ".docx");
         readTxt();
         Document docDocument = new SAXReader().read(docXmlFile);
         Document comDocument = new SAXReader().read(comXmlFile);
@@ -213,15 +213,20 @@ public class AnalyXML {
         addToDocXmlRels(docRelsDocument.getRootElement());
 
         //输出修改过的文件
-        output(comDocument, docPath + "result/comments.xml");
-        output(docDocument, docPath + "result/document.xml");
-        output(conDocument, docPath + "result/[Content_Types].xml");
-        output(docRelsDocument, docPath + "result/document.xml.rels");
+//        output(comDocument, docPath + "result/comments.xml");
+//        output(docDocument, docPath + "result/document.xml");
+//        output(conDocument, docPath + "result/[Content_Types].xml");
+//        output(docRelsDocument, docPath + "result/document.xml.rels");
 
         //删除原始文件
         docXmlFile.delete();
         contentTypeFile.delete();
         docXmlRelsFile.delete();
+
+        output(comDocument, docPath + docName + "/word/comments.xml");
+        output(docDocument, docXmlPath);
+        output(conDocument, contentTypeXmlPath);
+        output(docRelsDocument, docXmlRelsPath);
     }
 
     /**
