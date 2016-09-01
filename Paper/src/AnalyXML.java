@@ -15,7 +15,7 @@ public class AnalyXML {
 
     private static final String docPath = "C:\\Users\\Billy\\Desktop\\paper\\";// word文档的位置
     private static final String docName = "test";
-    private static final String txtPath = "res/check_out.txt";//存储信息的TXT文件路径
+    private static final String txtPath = docPath + "check_out.txt";//存储信息的TXT文件路径
     private static final String docXmlPath = docPath + docName + "/word/document.xml";//document.xml的文件路径
     private static final String comXmlPath = "res/comments.xml";//comment.xml的文件路径
     private static final String contentTypeXmlPath = docPath + docName + "/[Content_Types].xml";
@@ -227,6 +227,9 @@ public class AnalyXML {
         output(docDocument, docXmlPath);
         output(conDocument, contentTypeXmlPath);
         output(docRelsDocument, docXmlRelsPath);
+
+        new ExtractXML(docPath + docName, docPath + "result.docx").buildZip();
+        ExtractXML.deleteAllDir(docPath, "test");
     }
 
     /**
