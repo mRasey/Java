@@ -1,6 +1,4 @@
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
+import org.dom4j.*;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -15,20 +13,32 @@ import java.util.*;
  */
 public class AnalyXML {
 
-    private static final String txtPath = "C:\\Users\\Billy\\Desktop\\paper\\check_out.txt";//存储信息的TXT文件路径
-    private static final String docXmlPath = "C:\\Users\\Billy\\Desktop\\paper\\document.xml";//document.xml的文件路径
-    private static final String comXmlPath = "C:\\Users\\Billy\\Desktop\\paper\\comments.xml";//comment.xml的文件路径
-    private HashMap<PNode, ArrayList<String>> paraIdToComment = new HashMap<>();
+    private static final String docPath = "C:\\Users\\Billy\\Desktop\\paper\\";// word文档的位置
+    private static final String docName = "test.docx";
+    private static final String txtPath = "res/check_out.txt";//存储信息的TXT文件路径
+    private static final String docXmlPath = docPath + "document.xml";//document.xml的文件路径
+    private static final String comXmlPath = "res/comments.xml";//comment.xml的文件路径
+    private static final String contentTypeXmlPath = docPath + "[Content_Types].xml";
+    private static final String docXmlRelsPath = docPath + "document.xml.rels";
+    private HashMap<Integer, ArrayList<String>> idToComment = new HashMap<>();
     private File txtFile;
     private File docXmlFile;
     private File comXmlFile;
+    private File contentTypeFile;
+    private File docXmlRelsFile;
     private int commentIdIndex = 0;//批注的ID，每次增加一
     private String currentTime = "";
+    private Element p = DocumentHelper.createElement("w:p");
+    private Element r = DocumentHelper.createElement("w:r");
 
     public AnalyXML() {
         txtFile = new File(AnalyXML.txtPath);
         docXmlFile = new File(AnalyXML.docXmlPath);
         comXmlFile = new File(AnalyXML.comXmlPath);
+        contentTypeFile = new File(AnalyXML.contentTypeXmlPath);
+        docXmlRelsFile = new File(AnalyXML.docXmlRelsPath);
+
+        new File(docPath + "result").mkdirs();
 
         Date date = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -44,18 +54,19 @@ public class AnalyXML {
     public AnalyXML readTxt() throws IOException {
         BufferedReader bfr = new BufferedReader(new FileReader(txtFile));
         String readIn = bfr.readLine();
+        commentIdIndex = 0;
         while(readIn != null) {
             System.out.println(readIn);
-            if(readIn.contains("paraId")) {
-                String paraId = readIn.substring(readIn.indexOf("=") + 1);
+            if(readIn.contains("id")) {
                 readIn = bfr.readLine();
                 ArrayList<String> comments = new ArrayList<>();
                 if(readIn != null) {
                     do {
                         comments.add(readIn);
                         readIn = bfr.readLine();
-                    } while (readIn != null && !readIn.startsWith("paraId"));
-                    paraIdToComment.put(new PNode(paraId), comments);
+                    } while (readIn != null && !readIn.startsWith("id"));
+                    idToComment.put(commentIdIndex, comments);
+                    commentIdIndex++;
                 }
             }
         }
@@ -64,65 +75,16 @@ public class AnalyXML {
     }
 
     /**
-     * 判断hashMap中是否含有指定paraId
-     * @param paraId 指定paraId
-     * @return 找到的pNode或者null
-     */
-    public PNode hasThisParaId(String paraId) {
-        for(PNode pNode : paraIdToComment.keySet()) {
-            if(pNode.paraId.equals(paraId))
-                return pNode;
-        }
-        return null;
-    }
-
-    /**
-     * 将p节点的各种Id保存起来
-     * @return this
-     */
-    public AnalyXML addIdsToHashMap(Element root) {
-        Iterator pNodes = root.elements("p").iterator();
-        while(pNodes.hasNext()) {
-            Element nextP = (Element) pNodes.next();
-            PNode pNode = hasThisParaId(nextP.attributeValue("paraId"));
-            if(pNode != null) {
-                pNode.textId = nextP.attributeValue("textId");
-                pNode.rsidR = nextP.attributeValue("rsidR");
-                pNode.rsidRDefault = nextP.attributeValue("rsidRDefault");
-            }
-        }
-        return this;
-    }
-
-    /**
      * 将批注加入comment.xml
      * @return this
      */
-    public AnalyXML addCommentsToCom(Element newComment, PNode pNode) {
+    public AnalyXML addCommentsToCom(Element newComment) {
         newComment.addAttribute("w:id", commentIdIndex + "");
-        newComment.addAttribute("w:author", "BeiHang");
-        newComment.addAttribute("w:data", currentTime);
-        newComment.addAttribute("w:initials", "Billy");
         newComment.addElement("w:p");
         Element newP = newComment.element("p");
-        newP.addAttribute("w14:paraId", pNode.paraId);
-        newP.addAttribute("w14:textId", "DONTKNOW");
-        newP.addAttribute("w:rsidR", pNode.rsidRDefault);
-        newP.addAttribute("w:rsidRDefault", pNode.rsidRDefault);
-        newP.addElement("w:pPr");
-        newP.element("pPr").addElement("w:pStyle");
-        newP.element("pPr").element("pStyle").addAttribute("w:val", "a8");
-        Element newR1 = newP.addElement("w:r");
-        newR1.addElement("w:rPr");
-        newR1.element("rPr").addElement("w:rStyle");
-        newR1.element("rPr").element("rStyle").addAttribute("w:hint", "eastAsia");
-        newR1.addElement("w:annotationRef");
         Element newR2 = newP.addElement("w:r");
-        newR2.addElement("w:rPr");
-        newR2.element("rPr").addElement("w:rFonts");
-        newR2.element("rPr").element("rFonts").addAttribute("w:hint", "eastAsia");
         newR2.addElement("w:t");
-        for(String string : paraIdToComment.get(pNode)) {
+        for(String string : idToComment.get(commentIdIndex)) {
             newR2.element("t").addText(string);
         }
         commentIdIndex++;
@@ -133,22 +95,74 @@ public class AnalyXML {
      * 将批注索引加入document.xml
      * @return this
      */
-    public AnalyXML addCommentsToDoc(Element p, String paraId) {
-        PNode pNode = hasThisParaId(paraId);
-        if(pNode != null) {
-            p.addElement("w:commentRangeStart");
-            p.element("commentRangeStart").addAttribute("w:id", commentIdIndex + "");
-            p.addElement("w:commentRangeEnd");
-            p.element("commentRangeEnd").addAttribute("w:id", commentIdIndex + "");
-            p.addElement("w:r");
-            Element newR = (Element) p.elements("r").get(p.elements("r").size() - 1);
-            newR.addElement("w:rPr");
-            newR.element("rPr").addElement("w:rStyle");
-            newR.element("rPr").element("rStyle").addAttribute("w:val", "a7");
-            newR.addElement("w:commentReference");
-            newR.element("w:commentReference").addAttribute("w:id", commentIdIndex + "");
-            commentIdIndex++;
+    public AnalyXML addCommentsToDoc(Element p) {
+        List elements = p.elements("r");
+        // 插入在第一个w:r之前
+        elements.add(0, DocumentHelper.createElement("w:commentRangeStart"));
+        p.element("w:commentRangeStart").addAttribute("w:id", commentIdIndex + "");
+        elements.add(2, DocumentHelper.createElement("w:commentRangeEnd"));
+        p.element("w:commentRangeEnd").addAttribute("w:id", commentIdIndex + "");
+        elements.add(3, DocumentHelper.createElement("w:r"));
+        Element newR = (Element) p.elements("w:r").get(p.elements("w:r").size() - 1);
+        newR.addElement("w:commentReference");
+        newR.element("commentReference").addAttribute("w:id", commentIdIndex + "");
+        return this;
+    }
+
+    /**
+     * 如果contentType.xml里缺少comment.xml就将其加入xml中
+     * @param root 根节点
+     * @return this
+     */
+    public AnalyXML addToContentType(Element root) {
+        List elements = root.elements("Override");
+        Iterator iterator = elements.iterator();
+        while(iterator.hasNext()) {
+            Element element = (Element) iterator.next();
+            if(element.attributeValue("PartName").equals("/word/comments/xml")) {//如果含有则直接返回
+                System.out.println("include contentType");
+                return this;
+            }
         }
+//        Element element = DocumentHelper.createElement("Override");
+//        elements.add(element);
+
+        root.addElement("Override");
+        Element element = (Element) root.elements("Override").get(root.elements("Override").size() - 1);
+        element.addAttribute("PartName", "/word/comments.xml");
+        element.addAttribute("ContentType", "application/vnd.openxmlformats-officedocument.wordprocessingml.comments+xml");
+        return this;
+    }
+
+    /**
+     * 如果document.xml.rels里缺少comment.xml就将其加入xml中
+     * @param root 根节点
+     * @return this
+     */
+    public AnalyXML addToDocXmlRels(Element root) {
+        List elements = root.elements("Relationship");
+        int maxId = 0;
+        Iterator iterator = elements.iterator();
+        while(iterator.hasNext()) {
+            Element element = (Element) iterator.next();
+            if(element.attributeValue("Target").equals("comments.xml")) {//如果含有则直接返回
+                System.out.println("include docXmlRels");
+                return this;
+            }
+            else {
+                int id = Integer.parseInt(element.attributeValue("Id").substring(3));
+                if(maxId < id)
+                    maxId = id;
+            }
+        }
+//        Element element = DocumentHelper.createElement("Relationship");
+//        elements.add(element);
+
+        root.addElement("Relationship");
+        Element element = (Element) root.elements("Relationship").get(root.elements("Relationship").size() - 1);
+        element.addAttribute("Id", "rId" + (maxId + 1));
+        element.addAttribute("Type", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments");
+        element.addAttribute("Target", "comments.xml");
         return this;
     }
 
@@ -158,10 +172,10 @@ public class AnalyXML {
      * @return
      * @throws IOException
      */
-    public AnalyXML output(Document document) throws IOException {
+    public AnalyXML output(Document document, String path) throws IOException {
         OutputFormat format = OutputFormat.createPrettyPrint();
         format.setEncoding("UTF-8");
-        XMLWriter writer = new XMLWriter(new OutputStreamWriter(new FileOutputStream(comXmlPath + "_result"), "UTF-8"), format);
+        XMLWriter writer = new XMLWriter(new OutputStreamWriter(new FileOutputStream(path), "UTF-8"), format);
         writer.write(document);
         writer.flush();
         writer.close();
@@ -174,35 +188,40 @@ public class AnalyXML {
      * @throws DocumentException
      */
     public void run() throws IOException, DocumentException {
+        ExtractXML.unzipXml(docPath, docName);
         readTxt();
         Document docDocument = new SAXReader().read(docXmlFile);
         Document comDocument = new SAXReader().read(comXmlFile);
-        addIdsToHashMap(docDocument.getRootElement().element("body"));
+        Document conDocument = new SAXReader().read(contentTypeFile);
+        Document docRelsDocument = new SAXReader().read(docXmlRelsFile);
+
         commentIdIndex = 0;
-        for(PNode pNode : paraIdToComment.keySet()) {
-            comDocument.getRootElement().addElement("comment");
+        for(int i = 0; i < idToComment.size(); i++) {
+            comDocument.getRootElement().addElement("w:comment");
             Element newComment = (Element) comDocument.getRootElement().elements("comment").get(commentIdIndex);
-            addCommentsToCom(newComment, pNode);
+            addCommentsToCom(newComment);
         }
 
         commentIdIndex = 0;
         Iterator docPNodesItr = docDocument.getRootElement().element("body").elements("p").iterator();
         while(docPNodesItr.hasNext()) {
             Element nextPNode = (Element) docPNodesItr.next();
-            String paraId = nextPNode.attributeValue("paraId");
-            addCommentsToDoc(nextPNode, paraId);
+            addCommentsToDoc(nextPNode);
         }
 
-        output(comDocument);
-//        System.out.println(docDocument.asXML());
-    }
+        addToContentType(conDocument.getRootElement());
+        addToDocXmlRels(docRelsDocument.getRootElement());
 
-    public void test() {
-        for(ArrayList<String> arrayList : paraIdToComment.values()) {
-            for(String string : arrayList) {
-                System.out.println(string);
-            }
-        }
+        //输出修改过的文件
+        output(comDocument, docPath + "result/comments.xml");
+        output(docDocument, docPath + "result/document.xml");
+        output(conDocument, docPath + "result/[Content_Types].xml");
+        output(docRelsDocument, docPath + "result/document.xml.rels");
+
+        //删除原始文件
+        docXmlFile.delete();
+        contentTypeFile.delete();
+        docXmlRelsFile.delete();
     }
 
     /**
@@ -214,23 +233,4 @@ public class AnalyXML {
         new AnalyXML().run();
     }
 
-}
-
-class PNode {
-
-    String paraId = "UNKNOW";
-    String textId = "UNKNOW";
-    String rsidR = "UNKNOW";
-    String rsidRDefault = "UNKNOW";
-
-    PNode(String paraId) {
-        this.paraId = paraId;
-    }
-
-    PNode(String paraId, String textId, String rsidR, String rsidRDefault) {
-        this.paraId = paraId;
-        this.textId = textId;
-        this.rsidR = rsidR;
-        this.rsidRDefault = rsidRDefault;
-    }
 }
