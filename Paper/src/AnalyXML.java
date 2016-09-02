@@ -80,12 +80,18 @@ public class AnalyXML {
      */
     public AnalyXML addCommentsToCom(Element newComment) {
         newComment.addAttribute("w:id", commentIdIndex + "");
-        newComment.addElement("w:p");
-        Element newP = newComment.element("p");
-        Element newR2 = newP.addElement("w:r");
-        newR2.addElement("w:t");
+        List elements = newComment.elements();
+//        newComment.addElement("w:p");
+//        Element newP = newComment.element("p");
+//        Element newR2 = newP.addElement("w:r");
+//        newR2.addElement("w:t");
         for(String string : idToComment.get(commentIdIndex)) {
-            newR2.element("t").addText(string);
+            newComment.addElement("w:p");
+            Element newP = (Element) newComment.elements("p").get(newComment.elements("p").size() - 1);
+            newP.addElement("w:r");
+            Element newR = newP.element("r");
+            newR.addElement("w:t");
+            newR.element("t").addText(string);
         }
         commentIdIndex++;
         return this;

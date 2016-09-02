@@ -1,6 +1,12 @@
+import java.util.Random;
+
 public class split {
     public static void main(String[] args) {
-        String i = "hello";
-        System.out.println(i.split(" ")[0]);
+        for(int i = 0; i < 4; i++) {
+            Random random = new Random();
+            int r = random.nextInt('z' - 'a');
+            System.out.print((char) ('a' + r));
+        }
+        System.out.println(21);
     }
 }
