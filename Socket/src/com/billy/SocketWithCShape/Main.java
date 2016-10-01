@@ -23,6 +23,10 @@ public class Main {
                     break;
                 case "updateIpAddress":
                     new Thread(new OperateSQL(infos[0], infos[1], clientSocket)).start();
+                    break;
+                default:
+                    System.out.println("error instruction");
+                    break;
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.billy.SocketWithCShape;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
@@ -11,6 +12,7 @@ public class OperateSQL implements Runnable{
     private String method;
     private String name;
     private String password;
+    private String ipAddress;
     private String email;
     private Socket clientSocket;
     private Connection connection;
@@ -23,6 +25,8 @@ public class OperateSQL implements Runnable{
         this.name = name;
         this.clientSocket = clientSocket;
         this.bfw = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        String ipAddress = clientSocket.getInetAddress().toString();
+        this.ipAddress = ipAddress.substring(ipAddress.indexOf("/") + 1);
 
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/diary?user=root&password=199507wz";
@@ -40,6 +44,8 @@ public class OperateSQL implements Runnable{
         this.password = password;
         this.clientSocket = clientSocket;
         this.bfw = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        String ipAddress = clientSocket.getInetAddress().toString();
+        this.ipAddress = ipAddress.substring(ipAddress.indexOf("/") + 1);
 
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/diary?user=root&password=199507wz";
@@ -58,6 +64,8 @@ public class OperateSQL implements Runnable{
         this.email = email;
         this.clientSocket = clientSocket;
         this.bfw = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        String ipAddress = clientSocket.getInetAddress().toString();
+        this.ipAddress = ipAddress.substring(ipAddress.indexOf("/") + 1);
 
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/diary?user=root&password=199507wz";
@@ -69,9 +77,6 @@ public class OperateSQL implements Runnable{
         statement = connection.createStatement();
     }
 
-    private String $(String s) {
-        return "'" + s + "'";
-    }
 
     public void signIn() throws SQLException, IOException {
         sql = "SELECT name, password FROM users_info WHERE name = " + $(name);
@@ -81,14 +86,17 @@ public class OperateSQL implements Runnable{
             if(this.password.equals(password)) {
                 bfw.write("signIn success\n");
                 bfw.flush();
+                printInfo("signIn success");
                 return;
             }
             bfw.write("error password\n");
             bfw.flush();
+            printInfo("error password");
             return;
         }
         bfw.write("error account\n");
         bfw.flush();
+        printInfo("error account");
     }
 
     public void register() throws SQLException, IOException {
@@ -97,6 +105,7 @@ public class OperateSQL implements Runnable{
         if (resultSet.next()) {
             bfw.write("account already exist\n");
             bfw.flush();
+            printInfo("account already exist");
             return;
         }
         sql = "INSERT " +
@@ -104,21 +113,34 @@ public class OperateSQL implements Runnable{
                 "VALUES (" + $(name) + ","
                 + $(password) + ","
                 + $(email) + ","
-                + $(clientSocket.getInetAddress().toString()) + ");";
+                + $(ipAddress) + ");";
         statement.executeUpdate(sql);
         bfw.write("register success\n");
         bfw.flush();
+        String path = OperateSQL.class.getResource("").toString();
+        path = path.substring(0, path.lastIndexOf("Socket/"));
+        path = path.substring(path.indexOf("/") + 1);
+        new File(path + "/data/" + name + "/diary").mkdirs();
+        printInfo("register success");
     }
 
     public void updateIpAddress() throws SQLException, IOException {
         sql = "UPDATE users_info " +
-                "SET ipAddress=" + $(clientSocket.getInetAddress().toString()) + " " +
+                "SET ipAddress=" + $(ipAddress) + " " +
                 "WHERE name=" + $(name) + ";";
         statement.executeUpdate(sql);
         bfw.write("update ipAddress success\n");
         bfw.flush();
+        printInfo("update ipAddress success");
     }
 
+    private String $(String s) {
+        return "'" + s + "'";
+    }
+
+    private void printInfo(String s) {
+        System.out.println(ipAddress + " " + s);
+    }
     @Override
     public void run() {
         try {
